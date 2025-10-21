@@ -7,6 +7,7 @@ interface IItem {
     id: string;
     name: string;
     damageType: DamageType;
+    SustainType: SustainType;
     itemType: ItemType;
     giveHealth: boolean;
 }
@@ -14,6 +15,15 @@ interface IItem {
 enum DamageType {
     AD = "Physical",
     AP = "Magical",
+    AS = "Attack Speed",
+    None = "None",
+}
+
+enum SustainType {
+    Def = "Defense",
+    Mr = "Magic Resist",
+    Both = "Def + MR",
+    None = "None",
 }
 
 enum ItemType {
@@ -28,8 +38,188 @@ const Liandry : IItem = {
     name: "Liandry's Torment",
     damageType: DamageType.AP,
     itemType: ItemType.SelfOffsense,
+    SustainType: SustainType.None,
     giveHealth: true,
 };
+
+const bardItems: IItem[] = [
+    {
+        id: "3742",
+        name: "Dead Man's Plate",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3143",
+        name: "Randuin's Omen",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "4401",
+        name: "Force of Nature",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "2504",
+        name: "Kaenic Rookern",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "6665",
+        name: "Jak'Sho, The Protean",
+        damageType: DamageType.None,
+        SustainType: SustainType.Both,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3091",
+        name: "Wit's End",
+        damageType: DamageType.AS,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "3157",
+        name: "Zhonya's Hourglass",
+        damageType: DamageType.AP,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "3302",
+        name: "Terminus",
+        damageType: DamageType.AS,
+        SustainType: SustainType.Both,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "4633",
+        name: "Riftmaker",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "6653",
+        name: "Liandry's Torment",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3087",
+        name: "Statikk Shiv",
+        damageType: DamageType.AS,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "4629",
+        name: "Cosmic Drive",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3073",
+        name: "Experimental Hexplate",
+        damageType: DamageType.AD,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3190",
+        name: "Locket of the Iron Solari",
+        damageType: DamageType.None,
+        SustainType: SustainType.Both,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3107",
+        name: "Redemption",
+        damageType: DamageType.None,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3222",
+        name: "Mikael's Blessing",
+        damageType: DamageType.None,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3110",
+        name: "Frozen Heart",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.TeamDefense,
+        giveHealth: false,
+    },
+    {
+        id: "3109",
+        name: "Knight's Vow",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "4005",
+        name: "Imperial Mandate",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: false,
+    },
+    {
+        id: "8020",
+        name: "Abyssal Mask",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.TeamOffense,
+        giveHealth: true,
+    },
+    {
+        id: "4010",
+        name: "Bloodletter's Curse",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: true,
+    },
+    {
+        id: "6695",
+        name: "Serpent's Fang",
+        damageType: DamageType.AD,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: false,
+    },
+]
 
 
 

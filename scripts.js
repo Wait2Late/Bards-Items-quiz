@@ -37,6 +37,213 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var allVersionsApi = "https://ddragon.leagueoflegends.com/api/versions.json";
 var allChampions;
 var allItems;
+var DamageType;
+(function (DamageType) {
+    DamageType["AD"] = "Physical";
+    DamageType["AP"] = "Magical";
+    DamageType["AS"] = "Attack Speed";
+    DamageType["None"] = "None";
+})(DamageType || (DamageType = {}));
+var SustainType;
+(function (SustainType) {
+    SustainType["Def"] = "Defense";
+    SustainType["Mr"] = "Magic Resist";
+    SustainType["Both"] = "Def + MR";
+    SustainType["None"] = "None";
+})(SustainType || (SustainType = {}));
+var ItemType;
+(function (ItemType) {
+    ItemType["SelfDefense"] = "Self-Defense";
+    ItemType["SelfOffsense"] = "Self-Offense";
+    ItemType["TeamDefense"] = "Team-Defense";
+    ItemType["TeamOffense"] = "Team-Offense";
+})(ItemType || (ItemType = {}));
+var Liandry = {
+    id: "6655",
+    name: "Liandry's Torment",
+    damageType: DamageType.AP,
+    itemType: ItemType.SelfOffsense,
+    SustainType: SustainType.None,
+    giveHealth: true,
+};
+var bardItems = [
+    {
+        id: "3742",
+        name: "Dead Man's Plate",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3143",
+        name: "Randuin's Omen",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "4401",
+        name: "Force of Nature",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "2504",
+        name: "Kaenic Rookern",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "6665",
+        name: "Jak'Sho, The Protean",
+        damageType: DamageType.None,
+        SustainType: SustainType.Both,
+        itemType: ItemType.SelfDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3091",
+        name: "Wit's End",
+        damageType: DamageType.AS,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "3157",
+        name: "Zhonya's Hourglass",
+        damageType: DamageType.AP,
+        SustainType: SustainType.Def,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "3302",
+        name: "Terminus",
+        damageType: DamageType.AS,
+        SustainType: SustainType.Both,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "4633",
+        name: "Riftmaker",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "6653",
+        name: "Liandry's Torment",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3087",
+        name: "Statikk Shiv",
+        damageType: DamageType.AS,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: false,
+    },
+    {
+        id: "4629",
+        name: "Cosmic Drive",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3073",
+        name: "Experimental Hexplate",
+        damageType: DamageType.AD,
+        SustainType: SustainType.None,
+        itemType: ItemType.SelfOffsense,
+        giveHealth: true,
+    },
+    {
+        id: "3190",
+        name: "Locket of the Iron Solari",
+        damageType: DamageType.None,
+        SustainType: SustainType.Both,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3107",
+        name: "Redemption",
+        damageType: DamageType.None,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3222",
+        name: "Mikael's Blessing",
+        damageType: DamageType.None,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "3110",
+        name: "Frozen Heart",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.TeamDefense,
+        giveHealth: false,
+    },
+    {
+        id: "3109",
+        name: "Knight's Vow",
+        damageType: DamageType.None,
+        SustainType: SustainType.Def,
+        itemType: ItemType.TeamDefense,
+        giveHealth: true,
+    },
+    {
+        id: "4005",
+        name: "Imperial Mandate",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: false,
+    },
+    {
+        id: "8020",
+        name: "Abyssal Mask",
+        damageType: DamageType.None,
+        SustainType: SustainType.Mr,
+        itemType: ItemType.TeamOffense,
+        giveHealth: true,
+    },
+    {
+        id: "4010",
+        name: "Bloodletter's Curse",
+        damageType: DamageType.AP,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: true,
+    },
+    {
+        id: "6695",
+        name: "Serpent's Fang",
+        damageType: DamageType.AD,
+        SustainType: SustainType.None,
+        itemType: ItemType.TeamOffense,
+        giveHealth: false,
+    },
+];
 function fetchCurrentPatch() {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
@@ -154,15 +361,11 @@ getAllChampionsAndItems().then(function (data) {
         var items = document.querySelectorAll(".item");
         var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
         items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
-        var deadMansPlate = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
-        items[1].innerHTML = "<img src=\"".concat(deadMansPlate, "\" alt=\"Dead Man's Plate\">");
+        var deadMansPlateImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
+        items[1].innerHTML = "<img src=\"".concat(deadMansPlateImg, "\" alt=\"Dead Man's Plate\">");
         var bootsSlot = document.querySelector(".item.boots-dropdown");
         if (bootsSlot) {
             createBootsDropdown(bootsSlot, data.patchVersion);
         }
     }
 });
-var deadMansPlateItem = {
-    id: "3742",
-    name: "Dead Man's Plate",
-};
