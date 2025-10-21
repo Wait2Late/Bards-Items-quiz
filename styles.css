@@ -1,0 +1,38 @@
+body {
+    background-color: beige;
+}
+
+header {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+}
+
+#quiz-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#items-list {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.item {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    gap: .5rem;
+}

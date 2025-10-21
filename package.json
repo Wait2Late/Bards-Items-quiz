@@ -1,0 +1,20 @@
+{
+  "name": "bards-items-quiz",
+  "version": "1.0.0",
+  "description": "A fun quiz about which items to buy as a Bard. Whether when you lose or win.",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wait2Late/Bards-Items-quiz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wait2Late/Bards-Items-quiz/issues"
+  },
+  "homepage": "https://github.com/Wait2Late/Bards-Items-quiz#readme"
+}
