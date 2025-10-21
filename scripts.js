@@ -99,59 +99,51 @@ function getAllChampionsAndItems() {
         });
     });
 }
-function createBootsDropdown(element) {
-    var _this = this;
+function createBootsDropdown(element, patchVersion) {
     var boots = [
         { id: "3111", name: "Mercury's Treads" },
         { id: "3047", name: "Plated Steelcaps" },
         { id: "3009", name: "Boots of Swiftness" },
         { id: "3171", name: "Crimson Lucidity" }
     ];
-    var select = document.createElement("select");
-    select.className = "boots-dropdown";
-    var defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Select Boots";
-    select.appendChild(defaultOption);
-    boots.forEach(function (boot) {
-        var option = document.createElement("option");
-        option.value = boot.id;
-        option.textContent = boot.name;
-        select.appendChild(option);
-    });
-    // Event: Change image when a boot is selected
-    select.addEventListener("change", function (e) { return __awaiter(_this, void 0, void 0, function () {
-        var selectedId, currentPatch, img;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    selectedId = e.target.value;
-                    element.innerHTML = ""; // Clear previous content
-                    element.appendChild(select); // Keep dropdown
-                    if (!selectedId) return [3 /*break*/, 2];
-                    return [4 /*yield*/, fetchCurrentPatch()];
-                case 1:
-                    currentPatch = _a.sent();
-                    img = document.createElement("img");
-                    img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(currentPatch, "/img/item/").concat(selectedId, ".png");
-                    img.alt = select.selectedOptions[0].textContent || "Boots";
-                    element.appendChild(img);
-                    element.innerHTML = "<img src=\"".concat(img.src, "\" alt=\"boots\">");
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
-            }
+    // Create dropdown
+    var select = element.querySelector("select.boots-dropdown");
+    if (!select) {
+        select = document.createElement("select");
+        select.className = "boots-dropdown";
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Boots";
+        select.appendChild(defaultOption);
+        boots.forEach(function (boot) {
+            var option = document.createElement("option");
+            option.value = boot.id;
+            option.textContent = boot.name;
+            select.appendChild(option);
         });
-    }); });
-    element.innerHTML = "";
-    element.appendChild(select);
-}
-// Usage example (after DOM is loaded):
-document.addEventListener("DOMContentLoaded", function () {
-    var items = document.querySelectorAll(".item");
-    if (items[5]) {
-        createBootsDropdown(items[5]);
+        element.appendChild(select); // keep the dropdown in the li
     }
-});
+    // Ensure there is an <img> we can update (don’t remove the select)
+    var img = element.querySelector("img");
+    select.addEventListener("change", function () {
+        var _a, _b;
+        var selected = select.value;
+        var label = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "Boots";
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = label;
+            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/item/").concat(selected, ".png");
+        }
+        else if (img) {
+            // Clear image if user selects the default option again
+            img.remove();
+            img = null;
+        }
+    });
+}
 getAllChampionsAndItems().then(function (data) {
     if (data) {
         allChampions = data.champions;
@@ -164,6 +156,10 @@ getAllChampionsAndItems().then(function (data) {
         items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
         var deadMansPlate = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
         items[1].innerHTML = "<img src=\"".concat(deadMansPlate, "\" alt=\"Dead Man's Plate\">");
+        var bootsSlot = document.querySelector(".item.boots-dropdown");
+        if (bootsSlot) {
+            createBootsDropdown(bootsSlot, data.patchVersion);
+        }
     }
 });
 var deadMansPlateItem = {

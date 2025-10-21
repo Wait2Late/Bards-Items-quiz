@@ -3,6 +3,36 @@ const allVersionsApi = "https://ddragon.leagueoflegends.com/api/versions.json";
 let allChampions;
 let allItems;
 
+interface IItem {
+    id: string;
+    name: string;
+    damageType: DamageType;
+    itemType: ItemType;
+    giveHealth: boolean;
+}
+
+enum DamageType {
+    AD = "Physical",
+    AP = "Magical",
+}
+
+enum ItemType {
+    SelfDefense = "Self-Defense",
+    SelfOffsense = "Self-Offense",
+    TeamDefense = "Team-Defense",
+    TeamOffense = "Team-Offense",
+}
+
+const Liandry : IItem = {
+    id: "6655",
+    name: "Liandry's Torment",
+    damageType: DamageType.AP,
+    itemType: ItemType.SelfOffsense,
+    giveHealth: true,
+};
+
+
+
 async function fetchCurrentPatch() {
     try {
         const response = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -40,7 +70,7 @@ async function getAllChampionsAndItems() {
     }
 }
 
-function createBootsDropdown(element: HTMLElement) {
+function createBootsDropdown(element: HTMLElement, patchVersion: string) {
     const boots = [
         { id: "3111", name: "Mercury's Treads" },
         { id: "3047", name: "Plated Steelcaps" },
@@ -48,48 +78,48 @@ function createBootsDropdown(element: HTMLElement) {
         { id: "3171", name: "Crimson Lucidity" }
     ];
 
-    const select = document.createElement("select");
-    select.className = "boots-dropdown";
+    // Create dropdown
+    let select = element.querySelector("select.boots-dropdown") as HTMLSelectElement | null;
+    if (!select) {
+        select = document.createElement("select");
+        select.className = "boots-dropdown";
 
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Select Boots";
-    select.appendChild(defaultOption);
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Boots";
+        select.appendChild(defaultOption);
 
-    boots.forEach(boot => {
-        const option = document.createElement("option");
-        option.value = boot.id;
-        option.textContent = boot.name;
-        select.appendChild(option);
-    });
+        boots.forEach(boot => {
+            const option = document.createElement("option");
+            option.value = boot.id;
+            option.textContent = boot.name;
+            select!.appendChild(option);
+        });
 
-    // Event: Change image when a boot is selected
-    select.addEventListener("change", async (e) => {
-        const selectedId = (e.target as HTMLSelectElement).value;
-        element.innerHTML = ""; // Clear previous content
-        element.appendChild(select); // Keep dropdown
+        element.appendChild(select); // keep the dropdown in the li
+    }
 
-        if (selectedId) {
-            const currentPatch = await fetchCurrentPatch();
-            const img = document.createElement("img");
-            img.src = `https://ddragon.leagueoflegends.com/cdn/${currentPatch}/img/item/${selectedId}.png`;
-            img.alt = select.selectedOptions[0]!.textContent || "Boots";
-            element.appendChild(img);
-            element.innerHTML = `<img src="${img.src}" alt="boots">`;
+    // Ensure there is an <img> we can update (don’t remove the select)
+    let img = element.querySelector("img") as HTMLImageElement | null;
+
+    select.addEventListener("change", () => {
+        const selected = select!.value;
+        const label = select!.selectedOptions[0]?.textContent ?? "Boots";
+
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = label;
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/item/${selected}.png`;
+        } else if (img) {
+            // Clear image if user selects the default option again
+            img.remove();
+            img = null;
         }
     });
-
-    element.innerHTML = "";
-    element.appendChild(select);
 }
-
-// Usage example (after DOM is loaded):
-document.addEventListener("DOMContentLoaded", () => {
-    const items = document.querySelectorAll(".item");
-    if (items[5]) {
-        createBootsDropdown(items[5] as HTMLElement);
-    }
-});
 
 getAllChampionsAndItems().then(data => {
     if (data) {
@@ -105,20 +135,14 @@ getAllChampionsAndItems().then(data => {
         const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
         items[0]!.innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
 
-        const deadMansPlate = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
-        items[1]!.innerHTML = `<img src="${deadMansPlate}" alt="Dead Man's Plate">`;
+        const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
+        items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
 
+        const bootsSlot = document.querySelector(".item.boots-dropdown") as HTMLElement | null;
+        if (bootsSlot) {
+            createBootsDropdown(bootsSlot, data.patchVersion);
+        }
 
     }
 });
-
-interface Item {
-    id: string;
-    name: string;
-}
-
-const deadMansPlateItem : Item = {
-    id: "3742",
-    name: "Dead Man's Plate",
-};
 
