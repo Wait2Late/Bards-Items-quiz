@@ -1,5 +1,9 @@
 let allChampions: any;
 let allItems: { data: DDragonItemMap } | undefined;
+// Enriched Bard items cache
+let bardEnrichedItems: any[] | undefined;
+let bardEnrichedItemsById: Record<string, any> | undefined;
+
 
 let bardItemsData: any[];
 
@@ -469,16 +473,12 @@ function updateAllDropdowns() {
     });
 }
 
-// Helper: does an item have the "Health" tag in DDragon data?
+// Helper: does an item have the "Health" tag based on enriched data?
 function itemHasHealthTag(itemId: string | undefined): boolean {
     if (!itemId) return false;
-    try {
-        const ddItem = (allItems as any)?.data?.[itemId];
-        const tags: string[] | undefined = ddItem?.tags;
-        return Array.isArray(tags) && tags.includes("Health");
-    } catch {
-        return false;
-    }
+    const enriched = bardEnrichedItemsById?.[itemId];
+    const tags: string[] | undefined = enriched?.tag;
+    return Array.isArray(tags) && tags.includes("Health");
 }
 
 // Helper: apply/remove green border class for Health-tagged items
@@ -585,9 +585,24 @@ function setup() {
     }
 
     const matchedItems = matchBardItems().then(({ patch, enriched, enrichedById }) => {
+
+        bardEnrichedItems = enriched;
+        bardEnrichedItemsById = enrichedById;
+
         console.log("Current patch:", patch);
         console.log("Enriched Bard Items:", enriched);
         console.log("Enriched By ID:", enrichedById);
+
+        // Re-apply health borders now that enriched tags are available
+        const listItems = document.querySelectorAll('.items-list .item');
+        if (listItems[0]) applyHealthBorder(listItems[0] as HTMLElement, "3877");
+        if (listItems[1]) applyHealthBorder(listItems[1] as HTMLElement, "3742");
+
+        // Apply for current selections in all dropdowns
+        allDropdowns.forEach((dropdown) => {
+            const li = dropdown.closest('.item') as HTMLElement | null;
+            if (li) applyHealthBorder(li, dropdown.value || undefined);
+        });
 
         // let items = document.querySelectorAll(".item");
         

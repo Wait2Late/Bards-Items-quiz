@@ -36,6 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var allChampions;
 var allItems;
+// Enriched Bard items cache
+var bardEnrichedItems;
+var bardEnrichedItemsById;
 var bardItemsData;
 // Track selected items across all dropdowns
 var selectedItems = new Set();
@@ -486,19 +489,13 @@ function updateAllDropdowns() {
         });
     });
 }
-// Helper: does an item have the "Health" tag in DDragon data?
+// Helper: does an item have the "Health" tag based on enriched data?
 function itemHasHealthTag(itemId) {
-    var _a;
     if (!itemId)
         return false;
-    try {
-        var ddItem = (_a = allItems === null || allItems === void 0 ? void 0 : allItems.data) === null || _a === void 0 ? void 0 : _a[itemId];
-        var tags = ddItem === null || ddItem === void 0 ? void 0 : ddItem.tags;
-        return Array.isArray(tags) && tags.includes("Health");
-    }
-    catch (_b) {
-        return false;
-    }
+    var enriched = bardEnrichedItemsById === null || bardEnrichedItemsById === void 0 ? void 0 : bardEnrichedItemsById[itemId];
+    var tags = enriched === null || enriched === void 0 ? void 0 : enriched.tag;
+    return Array.isArray(tags) && tags.includes("Health");
 }
 // Helper: apply/remove green border class for Health-tagged items
 function applyHealthBorder(element, itemId) {
@@ -614,9 +611,23 @@ function setup() {
         }
         var matchedItems = matchBardItems().then(function (_a) {
             var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
+            bardEnrichedItems = enriched;
+            bardEnrichedItemsById = enrichedById;
             console.log("Current patch:", patch);
             console.log("Enriched Bard Items:", enriched);
             console.log("Enriched By ID:", enrichedById);
+            // Re-apply health borders now that enriched tags are available
+            var listItems = document.querySelectorAll('.items-list .item');
+            if (listItems[0])
+                applyHealthBorder(listItems[0], "3877");
+            if (listItems[1])
+                applyHealthBorder(listItems[1], "3742");
+            // Apply for current selections in all dropdowns
+            allDropdowns.forEach(function (dropdown) {
+                var li = dropdown.closest('.item');
+                if (li)
+                    applyHealthBorder(li, dropdown.value || undefined);
+            });
             // let items = document.querySelectorAll(".item");
             // const bloodsong = enrichedById["3877"];
             // items[0]!.innerHTML = `<img src="${bloodsong?.icon}" alt="Bloodsong">`;
