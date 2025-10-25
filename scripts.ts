@@ -1,21 +1,7 @@
-const allVersionsApi = "https://ddragon.leagueoflegends.com/api/versions.json";
-
 let allChampions;
 let allItems;
 
-let SelfDefense: BardItem[] = [];
-let SelfOffense: BardItem[] = [];
-let TeamDefense: BardItem[] = [];
-let TeamOffense: BardItem[] = [];
-
-interface IItem {
-    id: string;
-    name: string;
-    damageType: DamageType;
-    SustainType: SustainType;
-    itemType: ItemType;
-    giveHealth: boolean;
-}
+let bardItemsData: any[];
 
 interface BardItem {
     id: string;
@@ -23,19 +9,37 @@ interface BardItem {
     ItemType: ItemType;
 }
 
-enum DamageType {
-    AD = "Physical",
-    AP = "Magical",
-    AS = "Attack Speed",
-    None = "None",
-}
+type DDragonItem = {
+  name: string;
+  image?: { full: string };
+  tags?: string[];
+  stats?: Record<string, number>;
+  // ...other fields exist but we don't need them here
+};
 
-enum SustainType {
-    Def = "Defense",
-    Mr = "Magic Resist",
-    Both = "Def + MR",
-    None = "None",
-}
+type DDragonItemMap = Record<string, DDragonItem>;
+
+// interface IItem {
+//     id: string;
+//     name: string;
+//     damageType: DamageType;
+//     SustainType: SustainType;
+//     itemType: ItemType;
+//     giveHealth: boolean;
+// }
+// enum DamageType {
+//     AD = "Physical",
+//     AP = "Magical",
+//     AS = "Attack Speed",
+//     None = "None",
+// }
+
+// enum SustainType {
+//     Def = "Defense",
+//     Mr = "Magic Resist",
+//     Both = "Def + MR",
+//     None = "None",
+// }
 
 enum ItemType {
     SelfDefense = "Self-Defense",
@@ -248,6 +252,11 @@ const BardItems : BardItem[] = [
     { id: "6695", name: "Serpent's Fang", ItemType: ItemType.TeamOffense  },
 ];
 
+const SelfDefense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.SelfDefense);
+const SelfOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.SelfOffsense);
+const TeamDefense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.TeamDefense);
+const TeamOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.TeamOffense);
+
 async function fetchCurrentPatch() {
     try {
         const response = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -336,14 +345,58 @@ function createBootsDropdown(element: HTMLElement, patchVersion: string) {
     });
 }
 
-getAllChampionsAndItems().then(data => {
+// Fetch items.json for a patch and return a by-id map
+async function loadItemsById(patch?: string): Promise<{ patch: string; itemsById: DDragonItemMap }> {
+  const usePatch = patch ?? (await fetchCurrentPatch());
+  const url = `https://ddragon.leagueoflegends.com/cdn/${usePatch}/data/en_US/item.json`;
+  const res = await fetch(url);
+  const json = await res.json();
+  // DDragon shape: { data: { "3877": { ... }, "3742": { ... }, ... } }
+  const itemsById = json.data as DDragonItemMap;
+  return { patch: usePatch, itemsById };
+}
+
+async function matchBardItems() {
+  const { patch, itemsById } = await loadItemsById();
+
+  // Enriched array you can render with
+  const enriched = BardItems.map(bardItemId => {
+    const dd = itemsById[bardItemId.id]; // may be undefined if id not found
+    return {
+      bardItemId,
+      existsInDDragon: !!dd,
+      tag: dd?.tags ?? [],
+      stats: dd?.stats ?? {},
+      officialName: dd?.name ?? bardItemId.name, // prefer DDragon name if found
+      icon: dd ? `https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${bardItemId.id}.png` : undefined,
+      patch,
+    };
+  });
+
+  // Quick lookup if you prefer O(1) access by id
+  const enrichedById: Record<string, (typeof enriched)[number]> =
+    Object.fromEntries(enriched.map(e => [e.bardItemId.id, e]));
+
+//   // Example usage:
+//   const bloodsong = enrichedById["3877"];
+//   if (bloodsong?.existsInDDragon && bloodsong.icon) {
+//     // set a variable, update UI, etc.
+//     console.log("Bloodsong icon:", bloodsong.icon);
+//   } else {
+//     console.warn("Bloodsong not found in DDragon");
+//   }
+
+  return { patch, enriched, enrichedById };
+}
+
+function setup() {
+    getAllChampionsAndItems().then(data => {
     if (data) {
         allChampions = data.champions;
         allItems = data.items;
 
-        console.log(data.items);
-        console.log(data.champions);
-        console.log(`Patch Version: ${data.patchVersion}`);
+        console.log(data.items.data);
+        console.log(data.champions.data);
 
         let items = document.querySelectorAll(".item");
 
@@ -357,6 +410,27 @@ getAllChampionsAndItems().then(data => {
         if (bootsSlot) {
             createBootsDropdown(bootsSlot, data.patchVersion);
         }
-
     }
+
+    const matchedItems = matchBardItems().then(({ patch, enriched, enrichedById }) => {
+        console.log("Current patch:", patch);
+        console.log("Enriched Bard Items:", enriched);
+        console.log("Enriched By ID:", enrichedById);
+
+        // let items = document.querySelectorAll(".item");
+        
+        // const bloodsong = enrichedById["3877"];
+        // items[0]!.innerHTML = `<img src="${bloodsong?.icon}" alt="Bloodsong">`;
+        // console.log("bloodsong: ", bloodsong?.icon);
+        
+        // const deadMansPlateImg = enrichedById["3742"]?.icon;
+        // console.log(deadMansPlateImg);
+        // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+    });
+
+
+    
 });
+}
+
+setup();

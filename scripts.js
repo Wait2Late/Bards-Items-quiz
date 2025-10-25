@@ -34,27 +34,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var allVersionsApi = "https://ddragon.leagueoflegends.com/api/versions.json";
 var allChampions;
 var allItems;
-var SelfDefense = [];
-var SelfOffense = [];
-var TeamDefense = [];
-var TeamOffense = [];
-var DamageType;
-(function (DamageType) {
-    DamageType["AD"] = "Physical";
-    DamageType["AP"] = "Magical";
-    DamageType["AS"] = "Attack Speed";
-    DamageType["None"] = "None";
-})(DamageType || (DamageType = {}));
-var SustainType;
-(function (SustainType) {
-    SustainType["Def"] = "Defense";
-    SustainType["Mr"] = "Magic Resist";
-    SustainType["Both"] = "Def + MR";
-    SustainType["None"] = "None";
-})(SustainType || (SustainType = {}));
+var bardItemsData;
+// interface IItem {
+//     id: string;
+//     name: string;
+//     damageType: DamageType;
+//     SustainType: SustainType;
+//     itemType: ItemType;
+//     giveHealth: boolean;
+// }
+// enum DamageType {
+//     AD = "Physical",
+//     AP = "Magical",
+//     AS = "Attack Speed",
+//     None = "None",
+// }
+// enum SustainType {
+//     Def = "Defense",
+//     Mr = "Magic Resist",
+//     Both = "Def + MR",
+//     None = "None",
+// }
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
@@ -264,6 +266,10 @@ var BardItems = [
     { id: "4010", name: "Bloodletter's Curse", ItemType: ItemType.TeamOffense },
     { id: "6695", name: "Serpent's Fang", ItemType: ItemType.TeamOffense },
 ];
+var SelfDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfDefense; });
+var SelfOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfOffsense; });
+var TeamDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamDefense; });
+var TeamOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamOffense; });
 function fetchCurrentPatch() {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
@@ -371,21 +377,100 @@ function createBootsDropdown(element, patchVersion) {
         }
     });
 }
-getAllChampionsAndItems().then(function (data) {
-    if (data) {
-        allChampions = data.champions;
-        allItems = data.items;
-        console.log(data.items);
-        console.log(data.champions);
-        console.log("Patch Version: ".concat(data.patchVersion));
-        var items = document.querySelectorAll(".item");
-        var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
-        items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
-        var deadMansPlateImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
-        items[1].innerHTML = "<img src=\"".concat(deadMansPlateImg, "\" alt=\"Dead Man's Plate\">");
-        var bootsSlot = document.querySelector(".item.boots-dropdown");
-        if (bootsSlot) {
-            createBootsDropdown(bootsSlot, data.patchVersion);
+// Fetch items.json for a patch and return a by-id map
+function loadItemsById(patch) {
+    return __awaiter(this, void 0, void 0, function () {
+        var usePatch, _a, url, res, json, itemsById;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!(patch !== null && patch !== void 0)) return [3 /*break*/, 1];
+                    _a = patch;
+                    return [3 /*break*/, 3];
+                case 1: return [4 /*yield*/, fetchCurrentPatch()];
+                case 2:
+                    _a = (_b.sent());
+                    _b.label = 3;
+                case 3:
+                    usePatch = _a;
+                    url = "https://ddragon.leagueoflegends.com/cdn/".concat(usePatch, "/data/en_US/item.json");
+                    return [4 /*yield*/, fetch(url)];
+                case 4:
+                    res = _b.sent();
+                    return [4 /*yield*/, res.json()];
+                case 5:
+                    json = _b.sent();
+                    itemsById = json.data;
+                    return [2 /*return*/, { patch: usePatch, itemsById: itemsById }];
+            }
+        });
+    });
+}
+function matchBardItems() {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, patch, itemsById, enriched, enrichedById;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, loadItemsById()];
+                case 1:
+                    _a = _b.sent(), patch = _a.patch, itemsById = _a.itemsById;
+                    enriched = BardItems.map(function (bardItemId) {
+                        var _a, _b, _c;
+                        var dd = itemsById[bardItemId.id]; // may be undefined if id not found
+                        return {
+                            bardItemId: bardItemId,
+                            existsInDDragon: !!dd,
+                            tag: (_a = dd === null || dd === void 0 ? void 0 : dd.tags) !== null && _a !== void 0 ? _a : [],
+                            stats: (_b = dd === null || dd === void 0 ? void 0 : dd.stats) !== null && _b !== void 0 ? _b : {},
+                            officialName: (_c = dd === null || dd === void 0 ? void 0 : dd.name) !== null && _c !== void 0 ? _c : bardItemId.name, // prefer DDragon name if found
+                            icon: dd ? "https://ddragon.leagueoflegends.com/cdn/".concat(patch, "/img/item/").concat(bardItemId.id, ".png") : undefined,
+                            patch: patch,
+                        };
+                    });
+                    enrichedById = Object.fromEntries(enriched.map(function (e) { return [e.bardItemId.id, e]; }));
+                    //   // Example usage:
+                    //   const bloodsong = enrichedById["3877"];
+                    //   if (bloodsong?.existsInDDragon && bloodsong.icon) {
+                    //     // set a variable, update UI, etc.
+                    //     console.log("Bloodsong icon:", bloodsong.icon);
+                    //   } else {
+                    //     console.warn("Bloodsong not found in DDragon");
+                    //   }
+                    return [2 /*return*/, { patch: patch, enriched: enriched, enrichedById: enrichedById }];
+            }
+        });
+    });
+}
+function setup() {
+    getAllChampionsAndItems().then(function (data) {
+        if (data) {
+            allChampions = data.champions;
+            allItems = data.items;
+            console.log(data.items.data);
+            console.log(data.champions.data);
+            var items = document.querySelectorAll(".item");
+            var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
+            items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
+            var deadMansPlateImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
+            items[1].innerHTML = "<img src=\"".concat(deadMansPlateImg, "\" alt=\"Dead Man's Plate\">");
+            var bootsSlot = document.querySelector(".item.boots-dropdown");
+            if (bootsSlot) {
+                createBootsDropdown(bootsSlot, data.patchVersion);
+            }
         }
-    }
-});
+        var matchedItems = matchBardItems().then(function (_a) {
+            var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
+            console.log("Current patch:", patch);
+            console.log("Enriched Bard Items:", enriched);
+            console.log("Enriched By ID:", enrichedById);
+            // let items = document.querySelectorAll(".item");
+            // const bloodsong = enrichedById["3877"];
+            // items[0]!.innerHTML = `<img src="${bloodsong?.icon}" alt="Bloodsong">`;
+            // console.log("bloodsong: ", bloodsong?.icon);
+            // const deadMansPlateImg = enrichedById["3742"]?.icon;
+            // console.log(deadMansPlateImg);
+            // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+        });
+    });
+}
+setup();
