@@ -1,7 +1,11 @@
-let allChampions;
-let allItems;
+let allChampions: any;
+let allItems: { data: DDragonItemMap } | undefined;
 
 let bardItemsData: any[];
+
+// Track selected items across all dropdowns
+const selectedItems = new Set<string>();
+const allDropdowns: HTMLSelectElement[] = [];
 
 interface BardItem {
     id: string;
@@ -345,6 +349,147 @@ function createBootsDropdown(element: HTMLElement, patchVersion: string) {
     });
 }
 
+// Generic dropdown creator for any item category with grouped headers
+function createItemDropdown(
+    element: HTMLElement, 
+    items: BardItem[], 
+    patchVersion: string, 
+    label: string,
+    dropdownClass: string = "item-dropdown"
+) {
+    // Create dropdown
+    let select = element.querySelector(`select.${dropdownClass}`) as HTMLSelectElement | null;
+    if (!select) {
+        select = document.createElement("select");
+        select.className = dropdownClass;
+        
+        // Track this dropdown
+        allDropdowns.push(select);
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = `Select ${label}`;
+        select.appendChild(defaultOption);
+
+        // Group items by ItemType
+        const groupedItems: Record<ItemType, BardItem[]> = {
+            [ItemType.SelfDefense]: [],
+            [ItemType.SelfOffsense]: [],
+            [ItemType.TeamDefense]: [],
+            [ItemType.TeamOffense]: [],
+        };
+
+        items.forEach(item => {
+            groupedItems[item.ItemType].push(item);
+        });
+
+        // Create optgroups for each category
+        Object.entries(groupedItems).forEach(([category, categoryItems]) => {
+            if (categoryItems.length > 0) {
+                const optgroup = document.createElement("optgroup");
+                optgroup.label = category;
+                
+                categoryItems.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    optgroup.appendChild(option);
+                });
+
+                select!.appendChild(optgroup);
+            }
+        });
+
+        element.appendChild(select);
+    }
+
+    // Ensure there is an <img> we can update (don't remove the select)
+    let img = element.querySelector("img") as HTMLImageElement | null;
+
+    select.addEventListener("change", () => {
+        const previousValue = select.dataset.previousValue;
+        const selected = select!.value;
+        const itemName = select!.selectedOptions[0]?.textContent ?? label;
+
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+        }
+
+        // Add new selection to the set
+        if (selected) {
+            selectedItems.add(selected);
+            select.dataset.previousValue = selected;
+        } else {
+            delete select.dataset.previousValue;
+        }
+
+        // Update all dropdowns to disable selected items
+        updateAllDropdowns();
+
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = itemName;
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/item/${selected}.png`;
+            // Toggle health border based on tags
+            applyHealthBorder(element, selected);
+        } else if (img) {
+            // Clear image if user selects the default option again
+            img.remove();
+            img = null;
+            applyHealthBorder(element, undefined);
+        }
+    });
+}
+
+// Update all dropdowns to disable/enable options based on selected items
+function updateAllDropdowns() {
+    allDropdowns.forEach(dropdown => {
+        const currentValue = dropdown.value;
+        
+        // Iterate through all options in the dropdown
+        Array.from(dropdown.options).forEach(option => {
+            if (option.value === "") {
+                // Don't disable the default "Select..." option
+                option.disabled = false;
+            } else if (option.value === currentValue) {
+                // Don't disable the currently selected option in this dropdown
+                option.disabled = false;
+            } else if (selectedItems.has(option.value)) {
+                // Disable if selected in another dropdown
+                option.disabled = true;
+            } else {
+                // Enable if not selected anywhere
+                option.disabled = false;
+            }
+        });
+    });
+}
+
+// Helper: does an item have the "Health" tag in DDragon data?
+function itemHasHealthTag(itemId: string | undefined): boolean {
+    if (!itemId) return false;
+    try {
+        const ddItem = (allItems as any)?.data?.[itemId];
+        const tags: string[] | undefined = ddItem?.tags;
+        return Array.isArray(tags) && tags.includes("Health");
+    } catch {
+        return false;
+    }
+}
+
+// Helper: apply/remove green border class for Health-tagged items
+function applyHealthBorder(element: HTMLElement, itemId?: string) {
+    if (itemHasHealthTag(itemId)) {
+        element.classList.add("health");
+    } else {
+        element.classList.remove("health");
+    }
+}
+
 // Fetch items.json for a patch and return a by-id map
 async function loadItemsById(patch?: string): Promise<{ patch: string; itemsById: DDragonItemMap }> {
   const usePatch = patch ?? (await fetchCurrentPatch());
@@ -390,6 +535,9 @@ async function matchBardItems() {
 }
 
 function setup() {
+    // Mark Dead Man's Plate as already selected (core item for Bard)
+    selectedItems.add("3742");
+    
     getAllChampionsAndItems().then(data => {
     if (data) {
         allChampions = data.champions;
@@ -400,16 +548,40 @@ function setup() {
 
         let items = document.querySelectorAll(".item");
 
-        const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
-        items[0]!.innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
+    const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
+    items[0]!.innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
+    applyHealthBorder(items[0] as HTMLElement, "3877");
 
-        const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
-        items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+    const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
+    items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+    applyHealthBorder(items[1] as HTMLElement, "3742");
 
+        // Create dropdown for item slot 3 - All Bard items
+        const itemSlot3 = items[2] as HTMLElement;
+        if (itemSlot3) {
+            createItemDropdown(itemSlot3, BardItems, data.patchVersion, "Item", "item-dropdown-3");
+        }
+
+        // Create dropdown for item slot 4 - All Bard items
+        const itemSlot4 = items[3] as HTMLElement;
+        if (itemSlot4) {
+            createItemDropdown(itemSlot4, BardItems, data.patchVersion, "Item", "item-dropdown-4");
+        }
+
+        // Create dropdown for item slot 5 - All Bard items
+        const itemSlot5 = items[4] as HTMLElement;
+        if (itemSlot5) {
+            createItemDropdown(itemSlot5, BardItems, data.patchVersion, "Item", "item-dropdown-5");
+        }
+
+        // Create dropdown for boots slot
         const bootsSlot = document.querySelector(".item.boots-dropdown") as HTMLElement | null;
         if (bootsSlot) {
             createBootsDropdown(bootsSlot, data.patchVersion);
         }
+
+            // Update all dropdowns to disable Dead Man's Plate (pre-selected core item)
+            updateAllDropdowns();
     }
 
     const matchedItems = matchBardItems().then(({ patch, enriched, enrichedById }) => {
@@ -427,9 +599,6 @@ function setup() {
         // console.log(deadMansPlateImg);
         // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
     });
-
-
-    
 });
 }
 

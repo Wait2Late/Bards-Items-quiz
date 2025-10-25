@@ -37,6 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var allChampions;
 var allItems;
 var bardItemsData;
+// Track selected items across all dropdowns
+var selectedItems = new Set();
+var allDropdowns = [];
 // interface IItem {
 //     id: string;
 //     name: string;
@@ -377,6 +380,135 @@ function createBootsDropdown(element, patchVersion) {
         }
     });
 }
+// Generic dropdown creator for any item category with grouped headers
+function createItemDropdown(element, items, patchVersion, label, dropdownClass) {
+    var _a;
+    if (dropdownClass === void 0) { dropdownClass = "item-dropdown"; }
+    // Create dropdown
+    var select = element.querySelector("select.".concat(dropdownClass));
+    if (!select) {
+        select = document.createElement("select");
+        select.className = dropdownClass;
+        // Track this dropdown
+        allDropdowns.push(select);
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select ".concat(label);
+        select.appendChild(defaultOption);
+        // Group items by ItemType
+        var groupedItems_1 = (_a = {},
+            _a[ItemType.SelfDefense] = [],
+            _a[ItemType.SelfOffsense] = [],
+            _a[ItemType.TeamDefense] = [],
+            _a[ItemType.TeamOffense] = [],
+            _a);
+        items.forEach(function (item) {
+            groupedItems_1[item.ItemType].push(item);
+        });
+        // Create optgroups for each category
+        Object.entries(groupedItems_1).forEach(function (_a) {
+            var category = _a[0], categoryItems = _a[1];
+            if (categoryItems.length > 0) {
+                var optgroup_1 = document.createElement("optgroup");
+                optgroup_1.label = category;
+                categoryItems.forEach(function (item) {
+                    var option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    optgroup_1.appendChild(option);
+                });
+                select.appendChild(optgroup_1);
+            }
+        });
+        element.appendChild(select);
+    }
+    // Ensure there is an <img> we can update (don't remove the select)
+    var img = element.querySelector("img");
+    select.addEventListener("change", function () {
+        var _a, _b;
+        var previousValue = select.dataset.previousValue;
+        var selected = select.value;
+        var itemName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : label;
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+        }
+        // Add new selection to the set
+        if (selected) {
+            selectedItems.add(selected);
+            select.dataset.previousValue = selected;
+        }
+        else {
+            delete select.dataset.previousValue;
+        }
+        // Update all dropdowns to disable selected items
+        updateAllDropdowns();
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = itemName;
+            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/item/").concat(selected, ".png");
+            // Toggle health border based on tags
+            applyHealthBorder(element, selected);
+        }
+        else if (img) {
+            // Clear image if user selects the default option again
+            img.remove();
+            img = null;
+            applyHealthBorder(element, undefined);
+        }
+    });
+}
+// Update all dropdowns to disable/enable options based on selected items
+function updateAllDropdowns() {
+    allDropdowns.forEach(function (dropdown) {
+        var currentValue = dropdown.value;
+        // Iterate through all options in the dropdown
+        Array.from(dropdown.options).forEach(function (option) {
+            if (option.value === "") {
+                // Don't disable the default "Select..." option
+                option.disabled = false;
+            }
+            else if (option.value === currentValue) {
+                // Don't disable the currently selected option in this dropdown
+                option.disabled = false;
+            }
+            else if (selectedItems.has(option.value)) {
+                // Disable if selected in another dropdown
+                option.disabled = true;
+            }
+            else {
+                // Enable if not selected anywhere
+                option.disabled = false;
+            }
+        });
+    });
+}
+// Helper: does an item have the "Health" tag in DDragon data?
+function itemHasHealthTag(itemId) {
+    var _a;
+    if (!itemId)
+        return false;
+    try {
+        var ddItem = (_a = allItems === null || allItems === void 0 ? void 0 : allItems.data) === null || _a === void 0 ? void 0 : _a[itemId];
+        var tags = ddItem === null || ddItem === void 0 ? void 0 : ddItem.tags;
+        return Array.isArray(tags) && tags.includes("Health");
+    }
+    catch (_b) {
+        return false;
+    }
+}
+// Helper: apply/remove green border class for Health-tagged items
+function applyHealthBorder(element, itemId) {
+    if (itemHasHealthTag(itemId)) {
+        element.classList.add("health");
+    }
+    else {
+        element.classList.remove("health");
+    }
+}
 // Fetch items.json for a patch and return a by-id map
 function loadItemsById(patch) {
     return __awaiter(this, void 0, void 0, function () {
@@ -442,6 +574,8 @@ function matchBardItems() {
     });
 }
 function setup() {
+    // Mark Dead Man's Plate as already selected (core item for Bard)
+    selectedItems.add("3742");
     getAllChampionsAndItems().then(function (data) {
         if (data) {
             allChampions = data.champions;
@@ -451,12 +585,32 @@ function setup() {
             var items = document.querySelectorAll(".item");
             var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
             items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
+            applyHealthBorder(items[0], "3877");
             var deadMansPlateImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
             items[1].innerHTML = "<img src=\"".concat(deadMansPlateImg, "\" alt=\"Dead Man's Plate\">");
+            applyHealthBorder(items[1], "3742");
+            // Create dropdown for item slot 3 - All Bard items
+            var itemSlot3 = items[2];
+            if (itemSlot3) {
+                createItemDropdown(itemSlot3, BardItems, data.patchVersion, "Item", "item-dropdown-3");
+            }
+            // Create dropdown for item slot 4 - All Bard items
+            var itemSlot4 = items[3];
+            if (itemSlot4) {
+                createItemDropdown(itemSlot4, BardItems, data.patchVersion, "Item", "item-dropdown-4");
+            }
+            // Create dropdown for item slot 5 - All Bard items
+            var itemSlot5 = items[4];
+            if (itemSlot5) {
+                createItemDropdown(itemSlot5, BardItems, data.patchVersion, "Item", "item-dropdown-5");
+            }
+            // Create dropdown for boots slot
             var bootsSlot = document.querySelector(".item.boots-dropdown");
             if (bootsSlot) {
                 createBootsDropdown(bootsSlot, data.patchVersion);
             }
+            // Update all dropdowns to disable Dead Man's Plate (pre-selected core item)
+            updateAllDropdowns();
         }
         var matchedItems = matchBardItems().then(function (_a) {
             var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
