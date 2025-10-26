@@ -11,15 +11,29 @@ main {
     width: 100%;
     max-width: 1200px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
 }
 
 header {
-    background-color: #f2f2f2;
+    background-color: #fff;
     padding: 20px;
     text-align: center;
-    width: 100%;
+    max-width: 100%;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+
+.matchup-info-container {
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
 }
 
 .quiz-container {
@@ -29,11 +43,12 @@ header {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* border: 1px solid #ccc; */
-    /* background-color: #fff; */
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
 }
 
-.quiz-container h2 {
+.quiz-container h3 {
     text-align: center;
     margin-bottom: 15px;
 }
@@ -144,9 +159,11 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* width: 100%; */
     width: 100%;
-    /* border: 1px solid #ccc; */
-    /* background-color: #fff; */
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
 }
 
 .champions-container {
@@ -233,6 +250,16 @@ ul {
     white-space: nowrap; /* prevent wrapping unlike select */
     color: #333;
 }
+
+/* .summary-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+    width: 100%;
+} */
 
 /* Button to regenerate teams */
 #new-champions-button {
