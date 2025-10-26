@@ -506,6 +506,14 @@ function assignChampionsToTeam(teamListSelector, championRoles, allChampions, pa
                     // Add Bard to used champions
                     usedChampions.add(bardData.id);
                 }
+                // Add/update a styled label under Bard icon (looks like dropdown)
+                var label = slotElement.querySelector('.champion-label');
+                if (!label) {
+                    label = document.createElement('p');
+                    label.className = 'champion-label';
+                    slotElement.appendChild(label);
+                }
+                label.textContent = "You are cool!";
             }
             return;
         }
@@ -708,6 +716,8 @@ function generateNewTeams() {
             }
         }
     });
+    // Remove any Bard label(s) before regenerating
+    document.querySelectorAll('.champion-dropdown .champion-label').forEach(function (el) { return el.remove(); });
     // Track used champions to prevent duplicates across both teams
     var usedChampions = new Set();
     // First assign my team (which includes Bard), then enemy team

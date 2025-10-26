@@ -518,6 +518,15 @@ function assignChampionsToTeam(
                     // Add Bard to used champions
                     usedChampions.add(bardData.id);
                 }
+
+                // Add/update a styled label under Bard icon (looks like dropdown)
+                let label = slotElement.querySelector('.champion-label') as HTMLElement | null;
+                if (!label) {
+                    label = document.createElement('p');
+                    label.className = 'champion-label';
+                    slotElement.appendChild(label);
+                }
+                label.textContent = "You are cool!";
             }
             return;
         }
@@ -718,6 +727,9 @@ function generateNewTeams() {
             }
         }
     });
+
+    // Remove any Bard label(s) before regenerating
+    document.querySelectorAll('.champion-dropdown .champion-label').forEach(el => el.remove());
     
     // Track used champions to prevent duplicates across both teams
     const usedChampions = new Set<string>();
