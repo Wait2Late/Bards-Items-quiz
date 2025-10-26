@@ -7,8 +7,9 @@
  * - Extracts role/pick-rate pairs from network JSON or embedded Next.js data
  * - Saves results to champion-roles.json
  * 
+ * Should take 3-5 minutes.
  * Run from scraper folder:
- *   node scraper-opgg-roles.js
+ *   $env:OPGG_CONCURRENCY=3; $env:OPGG_DELAY_MS=800; $env:OPGG_LIMIT=0; node scraper-opgg-roles.js
  */
 
 const fs = require('fs');

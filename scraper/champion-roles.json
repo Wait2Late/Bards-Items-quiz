@@ -1648,22 +1648,6 @@
       {
         "role": "JUNGLE",
         "pickRate": 1
-      },
-      {
-        "role": "TOP",
-        "pickRate": 0.5073
-      },
-      {
-        "role": "MID",
-        "pickRate": 0.5073
-      },
-      {
-        "role": "ADC",
-        "pickRate": 0.5073
-      },
-      {
-        "role": "SUPPORT",
-        "pickRate": 0.5073
       }
     ]
   },
