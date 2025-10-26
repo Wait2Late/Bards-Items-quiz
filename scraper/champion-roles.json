@@ -1,0 +1,2032 @@
+[
+  {
+    "slug": "naafiri",
+    "name": "Naafiri Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.63
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.63
+      }
+    ]
+  },
+  {
+    "slug": "malphite",
+    "name": "Malphite Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.87
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.87
+      }
+    ]
+  },
+  {
+    "slug": "anivia",
+    "name": "Anivia Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nami",
+    "name": "Nami Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "milio",
+    "name": "Milio Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "diana",
+    "name": "Diana Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.65
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.65
+      }
+    ]
+  },
+  {
+    "slug": "briar",
+    "name": "Briar Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "warwick",
+    "name": "Warwick Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.71
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.71
+      }
+    ]
+  },
+  {
+    "slug": "morgana",
+    "name": "Morgana Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.53
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.53
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.53
+      }
+    ]
+  },
+  {
+    "slug": "garen",
+    "name": "Garen Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ashe",
+    "name": "Ashe Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "volibear",
+    "name": "Volibear Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.6
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.6
+      }
+    ]
+  },
+  {
+    "slug": "jinx",
+    "name": "Jinx Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "fizz",
+    "name": "Fizz Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "jax",
+    "name": "Jax Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.56
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.56
+      }
+    ]
+  },
+  {
+    "slug": "syndra",
+    "name": "Syndra Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "malzahar",
+    "name": "Malzahar Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "khazix",
+    "name": "Kha'Zix Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "masteryi",
+    "name": "Master Yi Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.92
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.92
+      }
+    ]
+  },
+  {
+    "slug": "katarina",
+    "name": "Katarina Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "jarvaniv",
+    "name": "Jarvan IV Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kayn",
+    "name": "Kayn Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.91
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.91
+      }
+    ]
+  },
+  {
+    "slug": "thresh",
+    "name": "Thresh Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ahri",
+    "name": "Ahri Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kaisa",
+    "name": "Kai'Sa Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "viego",
+    "name": "Viego Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "leblanc",
+    "name": "LeBlanc Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.88
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.88
+      }
+    ]
+  },
+  {
+    "slug": "yasuo",
+    "name": "Yasuo Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.64
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.64
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.64
+      }
+    ]
+  },
+  {
+    "slug": "leesin",
+    "name": "Lee Sin Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "sylas",
+    "name": "Sylas Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.56
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.56
+      }
+    ]
+  },
+  {
+    "slug": "graves",
+    "name": "Graves Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "rammus",
+    "name": "Rammus Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "sona",
+    "name": "Sona Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ziggs",
+    "name": "Ziggs Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 0.72
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.72
+      }
+    ]
+  },
+  {
+    "slug": "kayle",
+    "name": "Kayle Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.68
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.68
+      }
+    ]
+  },
+  {
+    "slug": "talon",
+    "name": "Talon Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.7
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.7
+      }
+    ]
+  },
+  {
+    "slug": "janna",
+    "name": "Janna Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "sett",
+    "name": "Sett Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nunu",
+    "name": "Nunu & Willump Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "brand",
+    "name": "Brand Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.68
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.68
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.68
+      }
+    ]
+  },
+  {
+    "slug": "trundle",
+    "name": "Trundle Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.74
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.74
+      }
+    ]
+  },
+  {
+    "slug": "reksai",
+    "name": "Rek'Sai Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.62
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.62
+      }
+    ]
+  },
+  {
+    "slug": "fiddlesticks",
+    "name": "Fiddlesticks Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.76
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.76
+      }
+    ]
+  },
+  {
+    "slug": "vayne",
+    "name": "Vayne Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 0.8
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.8
+      }
+    ]
+  },
+  {
+    "slug": "soraka",
+    "name": "Soraka Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "evelynn",
+    "name": "Evelynn Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "vex",
+    "name": "Vex Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "akshan",
+    "name": "Akshan Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ekko",
+    "name": "Ekko Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.64
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.64
+      }
+    ]
+  },
+  {
+    "slug": "amumu",
+    "name": "Amumu Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.79
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.79
+      }
+    ]
+  },
+  {
+    "slug": "velkoz",
+    "name": "Vel'Koz Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.68
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.68
+      }
+    ]
+  },
+  {
+    "slug": "smolder",
+    "name": "Smolder Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 0.87
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.87
+      }
+    ]
+  },
+  {
+    "slug": "lillia",
+    "name": "Lillia Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "veigar",
+    "name": "Veigar Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.86
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.86
+      }
+    ]
+  },
+  {
+    "slug": "aatrox",
+    "name": "Aatrox Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "akali",
+    "name": "Akali Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.8
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.8
+      }
+    ]
+  },
+  {
+    "slug": "alistar",
+    "name": "Alistar Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ambessa",
+    "name": "Ambessa Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "annie",
+    "name": "Annie Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "aphelios",
+    "name": "Aphelios Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "aurelionsol",
+    "name": "Aurelion Sol Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "aurora",
+    "name": "Aurora Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.8
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.8
+      }
+    ]
+  },
+  {
+    "slug": "azir",
+    "name": "Azir Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "bard",
+    "name": "Bard Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "belveth",
+    "name": "Bel'Veth Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "blitzcrank",
+    "name": "Blitzcrank Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "braum",
+    "name": "Braum Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "caitlyn",
+    "name": "Caitlyn Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "camille",
+    "name": "Camille Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "cassiopeia",
+    "name": "Cassiopeia Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.68
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.68
+      }
+    ]
+  },
+  {
+    "slug": "chogath",
+    "name": "Cho'Gath Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.84
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.84
+      }
+    ]
+  },
+  {
+    "slug": "corki",
+    "name": "Corki Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "darius",
+    "name": "Darius Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "drmundo",
+    "name": "Dr. Mundo Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.78
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.78
+      }
+    ]
+  },
+  {
+    "slug": "draven",
+    "name": "Draven Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "elise",
+    "name": "Elise Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.66
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.66
+      }
+    ]
+  },
+  {
+    "slug": "ezreal",
+    "name": "Ezreal Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "fiora",
+    "name": "Fiora Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "galio",
+    "name": "Galio Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.87
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.87
+      }
+    ]
+  },
+  {
+    "slug": "gangplank",
+    "name": "Gangplank Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "gnar",
+    "name": "Gnar Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "gragas",
+    "name": "Gragas Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.76
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.76
+      }
+    ]
+  },
+  {
+    "slug": "gwen",
+    "name": "Gwen Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.73
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.73
+      }
+    ]
+  },
+  {
+    "slug": "hecarim",
+    "name": "Hecarim Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "heimerdinger",
+    "name": "Heimerdinger Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "hwei",
+    "name": "Hwei Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.8
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.8
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.8
+      }
+    ]
+  },
+  {
+    "slug": "illaoi",
+    "name": "Illaoi Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "irelia",
+    "name": "Irelia Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.63
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.63
+      }
+    ]
+  },
+  {
+    "slug": "ivern",
+    "name": "Ivern Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "jayce",
+    "name": "Jayce Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.83
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.83
+      }
+    ]
+  },
+  {
+    "slug": "jhin",
+    "name": "Jhin Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ksante",
+    "name": "K'Sante Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kalista",
+    "name": "Kalista Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "karma",
+    "name": "Karma Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "karthus",
+    "name": "Karthus Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kassadin",
+    "name": "Kassadin Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kennen",
+    "name": "Kennen Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.76
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.76
+      }
+    ]
+  },
+  {
+    "slug": "kindred",
+    "name": "Kindred Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kled",
+    "name": "Kled Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "kogmaw",
+    "name": "Kog'Maw Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "leona",
+    "name": "Leona Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "lissandra",
+    "name": "Lissandra Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "lucian",
+    "name": "Lucian Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "lulu",
+    "name": "Lulu Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "lux",
+    "name": "Lux Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.63
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.63
+      }
+    ]
+  },
+  {
+    "slug": "maokai",
+    "name": "Maokai Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "mel",
+    "name": "Mel Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.55
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.55
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.55
+      }
+    ]
+  },
+  {
+    "slug": "missfortune",
+    "name": "Miss Fortune Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "mordekaiser",
+    "name": "Mordekaiser Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nasus",
+    "name": "Nasus Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nautilus",
+    "name": "Nautilus Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "neeko",
+    "name": "Neeko Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.86
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.86
+      }
+    ]
+  },
+  {
+    "slug": "nidalee",
+    "name": "Nidalee Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nilah",
+    "name": "Nilah Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "nocturne",
+    "name": "Nocturne Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "olaf",
+    "name": "Olaf Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "orianna",
+    "name": "Orianna Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ornn",
+    "name": "Ornn Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "pantheon",
+    "name": "Pantheon Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.37
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.37
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.37
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.37
+      }
+    ]
+  },
+  {
+    "slug": "poppy",
+    "name": "Poppy Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.56
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.56
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.56
+      }
+    ]
+  },
+  {
+    "slug": "pyke",
+    "name": "Pyke Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "qiyana",
+    "name": "Qiyana Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.69
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.69
+      }
+    ]
+  },
+  {
+    "slug": "quinn",
+    "name": "Quinn Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.79
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.79
+      }
+    ]
+  },
+  {
+    "slug": "rakan",
+    "name": "Rakan Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "rell",
+    "name": "Rell Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "renata",
+    "name": "Renata Glasc Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "renekton",
+    "name": "Renekton Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "rengar",
+    "name": "Rengar Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "riven",
+    "name": "Riven Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "rumble",
+    "name": "Rumble Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "ryze",
+    "name": "Ryze Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.82
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.82
+      }
+    ]
+  },
+  {
+    "slug": "samira",
+    "name": "Samira Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "sejuani",
+    "name": "Sejuani Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "senna",
+    "name": "Senna Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.75
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.75
+      }
+    ]
+  },
+  {
+    "slug": "seraphine",
+    "name": "Seraphine Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "shaco",
+    "name": "Shaco Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.66
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.66
+      }
+    ]
+  },
+  {
+    "slug": "shen",
+    "name": "Shen Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.84
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.84
+      }
+    ]
+  },
+  {
+    "slug": "shyvana",
+    "name": "Shyvana Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "singed",
+    "name": "Singed Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "sion",
+    "name": "Sion Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.9
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.9
+      }
+    ]
+  },
+  {
+    "slug": "sivir",
+    "name": "Sivir Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "skarner",
+    "name": "Skarner Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.5073
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.5073
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.5073
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.5073
+      }
+    ]
+  },
+  {
+    "slug": "swain",
+    "name": "Swain Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.54
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.54
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.54
+      },
+      {
+        "role": "ADC",
+        "pickRate": 0.54
+      }
+    ]
+  },
+  {
+    "slug": "tahmkench",
+    "name": "Tahm Kench Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.72
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.72
+      }
+    ]
+  },
+  {
+    "slug": "taliyah",
+    "name": "Taliyah Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.83
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.83
+      }
+    ]
+  },
+  {
+    "slug": "taric",
+    "name": "Taric Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "teemo",
+    "name": "Teemo Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 0.67
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.67
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.67
+      }
+    ]
+  },
+  {
+    "slug": "tristana",
+    "name": "Tristana Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 0.9
+      },
+      {
+        "role": "MID",
+        "pickRate": 0.9
+      }
+    ]
+  },
+  {
+    "slug": "tryndamere",
+    "name": "Tryndamere Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "twistedfate",
+    "name": "Twisted Fate Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "twitch",
+    "name": "Twitch Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "udyr",
+    "name": "Udyr Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.79
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.79
+      }
+    ]
+  },
+  {
+    "slug": "urgot",
+    "name": "Urgot Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "varus",
+    "name": "Varus Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 0.81
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.81
+      }
+    ]
+  },
+  {
+    "slug": "vi",
+    "name": "Vi Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "viktor",
+    "name": "Viktor Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "vladimir",
+    "name": "Vladimir Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.57
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.57
+      }
+    ]
+  },
+  {
+    "slug": "monkeyking",
+    "name": "Wukong Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.85
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.85
+      }
+    ]
+  },
+  {
+    "slug": "xayah",
+    "name": "Xayah Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "xerath",
+    "name": "Xerath Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.54
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.54
+      }
+    ]
+  },
+  {
+    "slug": "xinzhao",
+    "name": "Xin Zhao Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "yone",
+    "name": "Yone Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.53
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.53
+      }
+    ]
+  },
+  {
+    "slug": "yorick",
+    "name": "Yorick Build for Top, Patch 15.21",
+    "roles": [
+      {
+        "role": "TOP",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "yunara",
+    "name": "Yunara Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "yuumi",
+    "name": "Yuumi Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "zac",
+    "name": "Zac Build for Jungle, Patch 15.21",
+    "roles": [
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.82
+      },
+      {
+        "role": "TOP",
+        "pickRate": 0.82
+      }
+    ]
+  },
+  {
+    "slug": "zed",
+    "name": "Zed Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.53
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.53
+      }
+    ]
+  },
+  {
+    "slug": "zeri",
+    "name": "Zeri Build for Bottom, Patch 15.21",
+    "roles": [
+      {
+        "role": "ADC",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "zilean",
+    "name": "Zilean Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 1
+      }
+    ]
+  },
+  {
+    "slug": "zoe",
+    "name": "Zoe Build for Middle, Patch 15.21",
+    "roles": [
+      {
+        "role": "MID",
+        "pickRate": 0.82
+      },
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.82
+      }
+    ]
+  },
+  {
+    "slug": "zyra",
+    "name": "Zyra Build for Support, Patch 15.21",
+    "roles": [
+      {
+        "role": "SUPPORT",
+        "pickRate": 0.79
+      },
+      {
+        "role": "JUNGLE",
+        "pickRate": 0.79
+      }
+    ]
+  }
+]
