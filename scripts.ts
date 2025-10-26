@@ -343,15 +343,15 @@ function createChampionDropdown(
         // Track this dropdown
         allChampionDropdowns.push(select);
 
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
-    defaultOption.textContent = `Select ${slotRole}`;
-    select.appendChild(defaultOption);
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
+        defaultOption.textContent = `Select ${slotRole}`;
+        select.appendChild(defaultOption);
 
         // Filter champions that can play this specific role
         const championsForRole: Array<{ slug: string; name: string; championId: string }> = [];
-
+        
         championRoles.forEach(champion => {
             // Check if this champion can play the slot's role
             const canPlayRole = champion.roles.some(r => r.role === slotRole);
@@ -368,7 +368,8 @@ function createChampionDropdown(
                 const champName = champ.name.toLowerCase();
                 const slug = champion.slug.toLowerCase();
                 
-                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+                // Use exact matches only to avoid false positives (e.g., "vi" matching "anivia")
+                return champId === slug || champName === slug;
             }) as any;
 
             if (championData) {
@@ -789,8 +790,8 @@ function setup() {
         allChampions = data.champions;
         allItems = data.items;
 
-        console.log(data.items.data);
-        console.log(data.champions.data);
+        // console.log(data.items.data);
+        // console.log(data.champions.data);
 
         // Assign champions to enemy team once we have both champion data and roles
         // Track used champions to prevent duplicates across both teams
@@ -853,9 +854,9 @@ function setup() {
         bardEnrichedItems = enriched;
         bardEnrichedItemsById = enrichedById;
 
-        console.log("Current patch:", patch);
-        console.log("Enriched Bard Items:", enriched);
-        console.log("Enriched By ID:", enrichedById);
+        // console.log("Current patch:", patch);
+        // console.log("Enriched Bard Items:", enriched);
+        // console.log("Enriched By ID:", enrichedById);
 
         // Re-apply health borders now that enriched tags are available
         const listItems = document.querySelectorAll('.items-list .item');

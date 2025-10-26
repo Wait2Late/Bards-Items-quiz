@@ -375,7 +375,8 @@ function createChampionDropdown(element, championRoles, allChampions, patchVersi
                 var champId = champ.id.toLowerCase();
                 var champName = champ.name.toLowerCase();
                 var slug = champion.slug.toLowerCase();
-                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+                // Use exact matches only to avoid false positives (e.g., "vi" matching "anivia")
+                return champId === slug || champName === slug;
             });
             if (championData) {
                 // Avoid duplicates
@@ -764,8 +765,8 @@ function setup() {
         if (data) {
             allChampions = data.champions;
             allItems = data.items;
-            console.log(data.items.data);
-            console.log(data.champions.data);
+            // console.log(data.items.data);
+            // console.log(data.champions.data);
             // Assign champions to enemy team once we have both champion data and roles
             // Track used champions to prevent duplicates across both teams
             var usedChampions_1 = new Set();
@@ -817,9 +818,9 @@ function setup() {
             var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
             bardEnrichedItems = enriched;
             bardEnrichedItemsById = enrichedById;
-            console.log("Current patch:", patch);
-            console.log("Enriched Bard Items:", enriched);
-            console.log("Enriched By ID:", enrichedById);
+            // console.log("Current patch:", patch);
+            // console.log("Enriched Bard Items:", enriched);
+            // console.log("Enriched By ID:", enrichedById);
             // Re-apply health borders now that enriched tags are available
             var listItems = document.querySelectorAll('.items-list .item');
             if (listItems[0])
