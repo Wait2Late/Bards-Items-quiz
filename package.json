@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Wait2Late/Bards-Items-quiz/issues"
   },
-  "homepage": "https://github.com/Wait2Late/Bards-Items-quiz#readme"
+  "homepage": "https://github.com/Wait2Late/Bards-Items-quiz#readme",
+  "dependencies": {
+    "puppeteer": "^24.26.1"
+  }
 }

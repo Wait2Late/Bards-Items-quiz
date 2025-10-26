@@ -134,3 +134,12 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Scraper artifacts (keep champion-roles.json tracked)
+scraper/debug/
+scraper/api-responses.json
+scraper/scraped-raw.html
+scraper/debug-screenshot.png
+scraper/screenshot.png
+scraper/champion-roles-list.json
+scraper/champion-roles-only.json
