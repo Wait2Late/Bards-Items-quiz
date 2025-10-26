@@ -4,9 +4,21 @@ let allItems: { data: DDragonItemMap } | undefined;
 let bardEnrichedItems: any[] | undefined;
 let bardEnrichedItemsById: Record<string, any> | undefined;
 
+// Champion roles data
+let championRoles: ChampionRole[] = [];
+
 // Track selected items across all dropdowns
 const selectedItems = new Set<string>();
 const allDropdowns: HTMLSelectElement[] = [];
+
+interface ChampionRole {
+    slug: string;
+    name: string;
+    roles: {
+        role: string;
+        pickRate: number | null;
+    }[];
+}
 
 interface BardItem {
     id: string;
@@ -269,6 +281,171 @@ function updateAllDropdowns() {
     });
 }
 
+/**
+ * Loads champion roles data from champion-roles.json
+ */
+async function loadChampionRoles(): Promise<ChampionRole[]> {
+    try {
+        const response = await fetch('scraper/champion-roles.json');
+        if (!response.ok) {
+            console.error('Failed to load champion-roles.json');
+            return [];
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error loading champion roles:', error);
+        return [];
+    }
+}
+
+/**
+ * Assigns random champions to team slots based on their roles
+ * @param teamListSelector - CSS selector for the team list
+ * @param championRoles - Array of champion role data
+ * @param allChampions - Data Dragon champion data
+ * @param patchVersion - Current patch version
+ * @param usedChampions - Set of already selected champion IDs to avoid duplicates
+ * @param isEnemyTeam - Whether this is the enemy team (to exclude Bard from support)
+ */
+function assignChampionsToTeam(
+    teamListSelector: string,
+    championRoles: ChampionRole[],
+    allChampions: any,
+    patchVersion: string,
+    usedChampions: Set<string>,
+    isEnemyTeam: boolean = false
+): void {
+    const teamList = document.querySelector(teamListSelector);
+    if (!teamList) {
+        console.error(`Team list ${teamListSelector} not found`);
+        return;
+    }
+
+    const championSlots = teamList.querySelectorAll('li.champion-dropdown');
+    
+    championSlots.forEach(slot => {
+        const slotElement = slot as HTMLElement;
+        
+        // Get role from class list (e.g., 'top', 'jungle', 'mid', 'adc', 'support', 'bard')
+        const roleClass = Array.from(slotElement.classList).find(cls => 
+            ['top', 'jungle', 'mid', 'adc', 'support', 'bard'].includes(cls)
+        );
+        
+        if (!roleClass) {
+            console.warn('No role class found for champion slot', slot);
+            return;
+        }
+        
+        // Special case: if the role is 'bard', assign Bard specifically
+        if (roleClass === 'bard') {
+            const bardData = Object.values(allChampions.data).find((champ: any) => 
+                champ.id.toLowerCase() === 'bard'
+            ) as any;
+            
+            if (bardData) {
+                const imgElement = slotElement.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${bardData.id}.png`;
+                    imgElement.alt = bardData.name;
+                    imgElement.title = `${bardData.name} (SUPPORT)`;
+                    // Add Bard to used champions
+                    usedChampions.add(bardData.id);
+                }
+            }
+            return;
+        }
+        
+        // Convert class to uppercase role (e.g., 'top' -> 'TOP')
+        const role = roleClass.toUpperCase();
+        
+        // Filter champions that can play this role
+        let availableChampions = championRoles.filter(champion => {
+            const hasRole = champion.roles.some(r => r.role === role);
+            if (!hasRole) return false;
+            
+            // For enemy team support role, exclude Bard
+            if (isEnemyTeam && role === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                return false;
+            }
+            
+            return true;
+        });
+        
+        if (availableChampions.length === 0) {
+            console.warn(`No champions found for role: ${role}`);
+            return;
+        }
+        
+        // Try to find a champion that hasn't been used yet
+        let randomChampion: ChampionRole | undefined;
+        let attempts = 0;
+        const maxAttempts = 50; // Prevent infinite loop
+        
+        while (attempts < maxAttempts) {
+            const candidate = availableChampions[Math.floor(Math.random() * availableChampions.length)];
+            
+            if (!candidate) {
+                attempts++;
+                continue;
+            }
+            
+            // Find the champion data to check if it's already used
+            const candidateData = Object.values(allChampions.data).find((champ: any) => {
+                const champId = champ.id.toLowerCase();
+                const champName = champ.name.toLowerCase();
+                const slug = candidate.slug.toLowerCase();
+                
+                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+            }) as any;
+            
+            // If champion data found and not already used, select it
+            if (candidateData && !usedChampions.has(candidateData.id)) {
+                randomChampion = candidate;
+                break;
+            }
+            
+            attempts++;
+        }
+        
+        if (!randomChampion) {
+            console.warn(`Failed to select unique champion for role: ${role} after ${maxAttempts} attempts`);
+            // Fallback: just pick any available champion
+            randomChampion = availableChampions[Math.floor(Math.random() * availableChampions.length)];
+        }
+        
+        if (!randomChampion) {
+            console.warn(`Failed to select champion for role: ${role}`);
+            return;
+        }
+        
+        // Find champion in Data Dragon data
+        // Try to match by slug or by name
+        const championData = Object.values(allChampions.data).find((champ: any) => {
+            const champId = champ.id.toLowerCase();
+            const champName = champ.name.toLowerCase();
+            const slug = randomChampion!.slug.toLowerCase();
+            
+            return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+        }) as any;
+        
+        if (!championData) {
+            console.warn(`Champion data not found for: ${randomChampion.slug}`);
+            return;
+        }
+        
+        // Set the champion image
+        const imgElement = slotElement.querySelector('img');
+        if (imgElement) {
+            imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${championData.id}.png`;
+            imgElement.alt = championData.name;
+            imgElement.title = `${championData.name} (${role})`;
+            // Add this champion to the used set
+            usedChampions.add(championData.id);
+        }
+    });
+}
+
 // Helper: does an item have the "Health" tag based on enriched data?
 function itemHasHealthTag(itemId: string | undefined): boolean {
     if (!itemId) return false;
@@ -334,6 +511,12 @@ function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
     selectedItems.add("3742");
     
+    // Load champion roles and assign champions to teams
+    loadChampionRoles().then(roles => {
+        championRoles = roles;
+        console.log(`Loaded ${championRoles.length} champions with role data`);
+    });
+    
     getAllChampionsAndItems().then(data => {
     if (data) {
         allChampions = data.champions;
@@ -342,15 +525,33 @@ function setup() {
         console.log(data.items.data);
         console.log(data.champions.data);
 
+        // Assign champions to enemy team once we have both champion data and roles
+        // Track used champions to prevent duplicates across both teams
+        const usedChampions = new Set<string>();
+        
+        if (championRoles.length > 0) {
+            // First assign my team (which includes Bard), then enemy team
+            assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions, false);
+            assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions, true);
+        } else {
+            // If roles haven't loaded yet, wait for them
+            loadChampionRoles().then(roles => {
+                championRoles = roles;
+                // First assign my team (which includes Bard), then enemy team
+                assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions, false);
+                assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions, true);
+            });
+        }
+
         let items = document.querySelectorAll(".item");
 
-    const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
-    items[0]!.innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
-    applyHealthBorder(items[0] as HTMLElement, "3877");
+        const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
+        items[0]!.innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
+        applyHealthBorder(items[0] as HTMLElement, "3877");
 
-    const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
-    items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
-    applyHealthBorder(items[1] as HTMLElement, "3742");
+        const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
+        items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+        applyHealthBorder(items[1] as HTMLElement, "3742");
 
         // Create dropdown for item slot 3 - All Bard items
         const itemSlot3 = items[2] as HTMLElement;
@@ -412,5 +613,7 @@ function setup() {
     });
 });
 }
+
+
 
 setup();
