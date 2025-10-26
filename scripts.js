@@ -39,30 +39,14 @@ var allItems;
 // Enriched Bard items cache
 var bardEnrichedItems;
 var bardEnrichedItemsById;
-var bardItemsData;
+// Champion roles data
+var championRoles = [];
 // Track selected items across all dropdowns
 var selectedItems = new Set();
 var allDropdowns = [];
-// interface IItem {
-//     id: string;
-//     name: string;
-//     damageType: DamageType;
-//     SustainType: SustainType;
-//     itemType: ItemType;
-//     giveHealth: boolean;
-// }
-// enum DamageType {
-//     AD = "Physical",
-//     AP = "Magical",
-//     AS = "Attack Speed",
-//     None = "None",
-// }
-// enum SustainType {
-//     Def = "Defense",
-//     Mr = "Magic Resist",
-//     Both = "Def + MR",
-//     None = "None",
-// }
+// Track selected champions across all dropdowns
+var selectedChampions = new Set();
+var allChampionDropdowns = [];
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
@@ -70,184 +54,6 @@ var ItemType;
     ItemType["TeamDefense"] = "Team-Defense";
     ItemType["TeamOffense"] = "Team-Offense";
 })(ItemType || (ItemType = {}));
-// const bardItems: IItem[] = [
-//     {
-//         id: "3742",
-//         name: "Dead Man's Plate",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Def,
-//         itemType: ItemType.SelfDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3143",
-//         name: "Randuin's Omen",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Def,
-//         itemType: ItemType.SelfDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "4401",
-//         name: "Force of Nature",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Mr,
-//         itemType: ItemType.SelfDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "2504",
-//         name: "Kaenic Rookern",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Mr,
-//         itemType: ItemType.SelfDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "6665",
-//         name: "Jak'Sho, The Protean",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Both,
-//         itemType: ItemType.SelfDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3091",
-//         name: "Wit's End",
-//         damageType: DamageType.AS,
-//         SustainType: SustainType.Mr,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "3157",
-//         name: "Zhonya's Hourglass",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.Def,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "3302",
-//         name: "Terminus",
-//         damageType: DamageType.AS,
-//         SustainType: SustainType.Both,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "4633",
-//         name: "Riftmaker",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "6653",
-//         name: "Liandry's Torment",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3087",
-//         name: "Statikk Shiv",
-//         damageType: DamageType.AS,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "4629",
-//         name: "Cosmic Drive",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3073",
-//         name: "Experimental Hexplate",
-//         damageType: DamageType.AD,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.SelfOffsense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3190",
-//         name: "Locket of the Iron Solari",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Both,
-//         itemType: ItemType.TeamDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3107",
-//         name: "Redemption",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.TeamDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3222",
-//         name: "Mikael's Blessing",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.TeamDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "3110",
-//         name: "Frozen Heart",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Def,
-//         itemType: ItemType.TeamDefense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "3109",
-//         name: "Knight's Vow",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Def,
-//         itemType: ItemType.TeamDefense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "4005",
-//         name: "Imperial Mandate",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.TeamOffense,
-//         giveHealth: false,
-//     },
-//     {
-//         id: "8020",
-//         name: "Abyssal Mask",
-//         damageType: DamageType.None,
-//         SustainType: SustainType.Mr,
-//         itemType: ItemType.TeamOffense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "4010",
-//         name: "Bloodletter's Curse",
-//         damageType: DamageType.AP,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.TeamOffense,
-//         giveHealth: true,
-//     },
-//     {
-//         id: "6695",
-//         name: "Serpent's Fang",
-//         damageType: DamageType.AD,
-//         SustainType: SustainType.None,
-//         itemType: ItemType.TeamOffense,
-//         giveHealth: false,
-//     },
-// ]
 var BardItems = [
     { id: "3742", name: "Dead Man's Plate", ItemType: ItemType.SelfDefense },
     { id: "3143", name: "Randuin's Omen", ItemType: ItemType.SelfDefense },
@@ -350,6 +156,8 @@ function createBootsDropdown(element, patchVersion) {
     if (!select) {
         select = document.createElement("select");
         select.className = "boots-dropdown";
+        // Track this dropdown
+        allDropdowns.push(select);
         var defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Select Boots";
@@ -366,8 +174,23 @@ function createBootsDropdown(element, patchVersion) {
     var img = element.querySelector("img");
     select.addEventListener("change", function () {
         var _a, _b;
+        var previousValue = select.dataset.previousValue;
         var selected = select.value;
         var label = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "Boots";
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+        }
+        // Add new selection to the set
+        if (selected) {
+            selectedItems.add(selected);
+            select.dataset.previousValue = selected;
+        }
+        else {
+            delete select.dataset.previousValue;
+        }
+        // Update all dropdowns to disable selected items
+        updateAllDropdowns();
         if (selected) {
             if (!img) {
                 img = document.createElement("img");
@@ -489,6 +312,298 @@ function updateAllDropdowns() {
         });
     });
 }
+/**
+ * Loads champion roles data from champion-roles.json
+ */
+function loadChampionRoles() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, data, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch('scraper/champion-roles.json')];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        console.error('Failed to load champion-roles.json');
+                        return [2 /*return*/, []];
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+                case 3:
+                    error_3 = _a.sent();
+                    console.error('Error loading champion roles:', error_3);
+                    return [2 /*return*/, []];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * Creates a dropdown for selecting champions for a specific role
+ */
+function createChampionDropdown(element, championRoles, allChampions, patchVersion, slotRole, isEnemyTeam) {
+    if (isEnemyTeam === void 0) { isEnemyTeam = false; }
+    // Create dropdown
+    var select = element.querySelector("select.champion-select");
+    if (!select) {
+        select = document.createElement("select");
+        select.className = "champion-select";
+        // Track this dropdown
+        allChampionDropdowns.push(select);
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
+        defaultOption.textContent = "Select ".concat(slotRole);
+        select.appendChild(defaultOption);
+        // Filter champions that can play this specific role
+        var championsForRole_1 = [];
+        championRoles.forEach(function (champion) {
+            // Check if this champion can play the slot's role
+            var canPlayRole = champion.roles.some(function (r) { return r.role === slotRole; });
+            if (!canPlayRole)
+                return;
+            // For enemy team, exclude Bard from SUPPORT role
+            if (isEnemyTeam && slotRole === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                return;
+            }
+            // Find the Data Dragon champion data
+            var championData = Object.values(allChampions.data).find(function (champ) {
+                var champId = champ.id.toLowerCase();
+                var champName = champ.name.toLowerCase();
+                var slug = champion.slug.toLowerCase();
+                // Use exact matches only to avoid false positives (e.g., "vi" matching "anivia")
+                return champId === slug || champName === slug;
+            });
+            if (championData) {
+                // Avoid duplicates
+                if (!championsForRole_1.some(function (c) { return c.championId === championData.id; })) {
+                    championsForRole_1.push({
+                        slug: champion.slug,
+                        name: championData.name,
+                        championId: championData.id
+                    });
+                }
+            }
+        });
+        // Sort champions alphabetically by name
+        championsForRole_1.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        // Add all champions as options
+        championsForRole_1.forEach(function (champ) {
+            var option = document.createElement("option");
+            option.value = champ.championId;
+            option.textContent = champ.name;
+            option.dataset.slug = champ.slug;
+            select.appendChild(option);
+        });
+        element.appendChild(select);
+    }
+    // Ensure there is an <img> we can update
+    var img = element.querySelector("img");
+    select.addEventListener("change", function () {
+        var _a, _b;
+        var previousValue = select.dataset.previousValue;
+        var selected = select.value;
+        var championName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "";
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedChampions.delete(previousValue);
+        }
+        // Add new selection to the set
+        if (selected) {
+            selectedChampions.add(selected);
+            select.dataset.previousValue = selected;
+        }
+        else {
+            delete select.dataset.previousValue;
+        }
+        // Update all champion dropdowns to disable selected champions
+        updateAllChampionDropdowns();
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = championName;
+            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(selected, ".png");
+            img.title = championName;
+        }
+        else if (img) {
+            // Clear image if user selects the default option again
+            img.src = "";
+            img.alt = "";
+            img.title = "";
+        }
+    });
+}
+/**
+ * Update all champion dropdowns to disable champions that are already selected elsewhere.
+ */
+function updateAllChampionDropdowns() {
+    allChampionDropdowns.forEach(function (dropdown) {
+        var currentValue = dropdown.value;
+        // Iterate through all options in the dropdown
+        Array.from(dropdown.options).forEach(function (option) {
+            if (option.value === "") {
+                // Don't disable the default "Select..." option
+                option.disabled = false;
+            }
+            else if (option.value === currentValue) {
+                // Don't disable the currently selected option in this dropdown
+                option.disabled = false;
+            }
+            else if (selectedChampions.has(option.value)) {
+                // Disable if selected in another dropdown
+                option.disabled = true;
+            }
+            else {
+                // Enable if not selected anywhere
+                option.disabled = false;
+            }
+        });
+    });
+}
+/**
+ * Assigns random champions to team slots based on their roles
+ * @param teamListSelector - CSS selector for the team list
+ * @param championRoles - Array of champion role data
+ * @param allChampions - Data Dragon champion data
+ * @param patchVersion - Current patch version
+ * @param usedChampions - Set of already selected champion IDs to avoid duplicates
+ * @param isEnemyTeam - Whether this is the enemy team (to exclude Bard from support)
+ */
+function assignChampionsToTeam(teamListSelector, championRoles, allChampions, patchVersion, usedChampions, isEnemyTeam) {
+    if (isEnemyTeam === void 0) { isEnemyTeam = false; }
+    var teamList = document.querySelector(teamListSelector);
+    if (!teamList) {
+        console.error("Team list ".concat(teamListSelector, " not found"));
+        return;
+    }
+    var championSlots = teamList.querySelectorAll('li.champion-dropdown');
+    championSlots.forEach(function (slot) {
+        var slotElement = slot;
+        // Get role from class list (e.g., 'top', 'jungle', 'mid', 'adc', 'support', 'bard')
+        var roleClass = Array.from(slotElement.classList).find(function (cls) {
+            return ['top', 'jungle', 'mid', 'adc', 'support', 'bard'].includes(cls);
+        });
+        if (!roleClass) {
+            console.warn('No role class found for champion slot', slot);
+            return;
+        }
+        // Special case: if the role is 'bard', assign Bard specifically
+        if (roleClass === 'bard') {
+            var bardData = Object.values(allChampions.data).find(function (champ) {
+                return champ.id.toLowerCase() === 'bard';
+            });
+            if (bardData) {
+                var imgElement_1 = slotElement.querySelector('img');
+                if (imgElement_1) {
+                    imgElement_1.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(bardData.id, ".png");
+                    imgElement_1.alt = bardData.name;
+                    imgElement_1.title = "".concat(bardData.name, " (SUPPORT)");
+                    // Add Bard to used champions
+                    usedChampions.add(bardData.id);
+                }
+                // Add/update a styled label under Bard icon (looks like dropdown)
+                var label = slotElement.querySelector('.champion-label');
+                if (!label) {
+                    label = document.createElement('p');
+                    label.className = 'champion-label';
+                    slotElement.appendChild(label);
+                }
+                label.textContent = "You are cool!";
+            }
+            return;
+        }
+        // Convert class to uppercase role (e.g., 'top' -> 'TOP')
+        var role = roleClass.toUpperCase();
+        // Create dropdown for this champion slot (not for bard slot)
+        createChampionDropdown(slotElement, championRoles, allChampions, patchVersion, role, isEnemyTeam);
+        // Filter champions that can play this role
+        var availableChampions = championRoles.filter(function (champion) {
+            var hasRole = champion.roles.some(function (r) { return r.role === role; });
+            if (!hasRole)
+                return false;
+            // For enemy team support role, exclude Bard
+            if (isEnemyTeam && role === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                return false;
+            }
+            return true;
+        });
+        if (availableChampions.length === 0) {
+            console.warn("No champions found for role: ".concat(role));
+            return;
+        }
+        // Try to find a champion that hasn't been used yet
+        var randomChampion;
+        var attempts = 0;
+        var maxAttempts = 50; // Prevent infinite loop
+        var _loop_1 = function () {
+            var candidate = availableChampions[Math.floor(Math.random() * availableChampions.length)];
+            if (!candidate) {
+                attempts++;
+                return "continue";
+            }
+            // Find the champion data to check if it's already used
+            var candidateData = Object.values(allChampions.data).find(function (champ) {
+                var champId = champ.id.toLowerCase();
+                var champName = champ.name.toLowerCase();
+                var slug = candidate.slug.toLowerCase();
+                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+            });
+            // If champion data found and not already used, select it
+            if (candidateData && !usedChampions.has(candidateData.id)) {
+                randomChampion = candidate;
+                return "break";
+            }
+            attempts++;
+        };
+        while (attempts < maxAttempts) {
+            var state_1 = _loop_1();
+            if (state_1 === "break")
+                break;
+        }
+        if (!randomChampion) {
+            console.warn("Failed to select unique champion for role: ".concat(role, " after ").concat(maxAttempts, " attempts"));
+            // Fallback: just pick any available champion
+            randomChampion = availableChampions[Math.floor(Math.random() * availableChampions.length)];
+        }
+        if (!randomChampion) {
+            console.warn("Failed to select champion for role: ".concat(role));
+            return;
+        }
+        // Find champion in Data Dragon data
+        // Try to match by slug or by name
+        var championData = Object.values(allChampions.data).find(function (champ) {
+            var champId = champ.id.toLowerCase();
+            var champName = champ.name.toLowerCase();
+            var slug = randomChampion.slug.toLowerCase();
+            return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+        });
+        if (!championData) {
+            console.warn("Champion data not found for: ".concat(randomChampion.slug));
+            return;
+        }
+        // Set the champion image
+        var imgElement = slotElement.querySelector('img');
+        if (imgElement) {
+            imgElement.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(championData.id, ".png");
+            imgElement.alt = championData.name;
+            imgElement.title = "".concat(championData.name, " (").concat(role, ")");
+            // Add this champion to the used set
+            usedChampions.add(championData.id);
+        }
+        // Update the dropdown to reflect the selected champion
+        var selectElement = slotElement.querySelector('select.champion-select');
+        if (selectElement) {
+            selectElement.value = championData.id;
+            selectElement.dataset.previousValue = championData.id;
+        }
+    });
+}
 // Helper: does an item have the "Health" tag based on enriched data?
 function itemHasHealthTag(itemId) {
     if (!itemId)
@@ -570,15 +685,105 @@ function matchBardItems() {
         });
     });
 }
+/**
+ * Generates new champion teams
+ */
+function generateNewTeams() {
+    var _a;
+    if (!allChampions || championRoles.length === 0) {
+        console.error('Champion data not loaded yet');
+        return;
+    }
+    // Get the current patch version from existing champion images
+    var existingImg = document.querySelector('.champion-dropdown img');
+    var patchVersion = ((_a = existingImg === null || existingImg === void 0 ? void 0 : existingImg.src.match(/cdn\/([^/]+)\//)) === null || _a === void 0 ? void 0 : _a[1]) || '15.21.1';
+    // Clear all selected champions
+    selectedChampions.clear();
+    // Reset all champion dropdowns
+    allChampionDropdowns.forEach(function (dropdown) {
+        var previousValue = dropdown.dataset.previousValue;
+        if (previousValue) {
+            delete dropdown.dataset.previousValue;
+        }
+        dropdown.value = "";
+        // Clear the image from the parent champion slot
+        var parentSlot = dropdown.closest('.champion-dropdown');
+        if (parentSlot) {
+            var img = parentSlot.querySelector('img');
+            if (img) {
+                img.src = "";
+                img.alt = "";
+                img.title = "";
+            }
+        }
+    });
+    // Remove any Bard label(s) before regenerating
+    document.querySelectorAll('.champion-dropdown .champion-label').forEach(function (el) { return el.remove(); });
+    // Track used champions to prevent duplicates across both teams
+    var usedChampions = new Set();
+    // First assign my team (which includes Bard), then enemy team
+    assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
+    assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+    // Update the selectedChampions set with the randomly assigned champions
+    usedChampions.forEach(function (champId) { return selectedChampions.add(champId); });
+    // Update all champion dropdowns to reflect the new selections
+    updateAllChampionDropdowns();
+    console.log('Generated new teams with champions:', Array.from(usedChampions));
+    // Reset all item dropdowns (slots 3, 4, 5, and boots)
+    allDropdowns.forEach(function (dropdown) {
+        var previousValue = dropdown.dataset.previousValue;
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+            delete dropdown.dataset.previousValue;
+        }
+        dropdown.value = "";
+        // Remove the image from the parent item
+        var parentItem = dropdown.closest('.item');
+        if (parentItem) {
+            var img = parentItem.querySelector('img');
+            if (img) {
+                img.src = "";
+                img.alt = "";
+            }
+            // Remove health border if present
+            parentItem.classList.remove('health');
+        }
+    });
+    // Update all dropdowns to re-enable options (only Dead Man's Plate remains selected)
+    updateAllDropdowns();
+    console.log('Reset all item selections');
+}
 function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
     selectedItems.add("3742");
+    // Load champion roles and assign champions to teams
+    loadChampionRoles().then(function (roles) {
+        championRoles = roles;
+        console.log("Loaded ".concat(championRoles.length, " champions with role data"));
+    });
     getAllChampionsAndItems().then(function (data) {
         if (data) {
             allChampions = data.champions;
             allItems = data.items;
-            console.log(data.items.data);
-            console.log(data.champions.data);
+            // console.log(data.items.data);
+            // console.log(data.champions.data);
+            // Assign champions to enemy team once we have both champion data and roles
+            // Track used champions to prevent duplicates across both teams
+            var usedChampions_1 = new Set();
+            if (championRoles.length > 0) {
+                // First assign my team (which includes Bard), then enemy team
+                assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions_1, false);
+                assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions_1, true);
+            }
+            else {
+                // If roles haven't loaded yet, wait for them
+                loadChampionRoles().then(function (roles) {
+                    championRoles = roles;
+                    // First assign my team (which includes Bard), then enemy team
+                    assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions_1, false);
+                    assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions_1, true);
+                });
+            }
             var items = document.querySelectorAll(".item");
             var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
             items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
@@ -613,9 +818,9 @@ function setup() {
             var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
             bardEnrichedItems = enriched;
             bardEnrichedItemsById = enrichedById;
-            console.log("Current patch:", patch);
-            console.log("Enriched Bard Items:", enriched);
-            console.log("Enriched By ID:", enrichedById);
+            // console.log("Current patch:", patch);
+            // console.log("Enriched Bard Items:", enriched);
+            // console.log("Enriched By ID:", enrichedById);
             // Re-apply health borders now that enriched tags are available
             var listItems = document.querySelectorAll('.items-list .item');
             if (listItems[0])
@@ -637,5 +842,12 @@ function setup() {
             // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
         });
     });
+    // Add event listener for the "Generate teams" button
+    var newChampionsButton = document.getElementById('new-champions-button');
+    if (newChampionsButton) {
+        newChampionsButton.addEventListener('click', function () {
+            generateNewTeams();
+        });
+    }
 }
 setup();
