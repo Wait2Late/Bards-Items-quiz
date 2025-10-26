@@ -11,6 +11,10 @@ let championRoles: ChampionRole[] = [];
 const selectedItems = new Set<string>();
 const allDropdowns: HTMLSelectElement[] = [];
 
+// Track selected champions across all dropdowns
+const selectedChampions = new Set<string>();
+const allChampionDropdowns: HTMLSelectElement[] = [];
+
 interface ChampionRole {
     slug: string;
     name: string;
@@ -320,6 +324,147 @@ async function loadChampionRoles(): Promise<ChampionRole[]> {
 }
 
 /**
+ * Creates a dropdown for selecting champions for a specific role
+ */
+function createChampionDropdown(
+    element: HTMLElement,
+    championRoles: ChampionRole[],
+    allChampions: any,
+    patchVersion: string,
+    slotRole: string,
+    isEnemyTeam: boolean = false
+) {
+    // Create dropdown
+    let select = element.querySelector("select.champion-select") as HTMLSelectElement | null;
+    if (!select) {
+        select = document.createElement("select");
+        select.className = "champion-select";
+        
+        // Track this dropdown
+        allChampionDropdowns.push(select);
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Champion";
+        select.appendChild(defaultOption);
+
+        // Filter champions that can play this specific role
+        const championsForRole: Array<{ slug: string; name: string; championId: string }> = [];
+
+        championRoles.forEach(champion => {
+            // Check if this champion can play the slot's role
+            const canPlayRole = champion.roles.some(r => r.role === slotRole);
+            if (!canPlayRole) return;
+            
+            // For enemy team, exclude Bard from SUPPORT role
+            if (isEnemyTeam && slotRole === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                return;
+            }
+
+            // Find the Data Dragon champion data
+            const championData = Object.values(allChampions.data).find((champ: any) => {
+                const champId = champ.id.toLowerCase();
+                const champName = champ.name.toLowerCase();
+                const slug = champion.slug.toLowerCase();
+                
+                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+            }) as any;
+
+            if (championData) {
+                // Avoid duplicates
+                if (!championsForRole.some(c => c.championId === championData.id)) {
+                    championsForRole.push({
+                        slug: champion.slug,
+                        name: championData.name,
+                        championId: championData.id
+                    });
+                }
+            }
+        });
+
+        // Sort champions alphabetically by name
+        championsForRole.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Add all champions as options
+        championsForRole.forEach(champ => {
+            const option = document.createElement("option");
+            option.value = champ.championId;
+            option.textContent = champ.name;
+            option.dataset.slug = champ.slug;
+            select!.appendChild(option);
+        });
+
+        element.appendChild(select);
+    }
+
+    // Ensure there is an <img> we can update
+    let img = element.querySelector("img") as HTMLImageElement | null;
+
+    select.addEventListener("change", () => {
+        const previousValue = select!.dataset.previousValue;
+        const selected = select!.value;
+        const championName = select!.selectedOptions[0]?.textContent ?? "";
+
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedChampions.delete(previousValue);
+        }
+
+        // Add new selection to the set
+        if (selected) {
+            selectedChampions.add(selected);
+            select!.dataset.previousValue = selected;
+        } else {
+            delete select!.dataset.previousValue;
+        }
+
+        // Update all champion dropdowns to disable selected champions
+        updateAllChampionDropdowns();
+
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = championName;
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${selected}.png`;
+            img.title = championName;
+        } else if (img) {
+            // Clear image if user selects the default option again
+            img.src = "";
+            img.alt = "";
+            img.title = "";
+        }
+    });
+}
+
+/**
+ * Update all champion dropdowns to disable champions that are already selected elsewhere.
+ */
+function updateAllChampionDropdowns() {
+    allChampionDropdowns.forEach(dropdown => {
+        const currentValue = dropdown.value;
+        
+        // Iterate through all options in the dropdown
+        Array.from(dropdown.options).forEach(option => {
+            if (option.value === "") {
+                // Don't disable the default "Select..." option
+                option.disabled = false;
+            } else if (option.value === currentValue) {
+                // Don't disable the currently selected option in this dropdown
+                option.disabled = false;
+            } else if (selectedChampions.has(option.value)) {
+                // Disable if selected in another dropdown
+                option.disabled = true;
+            } else {
+                // Enable if not selected anywhere
+                option.disabled = false;
+            }
+        });
+    });
+}
+
+/**
  * Assigns random champions to team slots based on their roles
  * @param teamListSelector - CSS selector for the team list
  * @param championRoles - Array of champion role data
@@ -378,6 +523,9 @@ function assignChampionsToTeam(
         
         // Convert class to uppercase role (e.g., 'top' -> 'TOP')
         const role = roleClass.toUpperCase();
+        
+        // Create dropdown for this champion slot (not for bard slot)
+        createChampionDropdown(slotElement, championRoles, allChampions, patchVersion, role, isEnemyTeam);
         
         // Filter champions that can play this role
         let availableChampions = championRoles.filter(champion => {
@@ -463,6 +611,13 @@ function assignChampionsToTeam(
             // Add this champion to the used set
             usedChampions.add(championData.id);
         }
+        
+        // Update the dropdown to reflect the selected champion
+        const selectElement = slotElement.querySelector('select.champion-select') as HTMLSelectElement | null;
+        if (selectElement) {
+            selectElement.value = championData.id;
+            selectElement.dataset.previousValue = championData.id;
+        }
     });
 }
 
@@ -540,12 +695,41 @@ function generateNewTeams() {
     const existingImg = document.querySelector('.champion-dropdown img') as HTMLImageElement;
     const patchVersion = existingImg?.src.match(/cdn\/([^/]+)\//)?.[1] || '15.21.1';
     
+    // Clear all selected champions
+    selectedChampions.clear();
+    
+    // Reset all champion dropdowns
+    allChampionDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
+        if (previousValue) {
+            delete dropdown.dataset.previousValue;
+        }
+        dropdown.value = "";
+        
+        // Clear the image from the parent champion slot
+        const parentSlot = dropdown.closest('.champion-dropdown');
+        if (parentSlot) {
+            const img = parentSlot.querySelector('img');
+            if (img) {
+                img.src = "";
+                img.alt = "";
+                img.title = "";
+            }
+        }
+    });
+    
     // Track used champions to prevent duplicates across both teams
     const usedChampions = new Set<string>();
     
     // First assign my team (which includes Bard), then enemy team
     assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
     assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+    
+    // Update the selectedChampions set with the randomly assigned champions
+    usedChampions.forEach(champId => selectedChampions.add(champId));
+    
+    // Update all champion dropdowns to reflect the new selections
+    updateAllChampionDropdowns();
     
     console.log('Generated new teams with champions:', Array.from(usedChampions));
     

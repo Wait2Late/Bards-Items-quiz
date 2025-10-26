@@ -44,6 +44,9 @@ var championRoles = [];
 // Track selected items across all dropdowns
 var selectedItems = new Set();
 var allDropdowns = [];
+// Track selected champions across all dropdowns
+var selectedChampions = new Set();
+var allChampionDropdowns = [];
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
@@ -340,6 +343,128 @@ function loadChampionRoles() {
     });
 }
 /**
+ * Creates a dropdown for selecting champions for a specific role
+ */
+function createChampionDropdown(element, championRoles, allChampions, patchVersion, slotRole, isEnemyTeam) {
+    if (isEnemyTeam === void 0) { isEnemyTeam = false; }
+    // Create dropdown
+    var select = element.querySelector("select.champion-select");
+    if (!select) {
+        select = document.createElement("select");
+        select.className = "champion-select";
+        // Track this dropdown
+        allChampionDropdowns.push(select);
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Champion";
+        select.appendChild(defaultOption);
+        // Filter champions that can play this specific role
+        var championsForRole_1 = [];
+        championRoles.forEach(function (champion) {
+            // Check if this champion can play the slot's role
+            var canPlayRole = champion.roles.some(function (r) { return r.role === slotRole; });
+            if (!canPlayRole)
+                return;
+            // For enemy team, exclude Bard from SUPPORT role
+            if (isEnemyTeam && slotRole === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                return;
+            }
+            // Find the Data Dragon champion data
+            var championData = Object.values(allChampions.data).find(function (champ) {
+                var champId = champ.id.toLowerCase();
+                var champName = champ.name.toLowerCase();
+                var slug = champion.slug.toLowerCase();
+                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+            });
+            if (championData) {
+                // Avoid duplicates
+                if (!championsForRole_1.some(function (c) { return c.championId === championData.id; })) {
+                    championsForRole_1.push({
+                        slug: champion.slug,
+                        name: championData.name,
+                        championId: championData.id
+                    });
+                }
+            }
+        });
+        // Sort champions alphabetically by name
+        championsForRole_1.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        // Add all champions as options
+        championsForRole_1.forEach(function (champ) {
+            var option = document.createElement("option");
+            option.value = champ.championId;
+            option.textContent = champ.name;
+            option.dataset.slug = champ.slug;
+            select.appendChild(option);
+        });
+        element.appendChild(select);
+    }
+    // Ensure there is an <img> we can update
+    var img = element.querySelector("img");
+    select.addEventListener("change", function () {
+        var _a, _b;
+        var previousValue = select.dataset.previousValue;
+        var selected = select.value;
+        var championName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "";
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedChampions.delete(previousValue);
+        }
+        // Add new selection to the set
+        if (selected) {
+            selectedChampions.add(selected);
+            select.dataset.previousValue = selected;
+        }
+        else {
+            delete select.dataset.previousValue;
+        }
+        // Update all champion dropdowns to disable selected champions
+        updateAllChampionDropdowns();
+        if (selected) {
+            if (!img) {
+                img = document.createElement("img");
+                element.appendChild(img);
+            }
+            img.alt = championName;
+            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(selected, ".png");
+            img.title = championName;
+        }
+        else if (img) {
+            // Clear image if user selects the default option again
+            img.src = "";
+            img.alt = "";
+            img.title = "";
+        }
+    });
+}
+/**
+ * Update all champion dropdowns to disable champions that are already selected elsewhere.
+ */
+function updateAllChampionDropdowns() {
+    allChampionDropdowns.forEach(function (dropdown) {
+        var currentValue = dropdown.value;
+        // Iterate through all options in the dropdown
+        Array.from(dropdown.options).forEach(function (option) {
+            if (option.value === "") {
+                // Don't disable the default "Select..." option
+                option.disabled = false;
+            }
+            else if (option.value === currentValue) {
+                // Don't disable the currently selected option in this dropdown
+                option.disabled = false;
+            }
+            else if (selectedChampions.has(option.value)) {
+                // Disable if selected in another dropdown
+                option.disabled = true;
+            }
+            else {
+                // Enable if not selected anywhere
+                option.disabled = false;
+            }
+        });
+    });
+}
+/**
  * Assigns random champions to team slots based on their roles
  * @param teamListSelector - CSS selector for the team list
  * @param championRoles - Array of champion role data
@@ -385,6 +510,8 @@ function assignChampionsToTeam(teamListSelector, championRoles, allChampions, pa
         }
         // Convert class to uppercase role (e.g., 'top' -> 'TOP')
         var role = roleClass.toUpperCase();
+        // Create dropdown for this champion slot (not for bard slot)
+        createChampionDropdown(slotElement, championRoles, allChampions, patchVersion, role, isEnemyTeam);
         // Filter champions that can play this role
         var availableChampions = championRoles.filter(function (champion) {
             var hasRole = champion.roles.some(function (r) { return r.role === role; });
@@ -458,6 +585,12 @@ function assignChampionsToTeam(teamListSelector, championRoles, allChampions, pa
             imgElement.title = "".concat(championData.name, " (").concat(role, ")");
             // Add this champion to the used set
             usedChampions.add(championData.id);
+        }
+        // Update the dropdown to reflect the selected champion
+        var selectElement = slotElement.querySelector('select.champion-select');
+        if (selectElement) {
+            selectElement.value = championData.id;
+            selectElement.dataset.previousValue = championData.id;
         }
     });
 }
@@ -554,11 +687,35 @@ function generateNewTeams() {
     // Get the current patch version from existing champion images
     var existingImg = document.querySelector('.champion-dropdown img');
     var patchVersion = ((_a = existingImg === null || existingImg === void 0 ? void 0 : existingImg.src.match(/cdn\/([^/]+)\//)) === null || _a === void 0 ? void 0 : _a[1]) || '15.21.1';
+    // Clear all selected champions
+    selectedChampions.clear();
+    // Reset all champion dropdowns
+    allChampionDropdowns.forEach(function (dropdown) {
+        var previousValue = dropdown.dataset.previousValue;
+        if (previousValue) {
+            delete dropdown.dataset.previousValue;
+        }
+        dropdown.value = "";
+        // Clear the image from the parent champion slot
+        var parentSlot = dropdown.closest('.champion-dropdown');
+        if (parentSlot) {
+            var img = parentSlot.querySelector('img');
+            if (img) {
+                img.src = "";
+                img.alt = "";
+                img.title = "";
+            }
+        }
+    });
     // Track used champions to prevent duplicates across both teams
     var usedChampions = new Set();
     // First assign my team (which includes Bard), then enemy team
     assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
     assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+    // Update the selectedChampions set with the randomly assigned champions
+    usedChampions.forEach(function (champId) { return selectedChampions.add(champId); });
+    // Update all champion dropdowns to reflect the new selections
+    updateAllChampionDropdowns();
     console.log('Generated new teams with champions:', Array.from(usedChampions));
     // Reset all item dropdowns (slots 3, 4, 5, and boots)
     allDropdowns.forEach(function (dropdown) {

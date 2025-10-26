@@ -205,6 +205,19 @@ ul {
     z-index: 10;
 }
 
+/* Style optgroup headers in champion dropdowns */
+.champion-dropdown > select optgroup {
+    font-weight: bold;
+    font-style: normal;
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.champion-dropdown > select option {
+    font-weight: normal;
+    padding-left: 8px;
+}
+
 .champion-dropdown > select option:disabled {
     color: #999;
     font-style: italic;
