@@ -525,6 +525,25 @@ function matchBardItems() {
         });
     });
 }
+/**
+ * Generates new champion teams
+ */
+function generateNewTeams() {
+    var _a;
+    if (!allChampions || championRoles.length === 0) {
+        console.error('Champion data not loaded yet');
+        return;
+    }
+    // Get the current patch version from existing champion images
+    var existingImg = document.querySelector('.champion-dropdown img');
+    var patchVersion = ((_a = existingImg === null || existingImg === void 0 ? void 0 : existingImg.src.match(/cdn\/([^/]+)\//)) === null || _a === void 0 ? void 0 : _a[1]) || '15.21.1';
+    // Track used champions to prevent duplicates across both teams
+    var usedChampions = new Set();
+    // First assign my team (which includes Bard), then enemy team
+    assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
+    assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+    console.log('Generated new teams with champions:', Array.from(usedChampions));
+}
 function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
     selectedItems.add("3742");
@@ -614,5 +633,12 @@ function setup() {
             // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
         });
     });
+    // Add event listener for the "Generate teams" button
+    var newChampionsButton = document.getElementById('new-champions-button');
+    if (newChampionsButton) {
+        newChampionsButton.addEventListener('click', function () {
+            generateNewTeams();
+        });
+    }
 }
 setup();

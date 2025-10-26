@@ -504,7 +504,30 @@ async function matchBardItems() {
 //     console.warn("Bloodsong not found in DDragon");
 //   }
 
-  return { patch, enriched, enrichedById };
+    return { patch, enriched, enrichedById };
+}
+
+/**
+ * Generates new champion teams
+ */
+function generateNewTeams() {
+    if (!allChampions || championRoles.length === 0) {
+        console.error('Champion data not loaded yet');
+        return;
+    }
+    
+    // Get the current patch version from existing champion images
+    const existingImg = document.querySelector('.champion-dropdown img') as HTMLImageElement;
+    const patchVersion = existingImg?.src.match(/cdn\/([^/]+)\//)?.[1] || '15.21.1';
+    
+    // Track used champions to prevent duplicates across both teams
+    const usedChampions = new Set<string>();
+    
+    // First assign my team (which includes Bard), then enemy team
+    assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
+    assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+    
+    console.log('Generated new teams with champions:', Array.from(usedChampions));
 }
 
 function setup() {
@@ -612,6 +635,14 @@ function setup() {
         // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
     });
 });
+    
+    // Add event listener for the "Generate teams" button
+    const newChampionsButton = document.getElementById('new-champions-button');
+    if (newChampionsButton) {
+        newChampionsButton.addEventListener('click', () => {
+            generateNewTeams();
+        });
+    }
 }
 
 
