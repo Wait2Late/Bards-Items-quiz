@@ -343,10 +343,11 @@ function createChampionDropdown(
         // Track this dropdown
         allChampionDropdowns.push(select);
 
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Select Champion";
-        select.appendChild(defaultOption);
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
+    defaultOption.textContent = `Select ${slotRole}`;
+    select.appendChild(defaultOption);
 
         // Filter champions that can play this specific role
         const championsForRole: Array<{ slug: string; name: string; championId: string }> = [];

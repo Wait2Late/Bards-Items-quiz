@@ -356,7 +356,8 @@ function createChampionDropdown(element, championRoles, allChampions, patchVersi
         allChampionDropdowns.push(select);
         var defaultOption = document.createElement("option");
         defaultOption.value = "";
-        defaultOption.textContent = "Select Champion";
+        // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
+        defaultOption.textContent = "Select ".concat(slotRole);
         select.appendChild(defaultOption);
         // Filter champions that can play this specific role
         var championsForRole_1 = [];
