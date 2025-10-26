@@ -123,6 +123,9 @@ function createBootsDropdown(element: HTMLElement, patchVersion: string) {
     if (!select) {
         select = document.createElement("select");
         select.className = "boots-dropdown";
+        
+        // Track this dropdown
+        allDropdowns.push(select);
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
@@ -143,8 +146,25 @@ function createBootsDropdown(element: HTMLElement, patchVersion: string) {
     let img = element.querySelector("img") as HTMLImageElement | null;
 
     select.addEventListener("change", () => {
+        const previousValue = select!.dataset.previousValue;
         const selected = select!.value;
         const label = select!.selectedOptions[0]?.textContent ?? "Boots";
+
+        // Remove previous selection from the set
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+        }
+
+        // Add new selection to the set
+        if (selected) {
+            selectedItems.add(selected);
+            select!.dataset.previousValue = selected;
+        } else {
+            delete select!.dataset.previousValue;
+        }
+
+        // Update all dropdowns to disable selected items
+        updateAllDropdowns();
 
         if (selected) {
             if (!img) {
@@ -528,6 +548,33 @@ function generateNewTeams() {
     assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
     
     console.log('Generated new teams with champions:', Array.from(usedChampions));
+    
+    // Reset all item dropdowns (slots 3, 4, 5, and boots)
+    allDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+            delete dropdown.dataset.previousValue;
+        }
+        dropdown.value = "";
+        
+        // Remove the image from the parent item
+        const parentItem = dropdown.closest('.item');
+        if (parentItem) {
+            const img = parentItem.querySelector('img');
+            if (img) {
+                img.src = "";
+                img.alt = "";
+            }
+            // Remove health border if present
+            parentItem.classList.remove('health');
+        }
+    });
+    
+    // Update all dropdowns to re-enable options (only Dead Man's Plate remains selected)
+    updateAllDropdowns();
+    
+    console.log('Reset all item selections');
 }
 
 function setup() {
