@@ -9,38 +9,82 @@ body {
 
 main {
     width: 100%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap; /* allow top containers to wrap instead of squeezing */
+    justify-content: center; /* center row when narrower screens */
 }
 
 header {
-    background-color: #f2f2f2;
+    background-color: #fff;
     padding: 20px;
     text-align: center;
-    width: 100%;
+    max-width: 100%;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+
+.matchup-info-container {
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
 }
 
 .quiz-container {
-    margin: 20px;
-    padding: 20px;
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* width: 100%;  Avoid forcing full width in a flex row */
+    flex: 1 1 360px; /* let it share space with siblings */
+    min-width: 320px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
+}
+
+.quiz-container h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.items-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* border: 1px solid #ccc; */
-    /* background-color: #fff; */
+    /* border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff; */
 }
 
-.quiz-container h2 {
-    text-align: center;
-    margin-bottom: 15px;
+.summary-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+    min-width: 320px;
+    /* width: 100%; */
+    flex:  0 100%; 
 }
 
 ul {
     list-style-type: none;
     padding: 0;
+}
+
+hr {
+    border: none;
 }
 
 .items-list {
@@ -49,6 +93,15 @@ ul {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
+}
+
+/* Fixed width for h4 headings in if-winning/if-losing to align items */
+.items-list h4 {
+    min-width: 100px;
+    flex-shrink: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .item {
@@ -82,12 +135,12 @@ ul {
 
 /* Space below the specific boots li so the dropdown has room */
 .item.boots-dropdown {
-    margin-bottom: 42px;
+    margin-bottom: 21px;
 }
 
 /* Space for item dropdowns */
 .item.item-dropdown {
-    margin-bottom: 42px;
+    margin-bottom: 21px;
 }
 
 /* Style all dropdowns positioned under their items */
@@ -139,14 +192,18 @@ ul {
 
 /* Champion container styling */
 .random-champions-container {
-    margin: 20px;
-    padding: 20px;
+    margin: 5px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    /* border: 1px solid #ccc; */
-    /* background-color: #fff; */
+    /* width: 100%; */
+    /* width: 100%;  Avoid forcing full width in a flex row */
+    flex: 1 1 360px; /* share row width */
+    min-width: 320px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
 }
 
 .champions-container {
@@ -169,7 +226,7 @@ ul {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .champion-dropdown {
@@ -182,7 +239,7 @@ ul {
     background-color: #f9f9f9;
     position: relative;
     overflow: visible;
-    margin-bottom: 42px; /* Space for dropdown */
+    margin-bottom: 21px; /* Space for dropdown */
 }
 
 .champion-dropdown img {
@@ -266,4 +323,16 @@ ul {
 #new-champions-button:focus {
     outline: 2px solid #4a90e2;
     outline-offset: 2px;
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+    max-width: 80%;
 }

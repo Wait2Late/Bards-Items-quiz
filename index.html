@@ -9,50 +9,67 @@
 <body>
     <header><h1>Welcome to Bard's items quiz!</h1></header>
     <main>
+        <div class="matchup-info-container">
+            <h3>Enemy team has</h3>
+            <ul>
+                <li>2 AP</li>
+                <li>1 AD</li>
+                <li>2 Tanks</li>
+                <li>no Bard</li>
+            </ul>
+            <hr>
+            <h3>Your team has </h3>
+            <ul>
+                <li>2 AP</li>
+                <li>1 AD</li>
+                <li>2 Tanks</li>
+                <li>Bard</li>
+            </ul>
+        </div>
         <div class="random-champions-container">
             <div class="champions-container">
                 <h3>You are facing against</h3>
                 <ul class="enemy-team-list">
-                    <li class="champion-dropdown top">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown jungle">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown mid">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown adc">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown support">
-                        <img src="" alt="">
-                    </li>
-                </ul>
-                <h3>Your teammates are</h3>
-                <ul class="my-team-list">
-                    <li class="champion-dropdown top">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown jungle">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown mid">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown adc">
-                        <img src="" alt="">
-                    </li>
-                    <li class="champion-dropdown bard">
-                        <img src="" alt="">
-                    </li>
-                </ul>
-            </div>
-            <button id="new-champions-button">Generate teams</button>
+                <li class="champion-dropdown top">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown jungle">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown mid">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown adc">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown support">
+                    <img src="" alt="">
+                </li>
+            </ul>
+            <h3>Your teammates are</h3>
+            <ul class="my-team-list">
+                <li class="champion-dropdown top">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown jungle">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown mid">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown adc">
+                    <img src="" alt="">
+                </li>
+                <li class="champion-dropdown bard">
+                    <img src="" alt="">
+                </li>
+            </ul>
+        </div>
+        <button id="new-champions-button">Generate teams</button>
         </div>
         <div class="quiz-container">
-            <h3>Which items need to be prioritized?</h3>
             <div class="items-container">
+                <h3>Which items need to be prioritized?</h3>
                 <ul class="items-list">
                     <li class="item bloodsong">
                         <img src="" alt="">
@@ -76,7 +93,38 @@
                     </li>
                 </ul>
             </div>
+            <div class="summary-container">
+                <h3>Suggested items:</h3>
+                <ul class="items-list if-winning">
+                    <h4>if winning: </h4>
+                    <li class="item suggested-item-1">
+                        <img src="" alt="">
+                    </li>
+                    <li class="item suggested-item-2">
+                        <img src="" alt="">
+                    </li>
+                    <li class="item suggested-item-3">
+                        <img src="" alt="">
+                    </li>
+                </ul>
+                <ul class="items-list if-losing">
+                    <h4>if losing:</h4>
+                    <li class="item suggested-item-1">
+                        <img src="" alt="">
+                    </li>
+                    <li class="item suggested-item-2">
+                        <img src="" alt="">
+                    </li>
+                    <li class="item suggested-item-3">
+                        <img src="" alt="">
+                    </li>
+                </ul>
+            </div>
         </div>
+        <footer>
+            <h1>Instructions</h1>
+            <p>orem ipsum dolor sit amet, consectetur adipiscing elit. Duis blandit a lectus eu gravida. Phasellus convallis turpis mi, cursus viverra ante congue et. Nullam odio ex, ult </p>
+        </footer>
     </main>
     <script src="scripts.js"></script>
 </body>
