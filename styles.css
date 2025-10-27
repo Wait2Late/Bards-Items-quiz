@@ -57,9 +57,34 @@ header {
     margin-bottom: 15px;
 }
 
+.items-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff; */
+}
+
+.summary-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+    min-width: 320px;
+    /* width: 100%; */
+    flex:  0 100%; 
+}
+
 ul {
     list-style-type: none;
     padding: 0;
+}
+
+hr {
+    border: none;
 }
 
 .items-list {
@@ -154,16 +179,6 @@ ul {
     border: 1px solid #ccc;
     background-color: white;
     box-sizing: border-box;
-}
-
-.summary-container {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    width: 100%;
-    flex:  0 100%; 
 }
 
 /* Champion container styling */
