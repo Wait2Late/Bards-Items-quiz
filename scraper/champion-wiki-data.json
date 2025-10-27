@@ -967,7 +967,7 @@
   },
   {
     "name": "Tristana",
-    "roles": ["Bottom", "Support", "Middle"],
+    "roles": ["Bottom", "Middle"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
@@ -1023,7 +1023,7 @@
   },
   {
     "name": "Vayne",
-    "roles": ["Bottom", "Support", "Top"],
+    "roles": ["Bottom", "Top"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
