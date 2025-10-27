@@ -43,7 +43,7 @@
   },
   {
     "name": "Amumu",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Support"],
     "class": "Vanguard",
     "legacyClass": ["Tank", "Support"],
     "adaptiveType": "magic"
@@ -120,7 +120,7 @@
   },
   {
     "name": "Brand",
-    "roles": ["Jungle", "Support"],
+    "roles": ["Jungle", "Support", "Middle"],
     "class": "Burst",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
@@ -155,21 +155,21 @@
   },
   {
     "name": "Cassiopeia",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Top"],
     "class": "Battlemage",
     "legacyClass": ["Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Cho'Gath",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Tank", "Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Corki",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -197,7 +197,7 @@
   },
   {
     "name": "Dr. Mundo",
-    "roles": ["Top"],
+    "roles": ["Top", "Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Tank", "Fighter"],
     "adaptiveType": "physical"
@@ -211,7 +211,7 @@
   },
   {
     "name": "Elise",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Support"],
     "class": "Diver",
     "legacyClass": ["Assassin", "Mage"],
     "adaptiveType": "magic"
@@ -232,7 +232,7 @@
   },
   {
     "name": "Fiddlesticks",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Support"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
@@ -253,7 +253,7 @@
   },
   {
     "name": "Galio",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank", "Mage"],
     "adaptiveType": "magic"
@@ -281,7 +281,7 @@
   },
   {
     "name": "Gragas",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Vanguard",
     "legacyClass": ["Fighter", "Mage"],
     "adaptiveType": "magic"
@@ -295,7 +295,7 @@
   },
   {
     "name": "Gwen",
-    "roles": ["Top"],
+    "roles": ["Top", "Jungle"],
     "class": "Skirmisher",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "magic"
@@ -309,14 +309,14 @@
   },
   {
     "name": "Heimerdinger",
-    "roles": ["Support"],
+    "roles": ["Support", "Top"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
   {
     "name": "Hwei",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle", "Support", "Bottom"],
     "class": "Artillery",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
@@ -365,7 +365,7 @@
   },
   {
     "name": "Jayce",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Artillery",
     "legacyClass": ["Fighter", "Marksman"],
     "adaptiveType": "physical"
@@ -428,31 +428,31 @@
   },
   {
     "name": "Kayle",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Marksman"],
     "adaptiveType": "physical"
   },
   {
     "name": "Kayn",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Skirmisher",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Kennen",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Marksman"],
     "adaptiveType": "magic"
   },
   {
     "name": "Kha'Zix",
-    "roles": [],
-    "class": null,
-    "legacyClass": [],
-    "adaptiveType": null
+    "roles": ["Jungle"],
+    "class": "Assassin",
+    "legacyClass": ["Assassin"],
+    "adaptiveType": "physical"
   },
   {
     "name": "Kindred",
@@ -477,14 +477,14 @@
   },
   {
     "name": "K'Sante",
-    "roles": [],
-    "class": null,
-    "legacyClass": [],
-    "adaptiveType": null
+    "roles": ["Top"],
+    "class": "Warden",
+    "legacyClass": ["Tank", "Fighter"],
+    "adaptiveType": "physical"
   },
   {
     "name": "LeBlanc",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Support"],
     "class": "Burst",
     "legacyClass": ["Assassin", "Mage"],
     "adaptiveType": "magic"
@@ -540,7 +540,7 @@
   },
   {
     "name": "Malphite",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Vanguard",
     "legacyClass": ["Tank", "Mage"],
     "adaptiveType": "magic"
@@ -561,14 +561,14 @@
   },
   {
     "name": "Master Yi",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Skirmisher",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Mel",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle", "Support", "Bottom"],
     "class": "Artillery",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
@@ -589,7 +589,7 @@
   },
   {
     "name": "Wukong",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Diver",
     "legacyClass": ["Fighter", "Tank"],
     "adaptiveType": "physical"
@@ -603,14 +603,14 @@
   },
   {
     "name": "Morgana",
-    "roles": ["Support", "Middle"],
+    "roles": ["Support", "Middle", "Jungle"],
     "class": "Catcher",
     "legacyClass": ["Support", "Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Naafiri",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Jungle"],
     "class": "Assassin",
     "legacyClass": ["Assassin", "Fighter"],
     "adaptiveType": "physical"
@@ -694,14 +694,14 @@
   },
   {
     "name": "Pantheon",
-    "roles": ["Top", "Support"],
+    "roles": ["Top", "Support", "Jungle", "Middle"],
     "class": "Diver",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Poppy",
-    "roles": ["Top", "Jungle"],
+    "roles": ["Top", "Jungle", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank", "Fighter"],
     "adaptiveType": "physical"
@@ -715,14 +715,14 @@
   },
   {
     "name": "Qiyana",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Jungle"],
     "class": "Assassin",
     "legacyClass": ["Assassin", "Fighter"],
     "adaptiveType": "physical"
   },
   {
     "name": "Quinn",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
@@ -743,7 +743,7 @@
   },
   {
     "name": "Rek'Sai",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Diver",
     "legacyClass": ["Fighter", "Tank"],
     "adaptiveType": "physical"
@@ -792,7 +792,7 @@
   },
   {
     "name": "Ryze",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Top"],
     "class": "Battlemage",
     "legacyClass": ["Mage", "Fighter"],
     "adaptiveType": "magic"
@@ -834,14 +834,14 @@
   },
   {
     "name": "Shaco",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Support"],
     "class": "Assassin",
     "legacyClass": ["Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Shen",
-    "roles": ["Top"],
+    "roles": ["Top", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank"],
     "adaptiveType": "physical"
@@ -862,7 +862,7 @@
   },
   {
     "name": "Sion",
-    "roles": ["Top"],
+    "roles": ["Top", "Middle"],
     "class": "Vanguard",
     "legacyClass": ["Tank", "Fighter"],
     "adaptiveType": "physical"
@@ -883,7 +883,7 @@
   },
   {
     "name": "Smolder",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom", "Support", "Middle"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -904,14 +904,14 @@
   },
   {
     "name": "Swain",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle", "Support", "Top", "Bottom"],
     "class": "Battlemage",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
   {
     "name": "Sylas",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Jungle"],
     "class": "Burst",
     "legacyClass": ["Mage", "Assassin"],
     "adaptiveType": "magic"
@@ -925,7 +925,7 @@
   },
   {
     "name": "Tahm Kench",
-    "roles": ["Top"],
+    "roles": ["Top", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank", "Support"],
     "adaptiveType": "magic"
@@ -939,7 +939,7 @@
   },
   {
     "name": "Talon",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Jungle"],
     "class": "Assassin",
     "legacyClass": ["Assassin"],
     "adaptiveType": "physical"
@@ -953,7 +953,7 @@
   },
   {
     "name": "Teemo",
-    "roles": ["Top"],
+    "roles": ["Top", "Support", "Jungle"],
     "class": "Specialist",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "magic"
@@ -967,14 +967,14 @@
   },
   {
     "name": "Tristana",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom", "Support", "Middle"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Trundle",
-    "roles": ["Top"],
+    "roles": ["Top", "Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Fighter", "Tank"],
     "adaptiveType": "physical"
@@ -1016,31 +1016,31 @@
   },
   {
     "name": "Varus",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom", "Support", "Top"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
   },
   {
     "name": "Vayne",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom", "Support", "Top"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
   },
   {
     "name": "Veigar",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Bottom"],
     "class": "Burst",
     "legacyClass": ["Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Vel'Koz",
-    "roles": [],
-    "class": null,
-    "legacyClass": [],
-    "adaptiveType": null
+    "roles": ["Support", "Middle"],
+    "class": "Artillery",
+    "legacyClass": ["Mage", "Support"],
+    "adaptiveType": "magic"
   },
   {
     "name": "Vex",
@@ -1072,21 +1072,21 @@
   },
   {
     "name": "Vladimir",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Top"],
     "class": "Battlemage",
     "legacyClass": ["Mage", "Fighter"],
     "adaptiveType": "magic"
   },
   {
     "name": "Volibear",
-    "roles": ["Top"],
+    "roles": ["Top", "Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Fighter", "Tank"],
     "adaptiveType": "physical"
   },
   {
     "name": "Warwick",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Diver",
     "legacyClass": ["Fighter", "Tank"],
     "adaptiveType": "physical"
@@ -1149,14 +1149,14 @@
   },
   {
     "name": "Zac",
-    "roles": ["Jungle"],
+    "roles": ["Jungle", "Top"],
     "class": "Vanguard",
     "legacyClass": ["Tank", "Fighter"],
     "adaptiveType": "magic"
   },
   {
     "name": "Zed",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Jungle"],
     "class": "Assassin",
     "legacyClass": ["Assassin"],
     "adaptiveType": "physical"
@@ -1170,7 +1170,7 @@
   },
   {
     "name": "Ziggs",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom", "Support", "Middle"],
     "class": "Artillery",
     "legacyClass": ["Mage"],
     "adaptiveType": "magic"
@@ -1184,14 +1184,14 @@
   },
   {
     "name": "Zoe",
-    "roles": ["Middle"],
+    "roles": ["Middle", "Support"],
     "class": "Burst",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
   {
     "name": "Zyra",
-    "roles": ["Support"],
+    "roles": ["Support", "Jungle"],
     "class": "Catcher",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"

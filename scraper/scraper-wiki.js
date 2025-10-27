@@ -51,6 +51,51 @@ async function loadChampionList() {
     }
 }
 
+// Load reference roles from champion-roles.json and build a map: Champion Name -> Set of roles
+async function loadReferenceRolesMap() {
+    try {
+        const filePath = path.join(__dirname, 'champion-roles.json');
+        const raw = await fs.readFile(filePath, 'utf-8');
+        const arr = JSON.parse(raw);
+
+        // Map various role codes to canonical names used in our wiki data
+        const roleMap = {
+            'TOP': 'Top',
+            'JUNGLE': 'Jungle',
+            'MID': 'Middle',
+            'MIDDLE': 'Middle',
+            'BOTTOM': 'Bottom',
+            'BOT': 'Bottom',
+            'ADC': 'Bottom',
+            'SUPPORT': 'Support',
+            'UTILITY': 'Support'
+        };
+
+        const byName = new Map();
+
+        for (const item of arr) {
+            const fullName = typeof item.name === 'string' ? item.name : '';
+            const championName = fullName.includes(' Build for') ? fullName.split(' Build for')[0].trim() : fullName.trim();
+            if (!championName) continue;
+
+            const rolesSet = byName.get(championName) || new Set();
+            if (Array.isArray(item.roles)) {
+                for (const r of item.roles) {
+                    const code = (r.role || '').toString().toUpperCase();
+                    const mapped = roleMap[code];
+                    if (mapped) rolesSet.add(mapped);
+                }
+            }
+            byName.set(championName, rolesSet);
+        }
+
+        return byName;
+    } catch (err) {
+        console.error('Error loading reference roles from champion-roles.json:', err.message);
+        return new Map();
+    }
+}
+
 // Convert champion id to proper wiki URL format
 function formatChampionName(championId) {
     // Data Dragon champion IDs are already in the correct format for most cases
@@ -67,12 +112,13 @@ function formatChampionName(championId) {
         'LeeSin': 'Lee_Sin',
         'TahmKench': 'Tahm_Kench',
         'KogMaw': "Kog'Maw",
-        'ChoGath': "Cho'Gath",
-        'KhaZix': "Kha'Zix",
-        'VelKoz': "Vel'Koz",
+        'Chogath': "Cho'Gath",
+        'Khazix': "Kha'Zix",
+        'Velkoz': "Vel'Koz",
         'RekSai': "Rek'Sai",
-        'KaiSa': "Kai'Sa",
+        'Kaisa': "Kai'Sa",
         'Belveth': "Bel'Veth",
+        'KSante': "K'Sante",
         'AurelionSol': 'Aurelion_Sol',
         'RenataGlasc': 'Renata_Glasc'
     };
@@ -88,14 +134,22 @@ function formatChampionName(championId) {
 // Scrape a single champion's wiki page
 async function scrapeChampionWiki(page, champion) {
     const championName = formatChampionName(champion.id);
-    const url = `https://wiki.leagueoflegends.com/en-us/${championName}`;
+    const safeSlug = championName.includes('%') ? championName : encodeURI(championName);
+    const url = `https://wiki.leagueoflegends.com/en-us/${safeSlug}`;
 
     console.log(`Scraping ${champion.name} (${champion.id})...`);
+    console.log(`  URL: ${url}`);
 
     let championData = null;
 
     try {
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        try {
+            // Ensure MediaWiki content area is present before scraping
+            await page.waitForSelector('.mw-parser-output, main, #content', { timeout: 10000 });
+        } catch (_) {
+            // Continue; we'll diagnose via debug logs
+        }
 
         // Extract champion data from the page
         championData = await page.evaluate(() => {
@@ -106,6 +160,12 @@ async function scrapeChampionWiki(page, champion) {
                 adaptiveType: null,
                 debug: [] // Add debug array to capture logs
             };
+
+            // Page-level diagnostics
+            try {
+                data.debug.push(`Document title: ${document.title}`);
+                data.debug.push(`Location href: ${location.href}`);
+            } catch (e) {}
 
             // Extract role from "ROLE(S):" section - try multiple methods
             // Method 1: Look for text containing ROLE(S):
@@ -220,11 +280,18 @@ async function scrapeChampionWiki(page, champion) {
 // Main scraper function
 async function scrapeAllChampions() {
     console.log('Loading champion list...');
-    const champions = await loadChampionList();
+    let champions = await loadChampionList();
 
     if (champions.length === 0) {
         console.error('No champions found in champion-roles.json');
         return;
+    }
+
+    // Optional filter by names/ids via WIKI_FILTER (comma-separated)
+    const filter = (process.env.WIKI_FILTER || '').trim();
+    if (filter) {
+        const wanted = new Set(filter.split(',').map(s => s.trim().toLowerCase()));
+        champions = champions.filter(c => wanted.has(c.name.toLowerCase()) || wanted.has(c.id.toLowerCase()));
     }
 
     console.log(`Found ${champions.length} champions to scrape`);
@@ -244,6 +311,8 @@ async function scrapeAllChampions() {
     });
 
     const results = [];
+    // Load reference roles map once (name -> Set<role>) to augment missing roles
+    const referenceRolesMap = await loadReferenceRolesMap();
     
     // Process champions in batches based on concurrency
     for (let i = 0; i < championsToScrape.length; i += concurrency) {
@@ -253,7 +322,21 @@ async function scrapeAllChampions() {
             const page = await browser.newPage();
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
             
-            const result = await scrapeChampionWiki(page, champion);
+            let result = await scrapeChampionWiki(page, champion);
+
+            // Augment roles with any missing ones from the reference file
+            try {
+                const refRoles = referenceRolesMap.get(result.name);
+                if (refRoles && refRoles.size > 0) {
+                    const existing = new Set(result.roles || []);
+                    for (const role of refRoles) {
+                        if (!existing.has(role)) existing.add(role);
+                    }
+                    result.roles = Array.from(existing);
+                }
+            } catch (e) {
+                // Non-fatal; continue
+            }
             await page.close();
             
             return result;
