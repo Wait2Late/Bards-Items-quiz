@@ -88,6 +88,17 @@ async function fetchCurrentPatch() {
     }
 }
 
+async function fetchMerakiChampionData(championName: string) {
+    try {
+        const response = await fetch(`https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/${championName}.json`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching champion: ", error);
+        return null;
+    }
+}
+
 async function getAllChampionsAndItems() {
     const patchVersion = await fetchCurrentPatch();
     if (!patchVersion) {
