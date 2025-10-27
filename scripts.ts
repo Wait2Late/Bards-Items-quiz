@@ -527,7 +527,7 @@ function assignChampionsToTeam(
                     label.className = 'champion-label';
                     slotElement.appendChild(label);
                 }
-                label.textContent = "You are cool!";
+                label.textContent = "You are so cool!";
             }
             return;
         }
