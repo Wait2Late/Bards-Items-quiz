@@ -4,8 +4,8 @@ let allItems: { data: DDragonItemMap } | undefined;
 let bardEnrichedItems: any[] | undefined;
 let bardEnrichedItemsById: Record<string, any> | undefined;
 
-// Champion roles data
-let championRoles: ChampionRole[] = [];
+// Champion wiki data
+let championWikiData: ChampionWikiData[] = [];
 
 // Track selected items across all dropdowns
 const selectedItems = new Set<string>();
@@ -15,13 +15,12 @@ const allDropdowns: HTMLSelectElement[] = [];
 const selectedChampions = new Set<string>();
 const allChampionDropdowns: HTMLSelectElement[] = [];
 
-interface ChampionRole {
-    slug: string;
+interface ChampionWikiData {
     name: string;
-    roles: {
-        role: string;
-        pickRate: number | null;
-    }[];
+    roles: string[];
+    class: string | null;
+    legacyClass: string[];
+    adaptiveType: string | null;
 }
 
 interface BardItem {
@@ -317,21 +316,26 @@ function updateAllDropdowns() {
 }
 
 /**
- * Loads champion roles data from champion-roles.json
+ * Loads champion wiki data from champion-wiki-data.json
  */
-async function loadChampionRoles(): Promise<ChampionRole[]> {
+async function loadChampionWikiData(): Promise<ChampionWikiData[]> {
     try {
-        const response = await fetch('scraper/champion-roles.json');
+        const response = await fetch('scraper/champion-wiki-data.json');
         if (!response.ok) {
-            console.error('Failed to load champion-roles.json');
+            console.error('Failed to load champion-wiki-data.json');
             return [];
         }
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error loading champion roles:', error);
+        console.error('Error loading champion wiki data:', error);
         return [];
     }
+}
+
+// UI-only role label mapping: keep logic using canonical codes, but show BOT for ADC
+function displayRole(role: string): string {
+    return role === 'ADC' ? 'BOT' : role;
 }
 
 /**
@@ -339,7 +343,7 @@ async function loadChampionRoles(): Promise<ChampionRole[]> {
  */
 function createChampionDropdown(
     element: HTMLElement,
-    championRoles: ChampionRole[],
+    championWikiData: ChampionWikiData[],
     allChampions: any,
     patchVersion: string,
     slotRole: string,
@@ -356,20 +360,29 @@ function createChampionDropdown(
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
-        // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / ADC / SUPPORT
-        defaultOption.textContent = `Select ${slotRole}`;
+    // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / BOT / SUPPORT (UI-only mapping)
+    defaultOption.textContent = `Select ${displayRole(slotRole)}`;
         select.appendChild(defaultOption);
 
+        // Map role names from wiki data to expected format
+        const roleMapping: Record<string, string> = {
+            'Top': 'TOP',
+            'Jungle': 'JUNGLE',
+            'Middle': 'MID',
+            'Bottom': 'ADC',
+            'Support': 'SUPPORT'
+        };
+
         // Filter champions that can play this specific role
-        const championsForRole: Array<{ slug: string; name: string; championId: string }> = [];
+        const championsForRole: Array<{ name: string; championId: string }> = [];
         
-        championRoles.forEach(champion => {
+        championWikiData.forEach(champion => {
             // Check if this champion can play the slot's role
-            const canPlayRole = champion.roles.some(r => r.role === slotRole);
+            const canPlayRole = champion.roles.some(role => roleMapping[role] === slotRole);
             if (!canPlayRole) return;
             
             // For enemy team, exclude Bard from SUPPORT role
-            if (isEnemyTeam && slotRole === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+            if (isEnemyTeam && slotRole === 'SUPPORT' && champion.name.toLowerCase() === 'bard') {
                 return;
             }
 
@@ -377,18 +390,17 @@ function createChampionDropdown(
             const championData = Object.values(allChampions.data).find((champ: any) => {
                 const champId = champ.id.toLowerCase();
                 const champName = champ.name.toLowerCase();
-                const slug = champion.slug.toLowerCase();
+                const wikiName = champion.name.toLowerCase();
                 
                 // Use exact matches only to avoid false positives (e.g., "vi" matching "anivia")
-                return champId === slug || champName === slug;
+                return champId === wikiName || champName === wikiName;
             }) as any;
 
             if (championData) {
                 // Avoid duplicates
                 if (!championsForRole.some(c => c.championId === championData.id)) {
                     championsForRole.push({
-                        slug: champion.slug,
-                        name: championData.name,
+                        name: champion.name,
                         championId: championData.id
                     });
                 }
@@ -403,7 +415,6 @@ function createChampionDropdown(
             const option = document.createElement("option");
             option.value = champ.championId;
             option.textContent = champ.name;
-            option.dataset.slug = champ.slug;
             select!.appendChild(option);
         });
 
@@ -488,7 +499,7 @@ function updateAllChampionDropdowns() {
  */
 function assignChampionsToTeam(
     teamListSelector: string,
-    championRoles: ChampionRole[],
+    championWikiData: ChampionWikiData[],
     allChampions: any,
     patchVersion: string,
     usedChampions: Set<string>,
@@ -547,15 +558,25 @@ function assignChampionsToTeam(
         const role = roleClass.toUpperCase();
         
         // Create dropdown for this champion slot (not for bard slot)
-        createChampionDropdown(slotElement, championRoles, allChampions, patchVersion, role, isEnemyTeam);
+            createChampionDropdown(slotElement, championWikiData, allChampions, patchVersion, role, isEnemyTeam);
         
         // Filter champions that can play this role
-        let availableChampions = championRoles.filter(champion => {
-            const hasRole = champion.roles.some(r => r.role === role);
+            // Map role names to wiki format
+            const roleMapping: Record<string, string> = {
+                'TOP': 'Top',
+                'JUNGLE': 'Jungle',
+                'MID': 'Middle',
+                'ADC': 'Bottom',
+                'SUPPORT': 'Support'
+            };
+            const wikiRole = roleMapping[role] || role;
+        
+            let availableChampions = championWikiData.filter(champion => {
+                const hasRole = champion.roles.includes(wikiRole);
             if (!hasRole) return false;
             
             // For enemy team support role, exclude Bard
-            if (isEnemyTeam && role === 'SUPPORT' && champion.slug.toLowerCase() === 'bard') {
+                if (isEnemyTeam && role === 'SUPPORT' && champion.name.toLowerCase() === 'bard') {
                 return false;
             }
             
@@ -568,7 +589,7 @@ function assignChampionsToTeam(
         }
         
         // Try to find a champion that hasn't been used yet
-        let randomChampion: ChampionRole | undefined;
+        let randomChampion: ChampionWikiData | undefined;
         let attempts = 0;
         const maxAttempts = 50; // Prevent infinite loop
         
@@ -584,9 +605,9 @@ function assignChampionsToTeam(
             const candidateData = Object.values(allChampions.data).find((champ: any) => {
                 const champId = champ.id.toLowerCase();
                 const champName = champ.name.toLowerCase();
-                const slug = candidate.slug.toLowerCase();
+                 const wikiName = candidate.name.toLowerCase();
                 
-                return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+                 return champId === wikiName || champName === wikiName;
             }) as any;
             
             // If champion data found and not already used, select it
@@ -614,13 +635,13 @@ function assignChampionsToTeam(
         const championData = Object.values(allChampions.data).find((champ: any) => {
             const champId = champ.id.toLowerCase();
             const champName = champ.name.toLowerCase();
-            const slug = randomChampion!.slug.toLowerCase();
+            const wikiName = randomChampion!.name.toLowerCase();
             
-            return champId === slug || champName === slug || champId.includes(slug) || slug.includes(champId);
+            return champId === wikiName || champName === wikiName;
         }) as any;
         
         if (!championData) {
-            console.warn(`Champion data not found for: ${randomChampion.slug}`);
+            console.warn(`Champion data not found for: ${randomChampion.name}`);
             return;
         }
         
@@ -629,7 +650,7 @@ function assignChampionsToTeam(
         if (imgElement) {
             imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${championData.id}.png`;
             imgElement.alt = championData.name;
-            imgElement.title = `${championData.name} (${role})`;
+            imgElement.title = `${championData.name} (${displayRole(role)})`;
             // Add this champion to the used set
             usedChampions.add(championData.id);
         }
@@ -708,9 +729,9 @@ async function matchBardItems() {
  * Generates new champion teams
  */
 function generateNewTeams() {
-    if (!allChampions || championRoles.length === 0) {
+        if (!allChampions || championWikiData.length === 0) {
         console.error('Champion data not loaded yet');
-        return;
+                return;
     }
     
     // Get the current patch version from existing champion images
@@ -747,8 +768,8 @@ function generateNewTeams() {
     const usedChampions = new Set<string>();
     
     // First assign my team (which includes Bard), then enemy team
-    assignChampionsToTeam(".my-team-list", championRoles, allChampions, patchVersion, usedChampions, false);
-    assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, patchVersion, usedChampions, true);
+        assignChampionsToTeam(".my-team-list", championWikiData, allChampions, patchVersion, usedChampions, false);
+        assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, patchVersion, usedChampions, true);
     
     // Update the selectedChampions set with the randomly assigned champions
     usedChampions.forEach(champId => selectedChampions.add(champId));
@@ -791,9 +812,9 @@ function setup() {
     selectedItems.add("3742");
     
     // Load champion roles and assign champions to teams
-    loadChampionRoles().then(roles => {
-        championRoles = roles;
-        console.log(`Loaded ${championRoles.length} champions with role data`);
+        loadChampionWikiData().then(wikiData => {
+            championWikiData = wikiData;
+            console.log(`Loaded ${championWikiData.length} champions with wiki data`);
     });
     
     getAllChampionsAndItems().then(data => {
@@ -808,17 +829,17 @@ function setup() {
         // Track used champions to prevent duplicates across both teams
         const usedChampions = new Set<string>();
         
-        if (championRoles.length > 0) {
+            if (championWikiData.length > 0) {
             // First assign my team (which includes Bard), then enemy team
-            assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions, false);
-            assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions, true);
+                assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, false);
+                assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, true);
         } else {
             // If roles haven't loaded yet, wait for them
-            loadChampionRoles().then(roles => {
-                championRoles = roles;
+                loadChampionWikiData().then(wikiData => {
+                    championWikiData = wikiData;
                 // First assign my team (which includes Bard), then enemy team
-                assignChampionsToTeam(".my-team-list", championRoles, allChampions, data.patchVersion, usedChampions, false);
-                assignChampionsToTeam(".enemy-team-list", championRoles, allChampions, data.patchVersion, usedChampions, true);
+                    assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, false);
+                    assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, true);
             });
         }
 

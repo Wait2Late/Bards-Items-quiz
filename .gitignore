@@ -135,7 +135,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Scraper artifacts (keep champion-roles.json tracked)
+# Scraper artifacts
 scraper/debug/
 scraper/api-responses.json
 scraper/scraped-raw.html
