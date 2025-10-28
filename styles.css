@@ -75,7 +75,12 @@ header {
     background-color: #f9f9f9;
     min-width: 320px;
     /* width: 100%; */
-    flex:  0 100%; 
+    flex:  0 100%;
+    display: none; /* Hidden by default */
+}
+
+.summary-container.visible {
+    display: block; /* Show when all items are selected */
 }
 
 ul {

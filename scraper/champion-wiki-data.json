@@ -64,14 +64,14 @@
   },
   {
     "name": "Aphelios",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
   },
   {
     "name": "Ashe",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Support"],
     "adaptiveType": "physical"
@@ -141,7 +141,7 @@
   },
   {
     "name": "Caitlyn",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -190,7 +190,7 @@
   },
   {
     "name": "Draven",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -225,7 +225,7 @@
   },
   {
     "name": "Ezreal",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -372,28 +372,28 @@
   },
   {
     "name": "Jhin",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
   },
   {
     "name": "Jinx",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
   },
   {
     "name": "Kai'Sa",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Kalista",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -470,7 +470,7 @@
   },
   {
     "name": "Kog'Maw",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -519,7 +519,7 @@
   },
   {
     "name": "Lucian",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
@@ -652,7 +652,7 @@
   },
   {
     "name": "Nilah",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Skirmisher",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "physical"
@@ -799,7 +799,7 @@
   },
   {
     "name": "Samira",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Assassin"],
     "adaptiveType": "physical"
@@ -869,7 +869,7 @@
   },
   {
     "name": "Sivir",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -883,7 +883,7 @@
   },
   {
     "name": "Smolder",
-    "roles": ["Bottom", "Support", "Middle"],
+    "roles": ["Bottom", "Middle"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -988,7 +988,7 @@
   },
   {
     "name": "Twisted Fate",
-    "roles": ["Middle", "Bottom", "Support"],
+    "roles": ["Middle"],
     "class": "Burst",
     "legacyClass": ["Mage", "Marksman"],
     "adaptiveType": "magic"
@@ -1016,7 +1016,7 @@
   },
   {
     "name": "Varus",
-    "roles": ["Bottom", "Support", "Top"],
+    "roles": ["Bottom", "Top"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "physical"
@@ -1030,7 +1030,7 @@
   },
   {
     "name": "Veigar",
-    "roles": ["Middle", "Bottom"],
+    "roles": ["Middle", "Bottom", "Support"],
     "class": "Burst",
     "legacyClass": ["Mage"],
     "adaptiveType": "magic"
@@ -1093,7 +1093,7 @@
   },
   {
     "name": "Xayah",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -1114,7 +1114,7 @@
   },
   {
     "name": "Yasuo",
-    "roles": ["Top", "Middle", "Bottom", "Support"],
+    "roles": ["Top", "Middle", "Bottom"],
     "class": "Skirmisher",
     "legacyClass": ["Fighter", "Assassin"],
     "adaptiveType": "physical"
@@ -1170,7 +1170,7 @@
   },
   {
     "name": "Ziggs",
-    "roles": ["Bottom", "Support", "Middle"],
+    "roles": ["Bottom", "Middle"],
     "class": "Artillery",
     "legacyClass": ["Mage"],
     "adaptiveType": "magic"
