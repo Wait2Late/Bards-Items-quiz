@@ -214,6 +214,8 @@ function createBootsDropdown(element, patchVersion) {
         }
         // Update all dropdowns to disable selected items
         updateAllDropdowns();
+        // Check if all item slots are filled to show/hide summary
+        updateSummaryVisibility();
         if (selected) {
             if (!img) {
                 img = document.createElement("img");
@@ -292,6 +294,8 @@ function createItemDropdown(element, items, patchVersion, label, dropdownClass) 
         }
         // Update all dropdowns to disable selected items
         updateAllDropdowns();
+        // Check if all item slots are filled to show/hide summary
+        updateSummaryVisibility();
         if (selected) {
             if (!img) {
                 img = document.createElement("img");
@@ -335,6 +339,20 @@ function updateAllDropdowns() {
         });
     });
 }
+// Check if all item slots are filled and show/hide summary container accordingly
+function updateSummaryVisibility() {
+    var summaryContainer = document.querySelector('.summary-container');
+    if (!summaryContainer)
+        return;
+    // Check if all 4 dropdowns (3 item slots + boots) have selections
+    var allFilled = allDropdowns.every(function (dropdown) { return dropdown.value !== ""; });
+    if (allFilled) {
+        summaryContainer.classList.add('visible');
+    }
+    else {
+        summaryContainer.classList.remove('visible');
+    }
+}
 // Reset all item dropdowns (slots 3, 4, 5, and boots) to their default state
 function resetAllItemDropdowns() {
     allDropdowns.forEach(function (dropdown) {
@@ -363,6 +381,8 @@ function resetAllItemDropdowns() {
     });
     // Update all dropdowns to re-enable options
     updateAllDropdowns();
+    // Hide summary container since items are reset
+    updateSummaryVisibility();
 }
 /**
  * Loads champion wiki data from champion-wiki-data.json
@@ -824,6 +844,8 @@ function generateNewTeams() {
     });
     // Update all dropdowns to re-enable options (only Dead Man's Plate remains selected)
     updateAllDropdowns();
+    // Hide summary container since items are reset
+    updateSummaryVisibility();
     console.log('Reset all item selections');
 }
 function setup() {

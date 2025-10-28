@@ -180,6 +180,9 @@ function createBootsDropdown(element: HTMLElement, patchVersion: string) {
         // Update all dropdowns to disable selected items
         updateAllDropdowns();
 
+        // Check if all item slots are filled to show/hide summary
+        updateSummaryVisibility();
+
         if (selected) {
             if (!img) {
                 img = document.createElement("img");
@@ -273,6 +276,9 @@ function createItemDropdown(
         // Update all dropdowns to disable selected items
         updateAllDropdowns();
 
+        // Check if all item slots are filled to show/hide summary
+        updateSummaryVisibility();
+
         if (selected) {
             if (!img) {
                 img = document.createElement("img");
@@ -315,6 +321,21 @@ function updateAllDropdowns() {
     });
 }
 
+// Check if all item slots are filled and show/hide summary container accordingly
+function updateSummaryVisibility() {
+    const summaryContainer = document.querySelector('.summary-container');
+    if (!summaryContainer) return;
+
+    // Check if all 4 dropdowns (3 item slots + boots) have selections
+    const allFilled = allDropdowns.every(dropdown => dropdown.value !== "");
+
+    if (allFilled) {
+        summaryContainer.classList.add('visible');
+    } else {
+        summaryContainer.classList.remove('visible');
+    }
+}
+
 // Reset all item dropdowns (slots 3, 4, 5, and boots) to their default state
 function resetAllItemDropdowns() {
     allDropdowns.forEach(dropdown => {
@@ -347,6 +368,9 @@ function resetAllItemDropdowns() {
     
     // Update all dropdowns to re-enable options
     updateAllDropdowns();
+    
+    // Hide summary container since items are reset
+    updateSummaryVisibility();
 }
 
 /**
@@ -840,6 +864,9 @@ function generateNewTeams() {
     
     // Update all dropdowns to re-enable options (only Dead Man's Plate remains selected)
     updateAllDropdowns();
+    
+    // Hide summary container since items are reset
+    updateSummaryVisibility();
     
     console.log('Reset all item selections');
 }
