@@ -315,6 +315,40 @@ function updateAllDropdowns() {
     });
 }
 
+// Reset all item dropdowns (slots 3, 4, 5, and boots) to their default state
+function resetAllItemDropdowns() {
+    allDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
+        
+        // Remove from selected items set
+        if (previousValue) {
+            selectedItems.delete(previousValue);
+            delete dropdown.dataset.previousValue;
+        }
+        
+        // Reset dropdown to default option
+        dropdown.value = "";
+        
+        // Remove the image from the parent item
+        const parentItem = dropdown.closest('.item');
+        if (parentItem) {
+            const img = parentItem.querySelector('img');
+            if (img && !parentItem.classList.contains('core-item')) {
+                // Don't remove images from core items (Bloodsong and Dead Man's Plate)
+                img.src = "";
+                img.alt = "";
+            }
+            // Remove health border if present (but not from core items)
+            if (!parentItem.classList.contains('core-item')) {
+                parentItem.classList.remove('health');
+            }
+        }
+    });
+    
+    // Update all dropdowns to re-enable options
+    updateAllDropdowns();
+}
+
 /**
  * Loads champion wiki data from champion-wiki-data.json
  */
@@ -444,6 +478,9 @@ function createChampionDropdown(
 
         // Update all champion dropdowns to disable selected champions
         updateAllChampionDropdowns();
+
+        // Reset all item dropdowns when a champion is changed
+        resetAllItemDropdowns();
 
         if (selected) {
             if (!img) {
