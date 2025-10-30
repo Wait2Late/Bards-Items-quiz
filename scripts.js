@@ -522,7 +522,7 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
             img.title = "";
         }
         // Update AP/AD/Tank counts after champion selection
-        suggestItems();
+        analyzeChampions();
     });
 }
 /**
@@ -848,7 +848,7 @@ function generateNewTeams() {
     updateAllDropdowns();
     // Hide summary container since items are reset
     updateSummaryVisibility();
-    suggestItems();
+    analyzeChampions();
     console.log('Reset all item selections');
 }
 function normalizeName(name) {
@@ -890,7 +890,72 @@ function isAdorAp(championWikiData) {
     var dmgType = championWikiData.adaptiveType === "physical" ? "AD" : "AP";
     return dmgType;
 }
-function suggestItems() {
+function getTeamInfo(team) {
+    var ap = 0;
+    var ad = 0;
+    var tank = 0;
+    team.forEach(function (Champion) {
+        switch (Champion.class) {
+            case "Enchanter":
+                break;
+            case "Catcher":
+                if (Champion.name === "Morgana" ||
+                    Champion.name === "Zyra" ||
+                    Champion.name === "Pyke" ||
+                    Champion.name === "Neeko")
+                    isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Juggernaut":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                if (Champion.legacyClass.includes("Tank"))
+                    tank++;
+                break;
+            case "Diver":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Burst":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Battlemage":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Artillery":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Assassin":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Skirmisher":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Vanguard":
+                tank++;
+                if (Champion.name === "Amumu" ||
+                    Champion.name === "Sion" ||
+                    Champion.name === "Malphite" ||
+                    Champion.name === "Gragas")
+                    isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Warden":
+                tank++;
+                if (Champion.name === "Galio"
+                    || Champion.name === "K'Sante"
+                    || Champion.name === "Poppy")
+                    isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Marksman":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            case "Specialist":
+                isAdorAp(Champion) === "AD" ? ad++ : ap++;
+                break;
+            default:
+                console.log("Against ".concat(Champion.name, " (").concat(Champion.class, "), consider balanced items."));
+        }
+    });
+    return { ap: ap, ad: ad, tank: tank };
+}
+function analyzeChampions() {
     var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
     // let controller: string[] = ["Enchanter", "Catcher"];
     // let fighter: string[] = ["Juggernaut", "Diver"];
@@ -942,130 +1007,11 @@ function suggestItems() {
     var teamAp = 0;
     var teamAd = 0;
     var teamTank = 0;
-    enemyTeam.forEach(function (enemyChampion) {
-        switch (enemyChampion.class) {
-            case "Enchanter":
-                console.log("Against ".concat(enemyChampion.name, " (Enchanter), consider Team Defense items."));
-                break;
-            case "Catcher":
-                console.log("Against ".concat(enemyChampion.name, " (Catcher), consider Self Defense items."));
-                if (enemyChampion.name === "Morgana" || enemyChampion.name === "Zyra")
-                    isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Juggernaut":
-                console.log("Against ".concat(enemyChampion.name, " (Juggernaut), consider Self Offense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                if (enemyChampion.legacyClass.includes("Tank"))
-                    enemyTank++;
-                break;
-            case "Diver":
-                console.log("Against ".concat(enemyChampion.name, " (Diver), consider Team Offense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Burst":
-                console.log("Against ".concat(enemyChampion.name, " (Burst), consider Self Defense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Battlemage":
-                console.log("Against ".concat(enemyChampion.name, " (Battlemage), consider Self Defense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Artillery":
-                console.log("Against ".concat(enemyChampion.name, " (Artillery), consider Team Defense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Assassin":
-                console.log("Against ".concat(enemyChampion.name, " (Assassin), consider Self Defense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Skirmisher":
-                console.log("Against ".concat(enemyChampion.name, " (Skirmisher), consider Self Offense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Vanguard":
-                console.log("Against ".concat(enemyChampion.name, " (Vanguard), consider Team Offense items."));
-                enemyTank++;
-                if (enemyChampion.name === "Amumu" ||
-                    enemyChampion.name === "Sion" ||
-                    enemyChampion.name === "Malphite" ||
-                    enemyChampion.name === "Gragas")
-                    isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Warden":
-                console.log("Against ".concat(enemyChampion.name, " (Warden), consider Team Defense items."));
-                enemyTank++;
-                if (enemyChampion.name === "Galio"
-                    || enemyChampion.name === "K'Sante"
-                    || enemyChampion.name === "Poppy")
-                    isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Marksman":
-                console.log("Against ".concat(enemyChampion.name, " (Marksman), consider Self Defense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            case "Specialist":
-                console.log("Against ".concat(enemyChampion.name, " (Specialist), consider Self Offense items."));
-                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
-                break;
-            default:
-                console.log("Against ".concat(enemyChampion.name, " (").concat(enemyChampion.class, "), consider balanced items."));
-        }
-    });
-    myTeam.forEach(function (teamChampion) {
-        switch (teamChampion.class) {
-            case "Enchanter":
-                break;
-            case "Catcher":
-                if (teamChampion.name === "Morgana" || teamChampion.name === "Zyra")
-                    isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Juggernaut":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                if (teamChampion.legacyClass.includes("Tank"))
-                    teamTank++;
-                break;
-            case "Diver":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Burst":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Battlemage":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Artillery":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Assassin":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Skirmisher":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Vanguard":
-                teamTank++;
-                if (teamChampion.name === "Amumu" ||
-                    teamChampion.name === "Sion" ||
-                    teamChampion.name === "Malphite" ||
-                    teamChampion.name === "Gragas")
-                    isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Warden":
-                teamTank++;
-                if (teamChampion.name === "Galio" ||
-                    teamChampion.name === "K'Sante" ||
-                    teamChampion.name === "Poppy")
-                    isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Marksman":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            case "Specialist":
-                isAdorAp(teamChampion) === "AD" ? teamAd++ : teamAp++;
-                break;
-            default:
-        }
-    });
+    var enemyInfo = getTeamInfo(enemyTeam);
+    var teamInfo = getTeamInfo(myTeam);
+    (enemyAp = enemyInfo.ap, enemyAd = enemyInfo.ad, enemyTank = enemyInfo.tank);
+    (teamAp = teamInfo.ap, teamAd = teamInfo.ad, teamTank = teamInfo.tank);
+    // Style the counts in the UI
     var enemyApCount = document.querySelector(".enemy-ap");
     var enemyAdCount = document.querySelector(".enemy-ad");
     var enemyTankCount = document.querySelector(".enemy-tank");
@@ -1084,6 +1030,62 @@ function suggestItems() {
     teamTankCount.textContent = teamTank.toString() + (teamTank < 2 ? " Tank" : " Tanks");
     teamApCount.style.color = "rgba(0, 0, 255, 1)";
     teamAdCount.style.color = "rgba(243, 146, 0, 1)";
+    suggestItems(teamInfo, enemyInfo);
+}
+function suggestItems(teamInfo, enemyInfo) {
+    var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
+    var isWinning = false;
+}
+var ITEM_TAGS = {
+    "3742": ["Armor", "Health", "MS", "Engage", "Frontline"],
+    "3143": ["Armor", "AntiCrit", "TeamDefense", "Peel"],
+    // ...fill the rest once
+};
+function computeWeights(state, isWinning) {
+    var w = {};
+    var add = function (k, v) {
+        var _a;
+        if (v === void 0) { v = 1; }
+        return (w[k] = ((_a = w[k]) !== null && _a !== void 0 ? _a : 0) + v);
+    };
+    add("Armor", state.enemyAD);
+    add("MR", state.enemyAP);
+    add("TankBuster", state.enemyTank);
+    add("Stasis", state.enemyAssassin + state.enemyBurst);
+    add("Peel", state.enemyDiver + state.enemyAssassin);
+    add("TeamAegis", state.enemyArtillery);
+    if (isWinning) {
+        add("Snowball", 1);
+    }
+    else {
+        add("TeamDefense", 1);
+    }
+    if (state.teamTank === 0)
+        add("Frontline", 1);
+    return w;
+}
+function scoreItems(weights, exclude) {
+    var _a;
+    var results = [];
+    for (var _i = 0, _b = Object.entries(ITEM_TAGS); _i < _b.length; _i++) {
+        var _c = _b[_i], id = _c[0], tags = _c[1];
+        if (exclude.has(id))
+            continue;
+        var score = 0;
+        var reasons = [];
+        for (var _d = 0, tags_1 = tags; _d < tags_1.length; _d++) {
+            var tag = tags_1[_d];
+            var inc = (_a = weights[tag]) !== null && _a !== void 0 ? _a : 0;
+            if (inc > 0) {
+                score += inc;
+                reasons.push("+".concat(inc, " ").concat(tag));
+            }
+        }
+        if (score > 0)
+            results.push({ id: id, score: score, reasons: reasons });
+    }
+    results.sort(function (a, b) { return b.score - a.score; });
+    return results;
 }
 function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
@@ -1172,7 +1174,7 @@ function setup() {
             // const deadMansPlateImg = enrichedById["3742"]?.icon;
             // console.log(deadMansPlateImg);
             // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
-            suggestItems();
+            analyzeChampions();
         });
     });
     // Add event listener for the "Generate teams" button

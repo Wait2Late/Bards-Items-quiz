@@ -400,8 +400,8 @@
   },
   {
     "name": "Karma",
-    "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "roles": ["Support"],
+    "class": "Enchanter",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -534,7 +534,7 @@
   {
     "name": "Lux",
     "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "class": "Artillery",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -638,8 +638,8 @@
   },
   {
     "name": "Neeko",
-    "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "roles": ["Support"],
+    "class": "Catcher",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -709,7 +709,7 @@
   {
     "name": "Pyke",
     "roles": ["Support"],
-    "class": "Assassin",
+    "class": "Catcher",
     "legacyClass": ["Support", "Assassin"],
     "adaptiveType": "physical"
   },
