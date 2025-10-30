@@ -3,7 +3,7 @@
     "name": "Aatrox",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
@@ -200,7 +200,7 @@
     "roles": ["Top", "Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Tank", "Fighter"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Ekko",
@@ -253,7 +253,7 @@
   },
   {
     "name": "Galio",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle", "Support", "Top"],
     "class": "Warden",
     "legacyClass": ["Tank", "Mage"],
     "adaptiveType": "magic"
@@ -325,7 +325,7 @@
     "name": "Illaoi",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
@@ -431,7 +431,7 @@
     "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Marksman"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Kayn",
@@ -844,7 +844,7 @@
     "roles": ["Top", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Shyvana",
@@ -1011,7 +1011,7 @@
     "name": "Urgot",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
