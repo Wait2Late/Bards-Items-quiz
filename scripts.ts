@@ -30,10 +30,10 @@ interface BardItem {
 }
 
 type DDragonItem = {
-  name: string;
-  image?: { full: string };
-  tags?: string[];
-  stats?: Record<string, number>;
+    name: string;
+    image?: { full: string };
+    tags?: string[];
+    stats?: Record<string, number>;
   // ...other fields exist but we don't need them here
 };
 
@@ -744,34 +744,34 @@ function applyHealthBorder(element: HTMLElement, itemId?: string) {
 
 // Fetch items.json for a patch and return a by-id map
 async function loadItemsById(patch?: string): Promise<{ patch: string; itemsById: DDragonItemMap }> {
-  const usePatch = patch ?? (await fetchCurrentPatch());
-  const url = `https://ddragon.leagueoflegends.com/cdn/${usePatch}/data/en_US/item.json`;
-  const res = await fetch(url);
-  const json = await res.json();
-  // DDragon shape: { data: { "3877": { ... }, "3742": { ... }, ... } }
-  const itemsById = json.data as DDragonItemMap;
-  return { patch: usePatch, itemsById };
+    const usePatch = patch ?? (await fetchCurrentPatch());
+    const url = `https://ddragon.leagueoflegends.com/cdn/${usePatch}/data/en_US/item.json`;
+    const res = await fetch(url);
+    const json = await res.json();
+    // DDragon shape: { data: { "3877": { ... }, "3742": { ... }, ... } }
+    const itemsById = json.data as DDragonItemMap;
+    return { patch: usePatch, itemsById };
 }
 
 async function matchBardItems() {
-  const { patch, itemsById } = await loadItemsById();
+    const { patch, itemsById } = await loadItemsById();
 
   // Enriched array you can render with
-  const enriched = BardItems.map(bardItemId => {
+    const enriched = BardItems.map(bardItemId => {
     const dd = itemsById[bardItemId.id]; // may be undefined if id not found
     return {
-      bardItemId,
-      existsInDDragon: !!dd,
-      tag: dd?.tags ?? [],
-      stats: dd?.stats ?? {},
-      officialName: dd?.name ?? bardItemId.name, // prefer DDragon name if found
-      icon: dd ? `https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${bardItemId.id}.png` : undefined,
-      patch,
+        bardItemId,
+        existsInDDragon: !!dd,
+        tag: dd?.tags ?? [],
+        stats: dd?.stats ?? {},
+        officialName: dd?.name ?? bardItemId.name, // prefer DDragon name if found
+        icon: dd ? `https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${bardItemId.id}.png` : undefined,
+        patch,
     };
-  });
+    });
 
   // Quick lookup if you prefer O(1) access by id
-  const enrichedById: Record<string, (typeof enriched)[number]> =
+    const enrichedById: Record<string, (typeof enriched)[number]> =
     Object.fromEntries(enriched.map(e => [e.bardItemId.id, e]));
 
 //   // Example usage:
@@ -834,7 +834,7 @@ function generateNewTeams() {
     
     // Update the selectedChampions set with the randomly assigned champions
     usedChampions.forEach(champId => selectedChampions.add(champId));
-    
+
     // Update all champion dropdowns to reflect the new selections
     updateAllChampionDropdowns();
     
@@ -867,8 +867,223 @@ function generateNewTeams() {
     
     // Hide summary container since items are reset
     updateSummaryVisibility();
+
+    suggestItems();
     
     console.log('Reset all item selections');
+}
+
+function normalizeName(name: string): string {
+    // Remove spaces, apostrophes, periods, and convert to lowercase
+    return name.replace(/[\s'\.&]/g, '').toLowerCase();
+}
+
+function getTeamChampions(): {
+    myTeam: ChampionWikiData[];
+    enemyTeam: ChampionWikiData[];
+} {
+    const myTeam: ChampionWikiData[] = [];
+    const enemyTeam: ChampionWikiData[] = [];
+
+    const myTeamSlots = document.querySelectorAll('.my-team-list .champion-dropdown select')
+    myTeamSlots.forEach((selectElement) => {
+        const select = selectElement as HTMLSelectElement;
+        const championId = select.value;
+        if (championId){
+            const normalizedId = normalizeName(championId);
+            const champion = championWikiData.find(c =>
+                normalizeName(c.name) === normalizedId
+            );
+            if (champion) myTeam.push(champion);
+        }
+    });
+
+    const enemyTeamSlots = document.querySelectorAll('.enemy-team-list .champion-dropdown select')
+    enemyTeamSlots.forEach((selectElement) => {
+        const select = selectElement as HTMLSelectElement;
+        const championId = select.value;
+
+        if (championId){
+            const normalizedId = normalizeName(championId);
+            const champion = championWikiData.find(c =>
+                normalizeName(c.name) === normalizedId
+            );
+            if (champion) enemyTeam.push(champion);
+        }
+    });
+
+    return { myTeam, enemyTeam };
+}
+
+function isAdorAp(championWikiData: ChampionWikiData): "AD" | "AP" {
+    let isAd: boolean = false;
+    let isAp: boolean = false;
+
+    let dmgType: boolean = championWikiData.adaptiveType === "Physical" ? isAd = true : isAp = true;
+
+    return dmgType ? "AD" : "AP";
+}
+
+function suggestItems() {
+    const { myTeam, enemyTeam } = getTeamChampions();
+
+    // let controller: string[] = ["Enchanter", "Catcher"];
+    // let fighter: string[] = ["Juggernaut", "Diver"];
+    // let mage: string[] = ["Burst", "Battlemage", "Artillery"];
+    // let slayer: string[] = ["Assassin", "Skirmisher"];
+    // let tank: string[] = ["Vanguard", "Warden"];
+    // let marksman: string[] = ["Marksman"];
+    // let specialist: string[] = ["Specialist"];
+
+    // const newChampionClasses: string[] = {
+    //     ...controller,
+    //     ...fighter,
+    //     ...mage,
+    //     ...slayer,
+    //     ...tank,
+    //     ...marksman,
+    //     ...specialist
+    // };
+
+    // enemyTeam.forEach((enemyChampion) => {
+    //     console.log("Enemy champion:", enemyChampion.name, "Class:", enemyChampion.class);
+    //     newChampionClasses.forEach((newChampionClass) => {
+    //         switch (newChampionClass){
+    //         case "controller":
+    //             break;
+    //         case "fighter":
+    //             if (enemyChampion.class && fighter.includes(enemyChampion.class)){
+    //             }
+    //             break;
+    //         case "mage":
+    //             break;
+    //         case "slayer":
+    //             break;
+    //         case "tank":
+    //             if (enemyChampion.class && tank.includes(enemyChampion.class)){
+    //             }
+    //             break;
+    //         case "marksman":
+    //             break;
+    //         case "specialist":
+    //             break;
+    //         default:
+    //         }   
+    //     })
+    // });
+
+    console.log("Enemy team", enemyTeam);
+    console.log("My team ", myTeam);
+
+    let whatIsDmgType: boolean = false
+
+    let enemyAp: number = 0;
+    let enemyAd: number = 0;
+    let enemyTank: number = 0;
+
+    let teamAp: number = 0;
+    let teamAd: number = 0;
+    let teamTank: number = 0;
+
+    
+    enemyTeam.forEach((enemyChampion) => {
+        switch (enemyChampion.class){
+            case "Enchanter":
+                console.log(`Against ${enemyChampion.name} (Enchanter), consider Team Defense items.`);      
+                break;
+            case "Catcher":
+                    console.log(`Against ${enemyChampion.name} (Catcher), consider Self Defense items.`);
+                break;
+            case "Juggernaut":
+                console.log(`Against ${enemyChampion.name} (Juggernaut), consider Self Offense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Diver":
+                console.log(`Against ${enemyChampion.name} (Diver), consider Team Offense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Burst":
+                console.log(`Against ${enemyChampion.name} (Burst), consider Self Defense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Battlemage":
+                console.log(`Against ${enemyChampion.name} (Battlemage), consider Self Defense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Artillery":
+                console.log(`Against ${enemyChampion.name} (Artillery), consider Team Defense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Assassin":
+                console.log(`Against ${enemyChampion.name} (Assassin), consider Self Defense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Skirmisher":
+                console.log(`Against ${enemyChampion.name} (Skirmisher), consider Self Offense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Vanguard":
+                console.log(`Against ${enemyChampion.name} (Vanguard), consider Team Offense items.`);
+                enemyTank++;
+                break;
+            case "Warden":
+                console.log(`Against ${enemyChampion.name} (Warden), consider Team Defense items.`);
+                enemyTank++;
+                break;
+            case "Marksman":
+                console.log(`Against ${enemyChampion.name} (Marksman), consider Self Defense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            case "Specialist":
+                console.log(`Against ${enemyChampion.name} (Specialist), consider Self Offense items.`);
+                isAdorAp(enemyChampion) === "AD" ? enemyAd++ : enemyAp++;
+
+                break;
+            default:
+                console.log(`Against ${enemyChampion.name} (${enemyChampion.class}), consider balanced items.`);
+        }
+    });
+
+        myTeam.forEach((champion) => {
+        switch (champion.class){
+            case "Enchanter":
+                break;
+            case "Catcher":
+                break;
+            case "Juggernaut":
+                break;
+            case "Diver":
+                break;
+            case "Burst":
+                break;
+            case "Battlemage":
+                break;
+            case "Artillery":
+                break;
+            case "Assassin":
+                break;
+            case "Skirmisher":
+                break;
+            case "Vanguard":
+                break;
+            case "Warden":
+                break;
+            case "Marksman":
+                break;
+            case "Specialist":
+                break;
+            default:
+
+        }
+    });
 }
 
 function setup() {
@@ -974,6 +1189,9 @@ function setup() {
         // const deadMansPlateImg = enrichedById["3742"]?.icon;
         // console.log(deadMansPlateImg);
         // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+
+        suggestItems();
+
     });
 });
     

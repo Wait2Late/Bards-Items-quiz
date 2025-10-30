@@ -846,7 +846,130 @@ function generateNewTeams() {
     updateAllDropdowns();
     // Hide summary container since items are reset
     updateSummaryVisibility();
+    suggestItems();
     console.log('Reset all item selections');
+}
+function normalizeName(name) {
+    // Remove spaces, apostrophes, periods, and convert to lowercase
+    return name.replace(/[\s'\.&]/g, '').toLowerCase();
+}
+function getTeamChampions() {
+    var myTeam = [];
+    var enemyTeam = [];
+    var myTeamSlots = document.querySelectorAll('.my-team-list .champion-dropdown select');
+    myTeamSlots.forEach(function (selectElement) {
+        var select = selectElement;
+        var championId = select.value;
+        if (championId) {
+            var normalizedId_1 = normalizeName(championId);
+            var champion = championWikiData.find(function (c) {
+                return normalizeName(c.name) === normalizedId_1;
+            });
+            if (champion)
+                myTeam.push(champion);
+        }
+    });
+    var enemyTeamSlots = document.querySelectorAll('.enemy-team-list .champion-dropdown select');
+    enemyTeamSlots.forEach(function (selectElement) {
+        var select = selectElement;
+        var championId = select.value;
+        if (championId) {
+            var normalizedId_2 = normalizeName(championId);
+            var champion = championWikiData.find(function (c) {
+                return normalizeName(c.name) === normalizedId_2;
+            });
+            if (champion)
+                enemyTeam.push(champion);
+        }
+    });
+    return { myTeam: myTeam, enemyTeam: enemyTeam };
+}
+function suggestItems() {
+    var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
+    console.log("Enemy team", enemyTeam);
+    console.log("My team ", myTeam);
+    var enemyAp = 0;
+    var enemyAd = 0;
+    var enemyTank = 0;
+    var teamAp = 0;
+    var teamAd = 0;
+    var teamTank = 0;
+    // enemyTeam.forEach((champion) => {
+    //     switch (champion.class){
+    //         case "Enchanter":
+    //             console.log(`Against ${champion.name} (Enchanter), consider Team Defense items.`);
+    //             break;
+    //         case "Catcher":
+    //             console.log(`Against ${champion.name} (Catcher), consider Self Defense items.`);
+    //             break;
+    //         case "Juggernaut":
+    //             console.log(`Against ${champion.name} (Juggernaut), consider Self Offense items.`);
+    //             break;
+    //         case "Diver":
+    //             console.log(`Against ${champion.name} (Diver), consider Team Offense items.`);
+    //             break;
+    //         case "Burst":
+    //             console.log(`Against ${champion.name} (Burst), consider Self Defense items.`);
+    //             break;
+    //         case "Battlemage":
+    //             console.log(`Against ${champion.name} (Battlemage), consider Self Defense items.`);
+    //             break;
+    //         case "Artillery":
+    //             console.log(`Against ${champion.name} (Artillery), consider Team Defense items.`);
+    //             break;
+    //         case "Assassin":
+    //             console.log(`Against ${champion.name} (Assassin), consider Self Defense items.`);
+    //             break;
+    //         case "Skirmisher":
+    //             console.log(`Against ${champion.name} (Skirmisher), consider Self Offense items.`);
+    //             break;
+    //         case "Vanguard":
+    //             console.log(`Against ${champion.name} (Vanguard), consider Team Offense items.`);
+    //             break;
+    //         case "Warden":
+    //             console.log(`Against ${champion.name} (Warden), consider Team Defense items.`);
+    //             break;
+    //         case "Marksman":
+    //             console.log(`Against ${champion.name} (Marksman), consider Self Defense items.`);
+    //             break;
+    //         case "Specialist":
+    //             console.log(`Against ${champion.name} (Specialist), consider Self Offense items.`);
+    //             break;
+    //         default:
+    //             console.log(`Against ${champion.name} (${champion.class}), consider balanced items.`);
+    //     }
+    // });
+    //     myTeam.forEach((champion) => {
+    //     switch (champion.class){
+    //         case "Enchanter":
+    //             break;
+    //         case "Catcher":
+    //             break;
+    //         case "Juggernaut":
+    //             break;
+    //         case "Diver":
+    //             break;
+    //         case "Burst":
+    //             break;
+    //         case "Battlemage":
+    //             break;
+    //         case "Artillery":
+    //             break;
+    //         case "Assassin":
+    //             break;
+    //         case "Skirmisher":
+    //             break;
+    //         case "Vanguard":
+    //             break;
+    //         case "Warden":
+    //             break;
+    //         case "Marksman":
+    //             break;
+    //         case "Specialist":
+    //             break;
+    //         default:
+    //     }
+    // });
 }
 function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
@@ -935,6 +1058,7 @@ function setup() {
             // const deadMansPlateImg = enrichedById["3742"]?.icon;
             // console.log(deadMansPlateImg);
             // items[1]!.innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
+            suggestItems();
         });
     });
     // Add event listener for the "Generate teams" button
