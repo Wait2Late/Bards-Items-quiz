@@ -69,6 +69,7 @@ var allDropdowns = [];
 // Track selected champions across all dropdowns
 var selectedChampions = new Set();
 var allChampionDropdowns = [];
+var bardResources = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/Bard.json";
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
@@ -128,9 +129,34 @@ var ITEM_TAGS = {
     "4010": ["AP", "AmpMagic"], // Bloodletter's Curse
     "6695": ["AntiShield"], // Serpent's Fang
 };
-function fetchCurrentPatch() {
+function setBackgroundImage() {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch(bardResources)];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    document.body.style.backgroundImage = data.skins[0].uncenteredSplashPath;
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error("Error fetching Bard resources: ", error_1);
+                    return [2 /*return*/];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+setBackgroundImage();
+function fetchCurrentPatch() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, data, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -143,8 +169,8 @@ function fetchCurrentPatch() {
                     data = _a.sent();
                     return [2 /*return*/, data[0]];
                 case 3:
-                    error_1 = _a.sent();
-                    console.error("Error fetching patch version:", error_1);
+                    error_2 = _a.sent();
+                    console.error("Error fetching patch version:", error_2);
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
@@ -153,7 +179,7 @@ function fetchCurrentPatch() {
 }
 function fetchMerakiChampionData(championName) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_2;
+        var response, data, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -166,8 +192,8 @@ function fetchMerakiChampionData(championName) {
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
-                    error_2 = _a.sent();
-                    console.error("Error fetching champion: ", error_2);
+                    error_3 = _a.sent();
+                    console.error("Error fetching champion: ", error_3);
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
@@ -176,7 +202,7 @@ function fetchMerakiChampionData(championName) {
 }
 function getAllChampionsAndItems() {
     return __awaiter(this, void 0, void 0, function () {
-        var patchVersion, allItemsApi, allChampionsApi, _a, itemsResponse, championsResponse, items, champions, error_3;
+        var patchVersion, allItemsApi, allChampionsApi, _a, itemsResponse, championsResponse, items, champions, error_4;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0: return [4 /*yield*/, fetchCurrentPatch()];
@@ -207,8 +233,8 @@ function getAllChampionsAndItems() {
                     champions = _b.sent();
                     return [2 /*return*/, { items: items, champions: champions, patchVersion: patchVersion }];
                 case 6:
-                    error_3 = _b.sent();
-                    console.error("Error fetching champions/items:", error_3);
+                    error_4 = _b.sent();
+                    console.error("Error fetching champions/items:", error_4);
                     return [2 /*return*/, null];
                 case 7: return [2 /*return*/];
             }
@@ -437,7 +463,7 @@ function resetAllItemDropdowns() {
  */
 function loadChampionWikiData() {
     return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_4;
+        var response, data, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -454,8 +480,8 @@ function loadChampionWikiData() {
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
-                    error_4 = _a.sent();
-                    console.error('Error loading champion wiki data:', error_4);
+                    error_5 = _a.sent();
+                    console.error('Error loading champion wiki data:', error_5);
                     return [2 /*return*/, []];
                 case 4: return [2 /*return*/];
             }
@@ -1008,48 +1034,6 @@ function getTeamInfo(team) {
 }
 function analyzeChampions() {
     var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
-    // let controller: string[] = ["Enchanter", "Catcher"];
-    // let fighter: string[] = ["Juggernaut", "Diver"];
-    // let mage: string[] = ["Burst", "Battlemage", "Artillery"];
-    // let slayer: string[] = ["Assassin", "Skirmisher"];
-    // let tank: string[] = ["Vanguard", "Warden"];
-    // let marksman: string[] = ["Marksman"];
-    // let specialist: string[] = ["Specialist"];
-    // const newChampionClasses: string[] = {
-    //     ...controller,
-    //     ...fighter,
-    //     ...mage,
-    //     ...slayer,
-    //     ...tank,
-    //     ...marksman,
-    //     ...specialist
-    // };
-    // enemyTeam.forEach((enemyChampion) => {
-    //     console.log("Enemy champion:", enemyChampion.name, "Class:", enemyChampion.class);
-    //     newChampionClasses.forEach((newChampionClass) => {
-    //         switch (newChampionClass){
-    //         case "controller":
-    //             break;
-    //         case "fighter":
-    //             if (enemyChampion.class && fighter.includes(enemyChampion.class)){
-    //             }
-    //             break;
-    //         case "mage":
-    //             break;
-    //         case "slayer":
-    //             break;
-    //         case "tank":
-    //             if (enemyChampion.class && tank.includes(enemyChampion.class)){
-    //             }
-    //             break;
-    //         case "marksman":
-    //             break;
-    //         case "specialist":
-    //             break;
-    //         default:
-    //         }   
-    //     })
-    // });
     console.log("Enemy team", enemyTeam);
     console.log("My team ", myTeam);
     var enemyAp = 0;

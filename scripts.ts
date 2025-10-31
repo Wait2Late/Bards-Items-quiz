@@ -18,6 +18,8 @@ const allDropdowns: HTMLSelectElement[] = [];
 const selectedChampions = new Set<string>();
 const allChampionDropdowns: HTMLSelectElement[] = [];
 
+const bardResources: string = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/Bard.json";
+
 interface ChampionWikiData {
     name: string;
     roles: string[];
@@ -132,6 +134,21 @@ type GameState = {
     isWinning: boolean;
 }
 
+// async function setBackgroundImage() {
+//     try {
+//         const response = await fetch(bardResources);
+//         const data = await response.json();
+
+//         document.body.style.backgroundImage = data.skins[0].uncenteredSplashPath;
+
+//     } catch (error) {
+//         console.error("Error fetching Bard resources: ", error);
+//         return;
+//     }
+
+// }
+
+// setBackgroundImage();
 async function fetchCurrentPatch() {
     try {
         const response = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
@@ -1056,51 +1073,6 @@ function getTeamInfo(team: ChampionWikiData[]) : { ap: number; ad: number ; tank
 
 function analyzeChampions() {
     const { myTeam, enemyTeam } = getTeamChampions();
-
-    // let controller: string[] = ["Enchanter", "Catcher"];
-    // let fighter: string[] = ["Juggernaut", "Diver"];
-    // let mage: string[] = ["Burst", "Battlemage", "Artillery"];
-    // let slayer: string[] = ["Assassin", "Skirmisher"];
-    // let tank: string[] = ["Vanguard", "Warden"];
-    // let marksman: string[] = ["Marksman"];
-    // let specialist: string[] = ["Specialist"];
-
-    // const newChampionClasses: string[] = {
-    //     ...controller,
-    //     ...fighter,
-    //     ...mage,
-    //     ...slayer,
-    //     ...tank,
-    //     ...marksman,
-    //     ...specialist
-    // };
-
-    // enemyTeam.forEach((enemyChampion) => {
-    //     console.log("Enemy champion:", enemyChampion.name, "Class:", enemyChampion.class);
-    //     newChampionClasses.forEach((newChampionClass) => {
-    //         switch (newChampionClass){
-    //         case "controller":
-    //             break;
-    //         case "fighter":
-    //             if (enemyChampion.class && fighter.includes(enemyChampion.class)){
-    //             }
-    //             break;
-    //         case "mage":
-    //             break;
-    //         case "slayer":
-    //             break;
-    //         case "tank":
-    //             if (enemyChampion.class && tank.includes(enemyChampion.class)){
-    //             }
-    //             break;
-    //         case "marksman":
-    //             break;
-    //         case "specialist":
-    //             break;
-    //         default:
-    //         }   
-    //     })
-    // });
 
     console.log("Enemy team", enemyTeam);
     console.log("My team ", myTeam);
