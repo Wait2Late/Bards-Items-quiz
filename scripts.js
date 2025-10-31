@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,6 +45,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var allChampions;
 var allItems;
 // Enriched Bard items cache
@@ -41,6 +61,8 @@ var bardEnrichedItems;
 var bardEnrichedItemsById;
 // Champion wiki data
 var championWikiData = [];
+// Cache the current patch version
+var currentPatchVersion = '15.21.1';
 // Track selected items across all dropdowns
 var selectedItems = new Set();
 var allDropdowns = [];
@@ -82,6 +104,30 @@ var SelfDefense = BardItems.filter(function (item) { return item.ItemType === It
 var SelfOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfOffsense; });
 var TeamDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamDefense; });
 var TeamOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamOffense; });
+var ITEM_TAGS = {
+    "3742": ["Armor", "Peel", "Frontline"], // Dead Man's Plate
+    "3143": ["Armor", "AntiCrit", "slow", "Frontline"], // Randuin's Omen
+    "4401": ["MR", "AntiDot"], // Force of Nature
+    "2504": ["MR", "AntiPoke", "Frontline"], // Kaenic Rookern
+    "6665": ["MixedEnemyDmg", "Frontline"], // Jak'Sho The Protean
+    "3091": ["MR", "AS", "OnHit", "Tenacity"], // Wit's End
+    "3157": ["Stasis", "AP", "Armor"], // Zhonya's Hourglass
+    "3302": ["AS", "OnHit", "MixedEnemyDmg"], // Terminus
+    "4633": ["AP", "Sustain"], // Riftmaker
+    "6653": ["AP", "TankBuster", "DoT"], // Liandry's Torment
+    "3087": ["AS", "OnHit", "Waveclear"], // Statikk Shiv
+    "4629": ["AP", "MS", "Cdr"], // Cosmic Drive
+    "3073": ["Snowball"], // Experimental Hexplate
+    "3190": ["AoEShield"], // Locket of the Iron Solari
+    "3107": ["AoEHeal"], // Redemption
+    "3222": ["Cleanse"], // Mikael's Blessing
+    "3110": ["Armor", "AntiAS"], // Frozen Heart
+    "3109": ["Armor", "Heal"], // Knight's Vow
+    "4005": ["AP"], // Imperial Mandate
+    "8020": ["MR", "AmpMagic", "Frontline"], // Abyssal Mask
+    "4010": ["AP", "AmpMagic"], // Bloodletter's Curse
+    "6695": ["AntiShield"], // Serpent's Fang
+};
 function fetchCurrentPatch() {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
@@ -140,6 +186,8 @@ function getAllChampionsAndItems() {
                         console.error("Failed to get patch version");
                         return [2 /*return*/, null];
                     }
+                    // Cache the patch version globally
+                    currentPatchVersion = patchVersion;
                     allItemsApi = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/data/en_US/item.json");
                     allChampionsApi = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/data/en_US/champion.json");
                     _b.label = 2;
@@ -897,6 +945,8 @@ function getTeamInfo(team) {
     team.forEach(function (Champion) {
         switch (Champion.class) {
             case "Enchanter":
+                // if (Champion.name === "Soraka" ||
+                //     Champion.name === "Nami")
                 break;
             case "Catcher":
                 if (Champion.name === "Morgana" ||
@@ -929,6 +979,7 @@ function getTeamInfo(team) {
                 isAdorAp(Champion) === "AD" ? ad++ : ap++;
                 break;
             case "Vanguard":
+                // console.log(Champion.name, "class: ", Champion.class); // TODO Fix Nunu & Willump bug
                 tank++;
                 if (Champion.name === "Amumu" ||
                     Champion.name === "Sion" ||
@@ -1034,58 +1085,141 @@ function analyzeChampions() {
 }
 function suggestItems(teamInfo, enemyInfo) {
     var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
-    var isWinning = false;
-}
-var ITEM_TAGS = {
-    "3742": ["Armor", "Health", "MS", "Engage", "Frontline"],
-    "3143": ["Armor", "AntiCrit", "TeamDefense", "Peel"],
-    // ...fill the rest once
-};
-function computeWeights(state, isWinning) {
-    var w = {};
-    var add = function (k, v) {
-        var _a;
-        if (v === void 0) { v = 1; }
-        return (w[k] = ((_a = w[k]) !== null && _a !== void 0 ? _a : 0) + v);
+    // let isWinning: boolean = false;
+    var enemyAP = enemyInfo.ap, enemyAD = enemyInfo.ad, enemyTank = enemyInfo.tank;
+    var enemyShields = 0, enemyPoke = 0, enemyCrit = 0, enemyAS = 0, enemyDot = 0;
+    var teamAP = teamInfo.ap, teamAD = teamInfo.ad, teamTank = teamInfo.tank;
+    enemyTeam.forEach(function (c) {
+        var _a, _b, _c, _d, _e;
+        if (((_a = c.class) === null || _a === void 0 ? void 0 : _a.includes("Enchanter")) && c.name !== "Nami" && c.name !== "Soraka")
+            enemyShields++;
+        if (((_b = c.class) === null || _b === void 0 ? void 0 : _b.includes("Artillery")) || ((_c = c.class) === null || _c === void 0 ? void 0 : _c.includes("Burst")) && c.adaptiveType === "magic")
+            enemyPoke++;
+        if ((_d = c.class) === null || _d === void 0 ? void 0 : _d.includes("BattleMage"))
+            enemyDot++;
+        if (((_e = c.class) === null || _e === void 0 ? void 0 : _e.includes("Marksman")) || c.name === "Yasuo" || c.name === "Yone")
+            enemyCrit++;
+        if (c.name === "Jax" || c.name === "Master Yi" || c.name === "Tryndamere")
+            enemyAS++;
+    });
+    var state = {
+        enemyAP: enemyAP,
+        enemyAD: enemyAD,
+        enemyTank: enemyTank,
+        enemyShields: enemyShields,
+        enemyPoke: enemyPoke,
+        enemyCrit: enemyCrit,
+        enemyAS: enemyAS,
+        enemyDot: enemyDot,
+        teamAP: teamAP,
+        teamAD: teamAD,
+        teamTank: teamTank,
+        isWinning: false
     };
+    var weightsWinning = computeWeights(__assign(__assign({}, state), { isWinning: true }));
+    var weightsLosing = computeWeights(state);
+    // Exclude Bloodsong and Dead Man's Plate
+    var excludedIds = new Set(__spreadArray(["3877", "3742"], Array.from(selectedItems), true));
+    var winningItems = scoreItems(weightsWinning, excludedIds);
+    var losingItems = scoreItems(weightsLosing, excludedIds);
+    winningItems.forEach(function (item) {
+        console.log("Winning Item: ".concat(item.name, " (Score: ").concat(item.score, ") - Reasons: ").concat(item.reasons.join(", ")));
+    });
+    // Render top 3 suggestions for each state
+    displaySuggestedItems(winningItems.slice(0, 3), losingItems.slice(0, 3));
+}
+function computeWeights(state) {
+    var w = {};
+    var add = function (key, value) {
+        var _a;
+        if (value === void 0) { value = 1; }
+        return (w[key] = ((_a = w[key]) !== null && _a !== void 0 ? _a : 0) + value);
+    };
+    if (state.enemyCrit === 0)
+        state.enemyCrit = -1;
+    if (state.teamAP < 2)
+        state.teamAP = -2;
     add("Armor", state.enemyAD);
     add("MR", state.enemyAP);
     add("TankBuster", state.enemyTank);
-    add("Stasis", state.enemyAssassin + state.enemyBurst);
-    add("Peel", state.enemyDiver + state.enemyAssassin);
-    add("TeamAegis", state.enemyArtillery);
-    if (isWinning) {
-        add("Snowball", 1);
+    add("AntiShield", state.enemyShields);
+    add("AntiPoke", state.enemyPoke);
+    add("AntiCrit", state.enemyCrit);
+    add("AntiAS", state.enemyCrit);
+    add("AntiDot", state.enemyDot);
+    add("AmpMagic", ((state.enemyAP >= 2 ? 2 : 0) + (state.teamAP >= 2 ? 2 : 0)) >= 4 ? 4 : 0);
+    add("Frontline", state.teamTank === 0 ? 2 : 0);
+    add("MixedEnemyDmg", (state.enemyAD >= 2 && state.enemyAP >= 2) ? 4 : 0);
+    if (state.isWinning) {
+        add("Frontline", 1);
+        add("AP", 1);
+        add("AS", 1);
     }
     else {
-        add("TeamDefense", 1);
+        add("AS", 2);
+        add("AP", 2);
+        add("OnHit", 1);
     }
-    if (state.teamTank === 0)
-        add("Frontline", 1);
     return w;
 }
-function scoreItems(weights, exclude) {
-    var _a;
+function scoreItems(weights, excludedIds) {
     var results = [];
-    for (var _i = 0, _b = Object.entries(ITEM_TAGS); _i < _b.length; _i++) {
-        var _c = _b[_i], id = _c[0], tags = _c[1];
-        if (exclude.has(id))
-            continue;
+    var _loop_2 = function (id, tags) {
+        if (excludedIds.has(id))
+            return "continue";
         var score = 0;
         var reasons = [];
-        for (var _d = 0, tags_1 = tags; _d < tags_1.length; _d++) {
-            var tag = tags_1[_d];
-            var inc = (_a = weights[tag]) !== null && _a !== void 0 ? _a : 0;
-            if (inc > 0) {
-                score += inc;
-                reasons.push("+".concat(inc, " ").concat(tag));
-            }
+        for (var _c = 0, tags_1 = tags; _c < tags_1.length; _c++) {
+            var tag = tags_1[_c];
+            var weight = weights[tag] || 0;
+            score += weight;
+            reasons.push("".concat(weight, " (+").concat(tag, ")"));
         }
-        if (score > 0)
-            results.push({ id: id, score: score, reasons: reasons });
+        if (score > 0) {
+            var item = BardItems.find(function (item) { return item.id === id; });
+            results.push({
+                id: id,
+                name: (item === null || item === void 0 ? void 0 : item.name) || id,
+                score: score,
+                reasons: reasons
+            });
+        }
+    };
+    for (var _i = 0, _a = Object.entries(ITEM_TAGS); _i < _a.length; _i++) {
+        var _b = _a[_i], id = _b[0], tags = _b[1];
+        _loop_2(id, tags);
     }
     results.sort(function (a, b) { return b.score - a.score; });
     return results;
+}
+function displaySuggestedItems(winningItems, losingItems) {
+    var patch = currentPatchVersion;
+    var renderInto = function (listSelector, items) {
+        var list = document.querySelector(listSelector);
+        if (!list)
+            return;
+        [1, 2, 3].forEach(function (n, idx) {
+            var li = list.querySelector(".suggested-item-".concat(n));
+            var img = li === null || li === void 0 ? void 0 : li.querySelector('img');
+            var item = items[idx];
+            if (!li || !img)
+                return;
+            if (item) {
+                img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patch, "/img/item/").concat(item.id, ".png");
+                img.alt = item.name;
+                img.title = item.reasons && item.reasons.length > 0
+                    ? "".concat(item.name, " \u2014 ").concat(item.reasons.slice(0, 2).join(', '))
+                    : item.name;
+            }
+            else {
+                img.src = '';
+                img.alt = '';
+                img.title = '';
+            }
+        });
+    };
+    renderInto('.items-list.if-winning', winningItems);
+    renderInto('.items-list.if-losing', losingItems);
 }
 function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
@@ -1093,7 +1227,6 @@ function setup() {
     // Load champion roles and assign champions to teams
     loadChampionWikiData().then(function (wikiData) {
         championWikiData = wikiData;
-        console.log("Loaded ".concat(championWikiData.length, " champions with wiki data"));
     });
     getAllChampionsAndItems().then(function (data) {
         if (data) {
