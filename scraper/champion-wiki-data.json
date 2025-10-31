@@ -953,7 +953,7 @@
   },
   {
     "name": "Teemo",
-    "roles": ["Top", "Support", "Jungle"],
+    "roles": ["Top", "Support"],
     "class": "Specialist",
     "legacyClass": ["Marksman", "Mage"],
     "adaptiveType": "magic"
