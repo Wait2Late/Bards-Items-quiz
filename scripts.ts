@@ -1196,7 +1196,7 @@ function computeWeights(state: GameState): Weights {
     add("AntiShield", state.enemyShields);
     add("AntiPoke", state.enemyPoke);
     add("AntiCrit", state.enemyCrit);
-    add("AntiAS", state.enemyCrit);
+    add("AntiAS", state.enemyAS);
     add("AntiDot", state.enemyDot);
     add("AmpMagic", ((state.enemyAP >= 2 ? 2 : 0) + (state.teamAP >= 2 ? 2 : 0)) >= 4 ? 4 : 0);
     add("Frontline", state.teamTank === 0 ? 2 : 0);
