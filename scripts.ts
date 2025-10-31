@@ -46,7 +46,7 @@ type DDragonItemMap = Record<string, DDragonItem>;
 
 enum ItemType {
     SelfDefense = "Self-Defense",
-    SelfOffsense = "Self-Offense",
+    SelfOffense = "Self-Offense",
     TeamDefense = "Team-Defense",
     TeamOffense = "Team-Offense",
 }
@@ -57,14 +57,14 @@ const BardItems : BardItem[] = [
     { id: "4401", name: "Force of Nature", ItemType: ItemType.SelfDefense },
     { id: "2504", name: "Kaenic Rookern", ItemType: ItemType.SelfDefense },
     { id: "6665", name: "Jak'Sho, The Protean", ItemType: ItemType.SelfDefense },
-    { id: "3091", name: "Wit's End", ItemType: ItemType.SelfOffsense },
-    { id: "3157", name: "Zhonya's Hourglass", ItemType: ItemType.SelfOffsense },
-    { id: "3302", name: "Terminus", ItemType: ItemType.SelfOffsense },
-    { id: "4633", name: "Riftmaker", ItemType: ItemType.SelfOffsense },
-    { id: "6653", name: "Liandry's Torment", ItemType: ItemType.SelfOffsense  },
-    { id: "3087", name: "Statikk Shiv", ItemType: ItemType.SelfOffsense  },
-    { id: "4629", name: "Cosmic Drive", ItemType: ItemType.SelfOffsense  },
-    { id: "3073", name: "Experimental Hexplate", ItemType: ItemType.SelfOffsense  },
+    { id: "3091", name: "Wit's End", ItemType: ItemType.SelfOffense },
+    { id: "3157", name: "Zhonya's Hourglass", ItemType: ItemType.SelfOffense },
+    { id: "3302", name: "Terminus", ItemType: ItemType.SelfOffense },
+    { id: "4633", name: "Riftmaker", ItemType: ItemType.SelfOffense },
+    { id: "6653", name: "Liandry's Torment", ItemType: ItemType.SelfOffense  },
+    { id: "3087", name: "Statikk Shiv", ItemType: ItemType.SelfOffense  },
+    { id: "4629", name: "Cosmic Drive", ItemType: ItemType.SelfOffense  },
+    { id: "3073", name: "Experimental Hexplate", ItemType: ItemType.SelfOffense  },
     { id: "3190", name: "Locket of the Iron Solari", ItemType: ItemType.TeamDefense },
     { id: "3107", name: "Redemption", ItemType: ItemType.TeamDefense },
     { id: "3222", name: "Mikael's Blessing", ItemType: ItemType.TeamDefense },
@@ -78,7 +78,7 @@ const BardItems : BardItem[] = [
 
 
 const SelfDefense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.SelfDefense);
-const SelfOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.SelfOffsense);
+const SelfOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.SelfOffense);
 const TeamDefense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.TeamDefense);
 const TeamOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemType.TeamOffense);
 
@@ -299,7 +299,7 @@ function createItemDropdown(
         // Group items by ItemType
         const groupedItems: Record<ItemType, BardItem[]> = {
             [ItemType.SelfDefense]: [],
-            [ItemType.SelfOffsense]: [],
+            [ItemType.SelfOffense]: [],
             [ItemType.TeamDefense]: [],
             [ItemType.TeamOffense]: [],
         };

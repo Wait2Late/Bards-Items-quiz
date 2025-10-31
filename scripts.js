@@ -73,7 +73,7 @@ var bardResources = "https://cdn.merakianalytics.com/riot/lol/resources/latest/e
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
-    ItemType["SelfOffsense"] = "Self-Offense";
+    ItemType["SelfOffense"] = "Self-Offense";
     ItemType["TeamDefense"] = "Team-Defense";
     ItemType["TeamOffense"] = "Team-Offense";
 })(ItemType || (ItemType = {}));
@@ -83,14 +83,14 @@ var BardItems = [
     { id: "4401", name: "Force of Nature", ItemType: ItemType.SelfDefense },
     { id: "2504", name: "Kaenic Rookern", ItemType: ItemType.SelfDefense },
     { id: "6665", name: "Jak'Sho, The Protean", ItemType: ItemType.SelfDefense },
-    { id: "3091", name: "Wit's End", ItemType: ItemType.SelfOffsense },
-    { id: "3157", name: "Zhonya's Hourglass", ItemType: ItemType.SelfOffsense },
-    { id: "3302", name: "Terminus", ItemType: ItemType.SelfOffsense },
-    { id: "4633", name: "Riftmaker", ItemType: ItemType.SelfOffsense },
-    { id: "6653", name: "Liandry's Torment", ItemType: ItemType.SelfOffsense },
-    { id: "3087", name: "Statikk Shiv", ItemType: ItemType.SelfOffsense },
-    { id: "4629", name: "Cosmic Drive", ItemType: ItemType.SelfOffsense },
-    { id: "3073", name: "Experimental Hexplate", ItemType: ItemType.SelfOffsense },
+    { id: "3091", name: "Wit's End", ItemType: ItemType.SelfOffense },
+    { id: "3157", name: "Zhonya's Hourglass", ItemType: ItemType.SelfOffense },
+    { id: "3302", name: "Terminus", ItemType: ItemType.SelfOffense },
+    { id: "4633", name: "Riftmaker", ItemType: ItemType.SelfOffense },
+    { id: "6653", name: "Liandry's Torment", ItemType: ItemType.SelfOffense },
+    { id: "3087", name: "Statikk Shiv", ItemType: ItemType.SelfOffense },
+    { id: "4629", name: "Cosmic Drive", ItemType: ItemType.SelfOffense },
+    { id: "3073", name: "Experimental Hexplate", ItemType: ItemType.SelfOffense },
     { id: "3190", name: "Locket of the Iron Solari", ItemType: ItemType.TeamDefense },
     { id: "3107", name: "Redemption", ItemType: ItemType.TeamDefense },
     { id: "3222", name: "Mikael's Blessing", ItemType: ItemType.TeamDefense },
@@ -102,7 +102,7 @@ var BardItems = [
     { id: "6695", name: "Serpent's Fang", ItemType: ItemType.TeamOffense },
 ];
 var SelfDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfDefense; });
-var SelfOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfOffsense; });
+var SelfOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfOffense; });
 var TeamDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamDefense; });
 var TeamOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamOffense; });
 var ITEM_TAGS = {
@@ -309,7 +309,7 @@ function createItemDropdown(element, items, patchVersion, label, dropdownClass) 
         // Group items by ItemType
         var groupedItems_1 = (_a = {},
             _a[ItemType.SelfDefense] = [],
-            _a[ItemType.SelfOffsense] = [],
+            _a[ItemType.SelfOffense] = [],
             _a[ItemType.TeamDefense] = [],
             _a[ItemType.TeamOffense] = [],
             _a);
