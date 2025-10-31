@@ -957,6 +957,22 @@ function normalizeName(name: string): string {
     return name.replace(/[\s'\.&]/g, '').toLowerCase();
 }
 
+// Resolve a DDragon champion id (e.g., "MonkeyKing", "Nunu") to its display name (e.g., "Wukong", "Nunu & Willump").
+function getChampionDisplayNameFromId(championId: string): string | null {
+    try {
+        if (!allChampions || !allChampions.data) return null;
+        // Direct key lookup first (most ids are also object keys)
+        const byKey = allChampions.data[championId];
+        if (byKey && byKey.name) return byKey.name as string;
+
+        // Fallback: scan values in case keys differ
+        const match = (Object.values(allChampions.data) as any[]).find(c => c.id === championId);
+        return match?.name ?? null;
+    } catch {
+        return null;
+    }
+}
+
 function getTeamChampions(): {
     myTeam: ChampionWikiData[];
     enemyTeam: ChampionWikiData[];
@@ -969,10 +985,10 @@ function getTeamChampions(): {
         const select = selectElement as HTMLSelectElement;
         const championId = select.value;
         if (championId){
-            const normalizedId = normalizeName(championId);
-            const champion = championWikiData.find(c =>
-                normalizeName(c.name) === normalizedId
-            );
+            // Prefer DDragon display name to bridge id/name differences (e.g., MonkeyKing -> Wukong)
+            const ddName = getChampionDisplayNameFromId(championId) || select.selectedOptions[0]?.textContent || championId;
+            const normalizedName = normalizeName(ddName);
+            const champion = championWikiData.find(c => normalizeName(c.name) === normalizedName);
             if (champion) myTeam.push(champion);
         }
     });
@@ -983,10 +999,9 @@ function getTeamChampions(): {
         const championId = select.value;
 
         if (championId){
-            const normalizedId = normalizeName(championId);
-            const champion = championWikiData.find(c =>
-                normalizeName(c.name) === normalizedId
-            );
+            const ddName = getChampionDisplayNameFromId(championId) || select.selectedOptions[0]?.textContent || championId;
+            const normalizedName = normalizeName(ddName);
+            const champion = championWikiData.find(c => normalizeName(c.name) === normalizedName);
             if (champion) enemyTeam.push(champion);
         }
     });
