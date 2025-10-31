@@ -353,9 +353,9 @@ hr {
 footer {
     width: 100%;
     display: flex;
-    flex-direction: column; /* stack heading above paragraph */
-    align-items: center;     /* center horizontally */
-    text-align: center;      /* center text inside */
+    flex-direction: column; 
+    align-items: stretch;    
+    text-align: start;      
     margin-top: 20px;
     padding: 15px;
     border: 1px solid #ccc;
@@ -365,5 +365,14 @@ footer {
 }
 
 footer h2 {
-    margin: 0 0 8px 0; /* remove top margin, add small spacing below */
+    margin: 0 0 8px 0; 
+    align-self: center; 
+    text-align: center;
+    
+}
+
+footer ul {
+    padding-left: 20px; 
+    margin: 0;
+    list-style-type: square;
 }
