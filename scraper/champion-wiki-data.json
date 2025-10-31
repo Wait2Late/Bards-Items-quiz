@@ -3,7 +3,7 @@
     "name": "Aatrox",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
@@ -18,7 +18,7 @@
     "roles": ["Top", "Middle"],
     "class": "Assassin",
     "legacyClass": ["Assassin"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Akshan",
@@ -200,7 +200,7 @@
     "roles": ["Top", "Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Tank", "Fighter"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Ekko",
@@ -253,14 +253,14 @@
   },
   {
     "name": "Galio",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle", "Support", "Top"],
     "class": "Warden",
     "legacyClass": ["Tank", "Mage"],
     "adaptiveType": "magic"
   },
   {
     "name": "Gangplank",
-    "roles": ["Top", "Support"],
+    "roles": ["Top"],
     "class": "Specialist",
     "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
@@ -325,7 +325,7 @@
     "name": "Illaoi",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
@@ -400,8 +400,8 @@
   },
   {
     "name": "Karma",
-    "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "roles": ["Support"],
+    "class": "Enchanter",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -431,7 +431,7 @@
     "roles": ["Top", "Middle"],
     "class": "Specialist",
     "legacyClass": ["Mage", "Marksman"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Kayn",
@@ -534,7 +534,7 @@
   {
     "name": "Lux",
     "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "class": "Artillery",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -638,8 +638,8 @@
   },
   {
     "name": "Neeko",
-    "roles": ["Middle", "Support"],
-    "class": "Burst",
+    "roles": ["Support"],
+    "class": "Catcher",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },
@@ -682,7 +682,7 @@
     "name": "Orianna",
     "roles": ["Middle"],
     "class": "Burst",
-    "legacyClass": ["Mage", "Support"],
+    "legacyClass": ["Mage"],
     "adaptiveType": "magic"
   },
   {
@@ -709,7 +709,7 @@
   {
     "name": "Pyke",
     "roles": ["Support"],
-    "class": "Assassin",
+    "class": "Catcher",
     "legacyClass": ["Support", "Assassin"],
     "adaptiveType": "physical"
   },
@@ -844,7 +844,7 @@
     "roles": ["Top", "Support"],
     "class": "Warden",
     "legacyClass": ["Tank"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Shyvana",
@@ -1011,7 +1011,7 @@
     "name": "Urgot",
     "roles": ["Top"],
     "class": "Juggernaut",
-    "legacyClass": ["Fighter", "Tank"],
+    "legacyClass": ["Fighter"],
     "adaptiveType": "physical"
   },
   {
@@ -1135,7 +1135,7 @@
   },
   {
     "name": "Yunara",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -1163,7 +1163,7 @@
   },
   {
     "name": "Zeri",
-    "roles": ["Bottom", "Support"],
+    "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman"],
     "adaptiveType": "physical"
@@ -1184,7 +1184,7 @@
   },
   {
     "name": "Zoe",
-    "roles": ["Middle", "Support"],
+    "roles": ["Middle"],
     "class": "Burst",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
