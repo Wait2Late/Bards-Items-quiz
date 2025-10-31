@@ -1,14 +1,3 @@
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,58 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-var allChampions;
-var allItems;
+let allChampions;
+let allItems;
 // Enriched Bard items cache
-var bardEnrichedItems;
-var bardEnrichedItemsById;
+let bardEnrichedItems;
+let bardEnrichedItemsById;
 // Champion wiki data
-var championWikiData = [];
+let championWikiData = [];
 // Cache the current patch version
-var currentPatchVersion = '15.21.1';
+let currentPatchVersion = '15.21.1';
 // Track selected items across all dropdowns
-var selectedItems = new Set();
-var allDropdowns = [];
+const selectedItems = new Set();
+const allDropdowns = [];
 // Track selected champions across all dropdowns
-var selectedChampions = new Set();
-var allChampionDropdowns = [];
-var bardResources = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/Bard.json";
+const selectedChampions = new Set();
+const allChampionDropdowns = [];
+const bardResources = "https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/Bard.json";
 var ItemType;
 (function (ItemType) {
     ItemType["SelfDefense"] = "Self-Defense";
@@ -77,7 +30,7 @@ var ItemType;
     ItemType["TeamDefense"] = "Team-Defense";
     ItemType["TeamOffense"] = "Team-Offense";
 })(ItemType || (ItemType = {}));
-var BardItems = [
+const BardItems = [
     { id: "3742", name: "Dead Man's Plate", ItemType: ItemType.SelfDefense },
     { id: "3143", name: "Randuin's Omen", ItemType: ItemType.SelfDefense },
     { id: "4401", name: "Force of Nature", ItemType: ItemType.SelfDefense },
@@ -101,11 +54,11 @@ var BardItems = [
     { id: "4010", name: "Bloodletter's Curse", ItemType: ItemType.TeamOffense },
     { id: "6695", name: "Serpent's Fang", ItemType: ItemType.TeamOffense },
 ];
-var SelfDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfDefense; });
-var SelfOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.SelfOffsense; });
-var TeamDefense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamDefense; });
-var TeamOffense = BardItems.filter(function (item) { return item.ItemType === ItemType.TeamOffense; });
-var ITEM_TAGS = {
+const SelfDefense = BardItems.filter(item => item.ItemType === ItemType.SelfDefense);
+const SelfOffense = BardItems.filter(item => item.ItemType === ItemType.SelfOffsense);
+const TeamDefense = BardItems.filter(item => item.ItemType === ItemType.TeamDefense);
+const TeamOffense = BardItems.filter(item => item.ItemType === ItemType.TeamOffense);
+const ITEM_TAGS = {
     "3742": ["Armor", "Peel", "Frontline"], // Dead Man's Plate
     "3143": ["Armor", "AntiCrit", "slow", "Frontline"], // Randuin's Omen
     "4401": ["MR", "AntiDot"], // Force of Nature
@@ -129,138 +82,89 @@ var ITEM_TAGS = {
     "4010": ["AP", "AmpMagic"], // Bloodletter's Curse
     "6695": ["AntiShield"], // Serpent's Fang
 };
-function setBackgroundImage() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch(bardResources)];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    document.body.style.backgroundImage = data.skins[0].uncenteredSplashPath;
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error("Error fetching Bard resources: ", error_1);
-                    return [2 /*return*/];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-setBackgroundImage();
+// async function setBackgroundImage() {
+//     try {
+//         const response = await fetch(bardResources);
+//         const data = await response.json();
+//         document.body.style.backgroundImage = data.skins[0].uncenteredSplashPath;
+//     } catch (error) {
+//         console.error("Error fetching Bard resources: ", error);
+//         return;
+//     }
+// }
+// setBackgroundImage();
 function fetchCurrentPatch() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch("https://ddragon.leagueoflegends.com/api/versions.json")];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data[0]];
-                case 3:
-                    error_2 = _a.sent();
-                    console.error("Error fetching patch version:", error_2);
-                    return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
-            }
-        });
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+            const data = yield response.json();
+            return data[0];
+        }
+        catch (error) {
+            console.error("Error fetching patch version:", error);
+            return null;
+        }
     });
 }
 function fetchMerakiChampionData(championName) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch("https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/".concat(championName, ".json"))];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 3:
-                    error_3 = _a.sent();
-                    console.error("Error fetching champion: ", error_3);
-                    return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
-            }
-        });
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch(`https://cdn.merakianalytics.com/riot/lol/resources/latest/en-US/champions/${championName}.json`);
+            const data = yield response.json();
+            return data;
+        }
+        catch (error) {
+            console.error("Error fetching champion: ", error);
+            return null;
+        }
     });
 }
 function getAllChampionsAndItems() {
-    return __awaiter(this, void 0, void 0, function () {
-        var patchVersion, allItemsApi, allChampionsApi, _a, itemsResponse, championsResponse, items, champions, error_4;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, fetchCurrentPatch()];
-                case 1:
-                    patchVersion = _b.sent();
-                    if (!patchVersion) {
-                        console.error("Failed to get patch version");
-                        return [2 /*return*/, null];
-                    }
-                    // Cache the patch version globally
-                    currentPatchVersion = patchVersion;
-                    allItemsApi = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/data/en_US/item.json");
-                    allChampionsApi = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/data/en_US/champion.json");
-                    _b.label = 2;
-                case 2:
-                    _b.trys.push([2, 6, , 7]);
-                    return [4 /*yield*/, Promise.all([
-                            fetch(allItemsApi),
-                            fetch(allChampionsApi)
-                        ])];
-                case 3:
-                    _a = _b.sent(), itemsResponse = _a[0], championsResponse = _a[1];
-                    return [4 /*yield*/, itemsResponse.json()];
-                case 4:
-                    items = _b.sent();
-                    return [4 /*yield*/, championsResponse.json()];
-                case 5:
-                    champions = _b.sent();
-                    return [2 /*return*/, { items: items, champions: champions, patchVersion: patchVersion }];
-                case 6:
-                    error_4 = _b.sent();
-                    console.error("Error fetching champions/items:", error_4);
-                    return [2 /*return*/, null];
-                case 7: return [2 /*return*/];
-            }
-        });
+    return __awaiter(this, void 0, void 0, function* () {
+        const patchVersion = yield fetchCurrentPatch();
+        if (!patchVersion) {
+            console.error("Failed to get patch version");
+            return null;
+        }
+        // Cache the patch version globally
+        currentPatchVersion = patchVersion;
+        const allItemsApi = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/data/en_US/item.json`;
+        const allChampionsApi = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/data/en_US/champion.json`;
+        try {
+            const [itemsResponse, championsResponse] = yield Promise.all([
+                fetch(allItemsApi),
+                fetch(allChampionsApi)
+            ]);
+            const items = yield itemsResponse.json();
+            const champions = yield championsResponse.json();
+            return { items, champions, patchVersion };
+        }
+        catch (error) {
+            console.error("Error fetching champions/items:", error);
+            return null;
+        }
     });
 }
 function createBootsDropdown(element, patchVersion) {
-    var boots = [
+    const boots = [
         { id: "3111", name: "Mercury's Treads" },
         { id: "3047", name: "Plated Steelcaps" },
         { id: "3009", name: "Boots of Swiftness" },
         { id: "3171", name: "Crimson Lucidity" }
     ];
     // Create dropdown
-    var select = element.querySelector("select.boots-dropdown");
+    let select = element.querySelector("select.boots-dropdown");
     if (!select) {
         select = document.createElement("select");
         select.className = "boots-dropdown";
         // Track this dropdown
         allDropdowns.push(select);
-        var defaultOption = document.createElement("option");
+        const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Select Boots";
         select.appendChild(defaultOption);
-        boots.forEach(function (boot) {
-            var option = document.createElement("option");
+        boots.forEach(boot => {
+            const option = document.createElement("option");
             option.value = boot.id;
             option.textContent = boot.name;
             select.appendChild(option);
@@ -268,12 +172,12 @@ function createBootsDropdown(element, patchVersion) {
         element.appendChild(select); // keep the dropdown in the li
     }
     // Ensure there is an <img> we can update (don’t remove the select)
-    var img = element.querySelector("img");
-    select.addEventListener("change", function () {
+    let img = element.querySelector("img");
+    select.addEventListener("change", () => {
         var _a, _b;
-        var previousValue = select.dataset.previousValue;
-        var selected = select.value;
-        var label = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "Boots";
+        const previousValue = select.dataset.previousValue;
+        const selected = select.value;
+        const label = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "Boots";
         // Remove previous selection from the set
         if (previousValue) {
             selectedItems.delete(previousValue);
@@ -296,7 +200,7 @@ function createBootsDropdown(element, patchVersion) {
                 element.appendChild(img);
             }
             img.alt = label;
-            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/item/").concat(selected, ".png");
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/item/${selected}.png`;
         }
         else if (img) {
             // Clear image if user selects the default option again
@@ -306,54 +210,51 @@ function createBootsDropdown(element, patchVersion) {
     });
 }
 // Generic dropdown creator for any item category with grouped headers
-function createItemDropdown(element, items, patchVersion, label, dropdownClass) {
-    var _a;
-    if (dropdownClass === void 0) { dropdownClass = "item-dropdown"; }
+function createItemDropdown(element, items, patchVersion, label, dropdownClass = "item-dropdown") {
     // Create dropdown
-    var select = element.querySelector("select.".concat(dropdownClass));
+    let select = element.querySelector(`select.${dropdownClass}`);
     if (!select) {
         select = document.createElement("select");
         select.className = dropdownClass;
         // Track this dropdown
         allDropdowns.push(select);
-        var defaultOption = document.createElement("option");
+        const defaultOption = document.createElement("option");
         defaultOption.value = "";
-        defaultOption.textContent = "Select ".concat(label);
+        defaultOption.textContent = `Select ${label}`;
         select.appendChild(defaultOption);
         // Group items by ItemType
-        var groupedItems_1 = (_a = {},
-            _a[ItemType.SelfDefense] = [],
-            _a[ItemType.SelfOffsense] = [],
-            _a[ItemType.TeamDefense] = [],
-            _a[ItemType.TeamOffense] = [],
-            _a);
-        items.forEach(function (item) {
-            groupedItems_1[item.ItemType].push(item);
+        const groupedItems = {
+            [ItemType.SelfDefense]: [],
+            [ItemType.SelfOffsense]: [],
+            [ItemType.TeamDefense]: [],
+            [ItemType.TeamOffense]: [],
+        };
+        items.forEach(item => {
+            groupedItems[item.ItemType].push(item);
         });
         // Create optgroups for each category
-        Object.entries(groupedItems_1).forEach(function (_a) {
-            var category = _a[0], categoryItems = _a[1];
+        Object.entries(groupedItems).forEach(([category, categoryItems]) => {
             if (categoryItems.length > 0) {
-                var optgroup_1 = document.createElement("optgroup");
-                optgroup_1.label = category;
-                categoryItems.forEach(function (item) {
-                    var option = document.createElement("option");
+                const optgroup = document.createElement("optgroup");
+                optgroup.label = category;
+                categoryItems.forEach(item => {
+                    const option = document.createElement("option");
                     option.value = item.id;
                     option.textContent = item.name;
-                    optgroup_1.appendChild(option);
+                    optgroup.appendChild(option);
                 });
-                select.appendChild(optgroup_1);
+                select.appendChild(optgroup);
             }
         });
         element.appendChild(select);
     }
     // Ensure there is an <img> we can update (don't remove the select)
-    var img = element.querySelector("img");
-    select.addEventListener("change", function () {
+    let img = element.querySelector("img");
+    select.addEventListener("change", () => {
         var _a, _b;
-        var previousValue = select.dataset.previousValue;
-        var selected = select.value;
-        var itemName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : label;
+        const previousValue = select.dataset.previousValue;
+        const selected = select.value;
+        const itemName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : label;
         // Remove previous selection from the set
         if (previousValue) {
             selectedItems.delete(previousValue);
@@ -376,7 +277,7 @@ function createItemDropdown(element, items, patchVersion, label, dropdownClass) 
                 element.appendChild(img);
             }
             img.alt = itemName;
-            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/item/").concat(selected, ".png");
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/item/${selected}.png`;
             // Toggle health border based on tags
             applyHealthBorder(element, selected);
         }
@@ -390,10 +291,10 @@ function createItemDropdown(element, items, patchVersion, label, dropdownClass) 
 }
 // Update all dropdowns to disable/enable options based on selected items
 function updateAllDropdowns() {
-    allDropdowns.forEach(function (dropdown) {
-        var currentValue = dropdown.value;
+    allDropdowns.forEach(dropdown => {
+        const currentValue = dropdown.value;
         // Iterate through all options in the dropdown
-        Array.from(dropdown.options).forEach(function (option) {
+        Array.from(dropdown.options).forEach(option => {
             if (option.value === "") {
                 // Don't disable the default "Select..." option
                 option.disabled = false;
@@ -415,11 +316,11 @@ function updateAllDropdowns() {
 }
 // Check if all item slots are filled and show/hide summary container accordingly
 function updateSummaryVisibility() {
-    var summaryContainer = document.querySelector('.summary-container');
+    const summaryContainer = document.querySelector('.summary-container');
     if (!summaryContainer)
         return;
     // Check if all 4 dropdowns (3 item slots + boots) have selections
-    var allFilled = allDropdowns.every(function (dropdown) { return dropdown.value !== ""; });
+    const allFilled = allDropdowns.every(dropdown => dropdown.value !== "");
     if (allFilled) {
         summaryContainer.classList.add('visible');
     }
@@ -429,8 +330,8 @@ function updateSummaryVisibility() {
 }
 // Reset all item dropdowns (slots 3, 4, 5, and boots) to their default state
 function resetAllItemDropdowns() {
-    allDropdowns.forEach(function (dropdown) {
-        var previousValue = dropdown.dataset.previousValue;
+    allDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
         // Remove from selected items set
         if (previousValue) {
             selectedItems.delete(previousValue);
@@ -439,9 +340,9 @@ function resetAllItemDropdowns() {
         // Reset dropdown to default option
         dropdown.value = "";
         // Remove the image from the parent item
-        var parentItem = dropdown.closest('.item');
+        const parentItem = dropdown.closest('.item');
         if (parentItem) {
-            var img = parentItem.querySelector('img');
+            const img = parentItem.querySelector('img');
             if (img && !parentItem.classList.contains('core-item')) {
                 // Don't remove images from core items (Bloodsong and Dead Man's Plate)
                 img.src = "";
@@ -462,30 +363,20 @@ function resetAllItemDropdowns() {
  * Loads champion wiki data from champion-wiki-data.json
  */
 function loadChampionWikiData() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('scraper/champion-wiki-data.json')];
-                case 1:
-                    response = _a.sent();
-                    if (!response.ok) {
-                        console.error('Failed to load champion-wiki-data.json');
-                        return [2 /*return*/, []];
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 3:
-                    error_5 = _a.sent();
-                    console.error('Error loading champion wiki data:', error_5);
-                    return [2 /*return*/, []];
-                case 4: return [2 /*return*/];
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield fetch('scraper/champion-wiki-data.json');
+            if (!response.ok) {
+                console.error('Failed to load champion-wiki-data.json');
+                return [];
             }
-        });
+            const data = yield response.json();
+            return data;
+        }
+        catch (error) {
+            console.error('Error loading champion wiki data:', error);
+            return [];
+        }
     });
 }
 // UI-only role label mapping: keep logic using canonical codes, but show BOT for ADC
@@ -495,22 +386,21 @@ function displayRole(role) {
 /**
  * Creates a dropdown for selecting champions for a specific role
  */
-function createChampionDropdown(element, championWikiData, allChampions, patchVersion, slotRole, isEnemyTeam) {
-    if (isEnemyTeam === void 0) { isEnemyTeam = false; }
+function createChampionDropdown(element, championWikiData, allChampions, patchVersion, slotRole, isEnemyTeam = false) {
     // Create dropdown
-    var select = element.querySelector("select.champion-select");
+    let select = element.querySelector("select.champion-select");
     if (!select) {
         select = document.createElement("select");
         select.className = "champion-select";
         // Track this dropdown
         allChampionDropdowns.push(select);
-        var defaultOption = document.createElement("option");
+        const defaultOption = document.createElement("option");
         defaultOption.value = "";
         // Show the role name in the placeholder, e.g., Select TOP / JUNGLE / MID / BOT / SUPPORT (UI-only mapping)
-        defaultOption.textContent = "Select ".concat(displayRole(slotRole));
+        defaultOption.textContent = `Select ${displayRole(slotRole)}`;
         select.appendChild(defaultOption);
         // Map role names from wiki data to expected format
-        var roleMapping_1 = {
+        const roleMapping = {
             'Top': 'TOP',
             'Jungle': 'JUNGLE',
             'Middle': 'MID',
@@ -518,10 +408,10 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
             'Support': 'SUPPORT'
         };
         // Filter champions that can play this specific role
-        var championsForRole_1 = [];
-        championWikiData.forEach(function (champion) {
+        const championsForRole = [];
+        championWikiData.forEach(champion => {
             // Check if this champion can play the slot's role
-            var canPlayRole = champion.roles.some(function (role) { return roleMapping_1[role] === slotRole; });
+            const canPlayRole = champion.roles.some(role => roleMapping[role] === slotRole);
             if (!canPlayRole)
                 return;
             // For enemy team, exclude Bard from SUPPORT role
@@ -529,17 +419,17 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
                 return;
             }
             // Find the Data Dragon champion data
-            var championData = Object.values(allChampions.data).find(function (champ) {
-                var champId = champ.id.toLowerCase();
-                var champName = champ.name.toLowerCase();
-                var wikiName = champion.name.toLowerCase();
+            const championData = Object.values(allChampions.data).find((champ) => {
+                const champId = champ.id.toLowerCase();
+                const champName = champ.name.toLowerCase();
+                const wikiName = champion.name.toLowerCase();
                 // Use exact matches only to avoid false positives (e.g., "vi" matching "anivia")
                 return champId === wikiName || champName === wikiName;
             });
             if (championData) {
                 // Avoid duplicates
-                if (!championsForRole_1.some(function (c) { return c.championId === championData.id; })) {
-                    championsForRole_1.push({
+                if (!championsForRole.some(c => c.championId === championData.id)) {
+                    championsForRole.push({
                         name: champion.name,
                         championId: championData.id
                     });
@@ -547,10 +437,10 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
             }
         });
         // Sort champions alphabetically by name
-        championsForRole_1.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        championsForRole.sort((a, b) => a.name.localeCompare(b.name));
         // Add all champions as options
-        championsForRole_1.forEach(function (champ) {
-            var option = document.createElement("option");
+        championsForRole.forEach(champ => {
+            const option = document.createElement("option");
             option.value = champ.championId;
             option.textContent = champ.name;
             select.appendChild(option);
@@ -558,12 +448,12 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
         element.appendChild(select);
     }
     // Ensure there is an <img> we can update
-    var img = element.querySelector("img");
-    select.addEventListener("change", function () {
+    let img = element.querySelector("img");
+    select.addEventListener("change", () => {
         var _a, _b;
-        var previousValue = select.dataset.previousValue;
-        var selected = select.value;
-        var championName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "";
+        const previousValue = select.dataset.previousValue;
+        const selected = select.value;
+        const championName = (_b = (_a = select.selectedOptions[0]) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : "";
         // Remove previous selection from the set
         if (previousValue) {
             selectedChampions.delete(previousValue);
@@ -586,7 +476,7 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
                 element.appendChild(img);
             }
             img.alt = championName;
-            img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(selected, ".png");
+            img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${selected}.png`;
             img.title = championName;
         }
         else if (img) {
@@ -603,10 +493,10 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
  * Update all champion dropdowns to disable champions that are already selected elsewhere.
  */
 function updateAllChampionDropdowns() {
-    allChampionDropdowns.forEach(function (dropdown) {
-        var currentValue = dropdown.value;
+    allChampionDropdowns.forEach(dropdown => {
+        const currentValue = dropdown.value;
         // Iterate through all options in the dropdown
-        Array.from(dropdown.options).forEach(function (option) {
+        Array.from(dropdown.options).forEach(option => {
             if (option.value === "") {
                 // Don't disable the default "Select..." option
                 option.disabled = false;
@@ -635,40 +525,35 @@ function updateAllChampionDropdowns() {
  * @param usedChampions - Set of already selected champion IDs to avoid duplicates
  * @param isEnemyTeam - Whether this is the enemy team (to exclude Bard from support)
  */
-function assignChampionsToTeam(teamListSelector, championWikiData, allChampions, patchVersion, usedChampions, isEnemyTeam) {
-    if (isEnemyTeam === void 0) { isEnemyTeam = false; }
-    var teamList = document.querySelector(teamListSelector);
+function assignChampionsToTeam(teamListSelector, championWikiData, allChampions, patchVersion, usedChampions, isEnemyTeam = false) {
+    const teamList = document.querySelector(teamListSelector);
     if (!teamList) {
-        console.error("Team list ".concat(teamListSelector, " not found"));
+        console.error(`Team list ${teamListSelector} not found`);
         return;
     }
-    var championSlots = teamList.querySelectorAll('li.champion-dropdown');
-    championSlots.forEach(function (slot) {
-        var slotElement = slot;
+    const championSlots = teamList.querySelectorAll('li.champion-dropdown');
+    championSlots.forEach(slot => {
+        const slotElement = slot;
         // Get role from class list (e.g., 'top', 'jungle', 'mid', 'adc', 'support', 'bard')
-        var roleClass = Array.from(slotElement.classList).find(function (cls) {
-            return ['top', 'jungle', 'mid', 'adc', 'support', 'bard'].includes(cls);
-        });
+        const roleClass = Array.from(slotElement.classList).find(cls => ['top', 'jungle', 'mid', 'adc', 'support', 'bard'].includes(cls));
         if (!roleClass) {
             console.warn('No role class found for champion slot', slot);
             return;
         }
         // Special case: if the role is 'bard', assign Bard specifically
         if (roleClass === 'bard') {
-            var bardData = Object.values(allChampions.data).find(function (champ) {
-                return champ.id.toLowerCase() === 'bard';
-            });
+            const bardData = Object.values(allChampions.data).find((champ) => champ.id.toLowerCase() === 'bard');
             if (bardData) {
-                var imgElement_1 = slotElement.querySelector('img');
-                if (imgElement_1) {
-                    imgElement_1.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(bardData.id, ".png");
-                    imgElement_1.alt = bardData.name;
-                    imgElement_1.title = "".concat(bardData.name, " (SUPPORT)");
+                const imgElement = slotElement.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${bardData.id}.png`;
+                    imgElement.alt = bardData.name;
+                    imgElement.title = `${bardData.name} (SUPPORT)`;
                     // Add Bard to used champions
                     usedChampions.add(bardData.id);
                 }
                 // Add/update a styled label under Bard icon (looks like dropdown)
-                var label = slotElement.querySelector('.champion-label');
+                let label = slotElement.querySelector('.champion-label');
                 if (!label) {
                     label = document.createElement('p');
                     label.className = 'champion-label';
@@ -679,21 +564,21 @@ function assignChampionsToTeam(teamListSelector, championWikiData, allChampions,
             return;
         }
         // Convert class to uppercase role (e.g., 'top' -> 'TOP')
-        var role = roleClass.toUpperCase();
+        const role = roleClass.toUpperCase();
         // Create dropdown for this champion slot (not for bard slot)
         createChampionDropdown(slotElement, championWikiData, allChampions, patchVersion, role, isEnemyTeam);
         // Filter champions that can play this role
         // Map role names to wiki format
-        var roleMapping = {
+        const roleMapping = {
             'TOP': 'Top',
             'JUNGLE': 'Jungle',
             'MID': 'Middle',
             'ADC': 'Bottom',
             'SUPPORT': 'Support'
         };
-        var wikiRole = roleMapping[role] || role;
-        var availableChampions = championWikiData.filter(function (champion) {
-            var hasRole = champion.roles.includes(wikiRole);
+        const wikiRole = roleMapping[role] || role;
+        let availableChampions = championWikiData.filter(champion => {
+            const hasRole = champion.roles.includes(wikiRole);
             if (!hasRole)
                 return false;
             // For enemy team support role, exclude Bard
@@ -703,70 +588,65 @@ function assignChampionsToTeam(teamListSelector, championWikiData, allChampions,
             return true;
         });
         if (availableChampions.length === 0) {
-            console.warn("No champions found for role: ".concat(role));
+            console.warn(`No champions found for role: ${role}`);
             return;
         }
         // Try to find a champion that hasn't been used yet
-        var randomChampion;
-        var attempts = 0;
-        var maxAttempts = 50; // Prevent infinite loop
-        var _loop_1 = function () {
-            var candidate = availableChampions[Math.floor(Math.random() * availableChampions.length)];
+        let randomChampion;
+        let attempts = 0;
+        const maxAttempts = 50; // Prevent infinite loop
+        while (attempts < maxAttempts) {
+            const candidate = availableChampions[Math.floor(Math.random() * availableChampions.length)];
             if (!candidate) {
                 attempts++;
-                return "continue";
+                continue;
             }
             // Find the champion data to check if it's already used
-            var candidateData = Object.values(allChampions.data).find(function (champ) {
-                var champId = champ.id.toLowerCase();
-                var champName = champ.name.toLowerCase();
-                var wikiName = candidate.name.toLowerCase();
+            const candidateData = Object.values(allChampions.data).find((champ) => {
+                const champId = champ.id.toLowerCase();
+                const champName = champ.name.toLowerCase();
+                const wikiName = candidate.name.toLowerCase();
                 return champId === wikiName || champName === wikiName;
             });
             // If champion data found and not already used, select it
             if (candidateData && !usedChampions.has(candidateData.id)) {
                 randomChampion = candidate;
-                return "break";
+                break;
             }
             attempts++;
-        };
-        while (attempts < maxAttempts) {
-            var state_1 = _loop_1();
-            if (state_1 === "break")
-                break;
         }
         if (!randomChampion) {
-            console.warn("Failed to select unique champion for role: ".concat(role, " after ").concat(maxAttempts, " attempts"));
+            console.warn(`Failed to select unique champion for role: ${role} after ${maxAttempts} attempts`);
             // Fallback: just pick any available champion
             randomChampion = availableChampions[Math.floor(Math.random() * availableChampions.length)];
         }
         if (!randomChampion) {
-            console.warn("Failed to select champion for role: ".concat(role));
+            console.warn(`Failed to select champion for role: ${role}`);
             return;
         }
         // Find champion in Data Dragon data
         // Try to match by slug or by name
-        var championData = Object.values(allChampions.data).find(function (champ) {
-            var champId = champ.id.toLowerCase();
-            var champName = champ.name.toLowerCase();
-            var wikiName = randomChampion.name.toLowerCase();
+        const championData = Object.values(allChampions.data).find((champ) => {
+            const champId = champ.id.toLowerCase();
+            const champName = champ.name.toLowerCase();
+            const wikiName = randomChampion.name.toLowerCase();
             return champId === wikiName || champName === wikiName;
         });
         if (!championData) {
-            console.warn("Champion data not found for: ".concat(randomChampion.name));
+            console.warn(`Champion data not found for: ${randomChampion.name}`);
             return;
         }
         // Set the champion image
-        var imgElement = slotElement.querySelector('img');
+        const imgElement = slotElement.querySelector('img');
         if (imgElement) {
-            imgElement.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(championData.id, ".png");
+            imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${championData.id}.png`;
             imgElement.alt = championData.name;
-            imgElement.title = "".concat(championData.name, " (").concat(displayRole(role), ")");
+            imgElement.title = `${championData.name} (${displayRole(role)})`;
             // Add this champion to the used set
             usedChampions.add(championData.id);
         }
         // Update the dropdown to reflect the selected champion
-        var selectElement = slotElement.querySelector('select.champion-select');
+        const selectElement = slotElement.querySelector('select.champion-select');
         if (selectElement) {
             selectElement.value = championData.id;
             selectElement.dataset.previousValue = championData.id;
@@ -777,8 +657,8 @@ function assignChampionsToTeam(teamListSelector, championWikiData, allChampions,
 function itemHasHealthTag(itemId) {
     if (!itemId)
         return false;
-    var enriched = bardEnrichedItemsById === null || bardEnrichedItemsById === void 0 ? void 0 : bardEnrichedItemsById[itemId];
-    var tags = enriched === null || enriched === void 0 ? void 0 : enriched.tag;
+    const enriched = bardEnrichedItemsById === null || bardEnrichedItemsById === void 0 ? void 0 : bardEnrichedItemsById[itemId];
+    const tags = enriched === null || enriched === void 0 ? void 0 : enriched.tag;
     return Array.isArray(tags) && tags.includes("Health");
 }
 // Helper: apply/remove green border class for Health-tagged items
@@ -792,66 +672,44 @@ function applyHealthBorder(element, itemId) {
 }
 // Fetch items.json for a patch and return a by-id map
 function loadItemsById(patch) {
-    return __awaiter(this, void 0, void 0, function () {
-        var usePatch, _a, url, res, json, itemsById;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    if (!(patch !== null && patch !== void 0)) return [3 /*break*/, 1];
-                    _a = patch;
-                    return [3 /*break*/, 3];
-                case 1: return [4 /*yield*/, fetchCurrentPatch()];
-                case 2:
-                    _a = (_b.sent());
-                    _b.label = 3;
-                case 3:
-                    usePatch = _a;
-                    url = "https://ddragon.leagueoflegends.com/cdn/".concat(usePatch, "/data/en_US/item.json");
-                    return [4 /*yield*/, fetch(url)];
-                case 4:
-                    res = _b.sent();
-                    return [4 /*yield*/, res.json()];
-                case 5:
-                    json = _b.sent();
-                    itemsById = json.data;
-                    return [2 /*return*/, { patch: usePatch, itemsById: itemsById }];
-            }
-        });
+    return __awaiter(this, void 0, void 0, function* () {
+        const usePatch = patch !== null && patch !== void 0 ? patch : (yield fetchCurrentPatch());
+        const url = `https://ddragon.leagueoflegends.com/cdn/${usePatch}/data/en_US/item.json`;
+        const res = yield fetch(url);
+        const json = yield res.json();
+        // DDragon shape: { data: { "3877": { ... }, "3742": { ... }, ... } }
+        const itemsById = json.data;
+        return { patch: usePatch, itemsById };
     });
 }
 function matchBardItems() {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, patch, itemsById, enriched, enrichedById;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, loadItemsById()];
-                case 1:
-                    _a = _b.sent(), patch = _a.patch, itemsById = _a.itemsById;
-                    enriched = BardItems.map(function (bardItemId) {
-                        var _a, _b, _c;
-                        var dd = itemsById[bardItemId.id]; // may be undefined if id not found
-                        return {
-                            bardItemId: bardItemId,
-                            existsInDDragon: !!dd,
-                            tag: (_a = dd === null || dd === void 0 ? void 0 : dd.tags) !== null && _a !== void 0 ? _a : [],
-                            stats: (_b = dd === null || dd === void 0 ? void 0 : dd.stats) !== null && _b !== void 0 ? _b : {},
-                            officialName: (_c = dd === null || dd === void 0 ? void 0 : dd.name) !== null && _c !== void 0 ? _c : bardItemId.name, // prefer DDragon name if found
-                            icon: dd ? "https://ddragon.leagueoflegends.com/cdn/".concat(patch, "/img/item/").concat(bardItemId.id, ".png") : undefined,
-                            patch: patch,
-                        };
-                    });
-                    enrichedById = Object.fromEntries(enriched.map(function (e) { return [e.bardItemId.id, e]; }));
-                    //   // Example usage:
-                    //   const bloodsong = enrichedById["3877"];
-                    //   if (bloodsong?.existsInDDragon && bloodsong.icon) {
-                    //     // set a variable, update UI, etc.
-                    //     console.log("Bloodsong icon:", bloodsong.icon);
-                    //   } else {
-                    //     console.warn("Bloodsong not found in DDragon");
-                    //   }
-                    return [2 /*return*/, { patch: patch, enriched: enriched, enrichedById: enrichedById }];
-            }
+    return __awaiter(this, void 0, void 0, function* () {
+        const { patch, itemsById } = yield loadItemsById();
+        // Enriched array you can render with
+        const enriched = BardItems.map(bardItemId => {
+            var _a, _b, _c;
+            const dd = itemsById[bardItemId.id]; // may be undefined if id not found
+            return {
+                bardItemId,
+                existsInDDragon: !!dd,
+                tag: (_a = dd === null || dd === void 0 ? void 0 : dd.tags) !== null && _a !== void 0 ? _a : [],
+                stats: (_b = dd === null || dd === void 0 ? void 0 : dd.stats) !== null && _b !== void 0 ? _b : {},
+                officialName: (_c = dd === null || dd === void 0 ? void 0 : dd.name) !== null && _c !== void 0 ? _c : bardItemId.name, // prefer DDragon name if found
+                icon: dd ? `https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${bardItemId.id}.png` : undefined,
+                patch,
+            };
         });
+        // Quick lookup if you prefer O(1) access by id
+        const enrichedById = Object.fromEntries(enriched.map(e => [e.bardItemId.id, e]));
+        //   // Example usage:
+        //   const bloodsong = enrichedById["3877"];
+        //   if (bloodsong?.existsInDDragon && bloodsong.icon) {
+        //     // set a variable, update UI, etc.
+        //     console.log("Bloodsong icon:", bloodsong.icon);
+        //   } else {
+        //     console.warn("Bloodsong not found in DDragon");
+        //   }
+        return { patch, enriched, enrichedById };
     });
 }
 /**
@@ -864,21 +722,21 @@ function generateNewTeams() {
         return;
     }
     // Get the current patch version from existing champion images
-    var existingImg = document.querySelector('.champion-dropdown img');
-    var patchVersion = ((_a = existingImg === null || existingImg === void 0 ? void 0 : existingImg.src.match(/cdn\/([^/]+)\//)) === null || _a === void 0 ? void 0 : _a[1]) || '15.21.1';
+    const existingImg = document.querySelector('.champion-dropdown img');
+    const patchVersion = ((_a = existingImg === null || existingImg === void 0 ? void 0 : existingImg.src.match(/cdn\/([^/]+)\//)) === null || _a === void 0 ? void 0 : _a[1]) || '15.21.1';
     // Clear all selected champions
     selectedChampions.clear();
     // Reset all champion dropdowns
-    allChampionDropdowns.forEach(function (dropdown) {
-        var previousValue = dropdown.dataset.previousValue;
+    allChampionDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
         if (previousValue) {
             delete dropdown.dataset.previousValue;
         }
         dropdown.value = "";
         // Clear the image from the parent champion slot
-        var parentSlot = dropdown.closest('.champion-dropdown');
+        const parentSlot = dropdown.closest('.champion-dropdown');
         if (parentSlot) {
-            var img = parentSlot.querySelector('img');
+            const img = parentSlot.querySelector('img');
             if (img) {
                 img.src = "";
                 img.alt = "";
@@ -887,29 +745,29 @@ function generateNewTeams() {
         }
     });
     // Remove any Bard label(s) before regenerating
-    document.querySelectorAll('.champion-dropdown .champion-label').forEach(function (el) { return el.remove(); });
+    document.querySelectorAll('.champion-dropdown .champion-label').forEach(el => el.remove());
     // Track used champions to prevent duplicates across both teams
-    var usedChampions = new Set();
+    const usedChampions = new Set();
     // First assign my team (which includes Bard), then enemy team
     assignChampionsToTeam(".my-team-list", championWikiData, allChampions, patchVersion, usedChampions, false);
     assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, patchVersion, usedChampions, true);
     // Update the selectedChampions set with the randomly assigned champions
-    usedChampions.forEach(function (champId) { return selectedChampions.add(champId); });
+    usedChampions.forEach(champId => selectedChampions.add(champId));
     // Update all champion dropdowns to reflect the new selections
     updateAllChampionDropdowns();
     console.log('Generated new teams with champions:', Array.from(usedChampions));
     // Reset all item dropdowns (slots 3, 4, 5, and boots)
-    allDropdowns.forEach(function (dropdown) {
-        var previousValue = dropdown.dataset.previousValue;
+    allDropdowns.forEach(dropdown => {
+        const previousValue = dropdown.dataset.previousValue;
         if (previousValue) {
             selectedItems.delete(previousValue);
             delete dropdown.dataset.previousValue;
         }
         dropdown.value = "";
         // Remove the image from the parent item
-        var parentItem = dropdown.closest('.item');
+        const parentItem = dropdown.closest('.item');
         if (parentItem) {
-            var img = parentItem.querySelector('img');
+            const img = parentItem.querySelector('img');
             if (img) {
                 img.src = "";
                 img.alt = "";
@@ -930,45 +788,41 @@ function normalizeName(name) {
     return name.replace(/[\s'\.&]/g, '').toLowerCase();
 }
 function getTeamChampions() {
-    var myTeam = [];
-    var enemyTeam = [];
-    var myTeamSlots = document.querySelectorAll('.my-team-list .champion-dropdown select');
-    myTeamSlots.forEach(function (selectElement) {
-        var select = selectElement;
-        var championId = select.value;
+    const myTeam = [];
+    const enemyTeam = [];
+    const myTeamSlots = document.querySelectorAll('.my-team-list .champion-dropdown select');
+    myTeamSlots.forEach((selectElement) => {
+        const select = selectElement;
+        const championId = select.value;
         if (championId) {
-            var normalizedId_1 = normalizeName(championId);
-            var champion = championWikiData.find(function (c) {
-                return normalizeName(c.name) === normalizedId_1;
-            });
+            const normalizedId = normalizeName(championId);
+            const champion = championWikiData.find(c => normalizeName(c.name) === normalizedId);
             if (champion)
                 myTeam.push(champion);
         }
     });
-    var enemyTeamSlots = document.querySelectorAll('.enemy-team-list .champion-dropdown select');
-    enemyTeamSlots.forEach(function (selectElement) {
-        var select = selectElement;
-        var championId = select.value;
+    const enemyTeamSlots = document.querySelectorAll('.enemy-team-list .champion-dropdown select');
+    enemyTeamSlots.forEach((selectElement) => {
+        const select = selectElement;
+        const championId = select.value;
         if (championId) {
-            var normalizedId_2 = normalizeName(championId);
-            var champion = championWikiData.find(function (c) {
-                return normalizeName(c.name) === normalizedId_2;
-            });
+            const normalizedId = normalizeName(championId);
+            const champion = championWikiData.find(c => normalizeName(c.name) === normalizedId);
             if (champion)
                 enemyTeam.push(champion);
         }
     });
-    return { myTeam: myTeam, enemyTeam: enemyTeam };
+    return { myTeam, enemyTeam };
 }
 function isAdorAp(championWikiData) {
-    var dmgType = championWikiData.adaptiveType === "physical" ? "AD" : "AP";
+    let dmgType = championWikiData.adaptiveType === "physical" ? "AD" : "AP";
     return dmgType;
 }
 function getTeamInfo(team) {
-    var ap = 0;
-    var ad = 0;
-    var tank = 0;
-    team.forEach(function (Champion) {
+    let ap = 0;
+    let ad = 0;
+    let tank = 0;
+    team.forEach((Champion) => {
         switch (Champion.class) {
             case "Enchanter":
                 // if (Champion.name === "Soraka" ||
@@ -1027,29 +881,29 @@ function getTeamInfo(team) {
                 isAdorAp(Champion) === "AD" ? ad++ : ap++;
                 break;
             default:
-                console.log("Against ".concat(Champion.name, " (").concat(Champion.class, "), consider balanced items."));
+                console.log(`Against ${Champion.name} (${Champion.class}), consider balanced items.`);
         }
     });
-    return { ap: ap, ad: ad, tank: tank };
+    return { ap, ad, tank };
 }
 function analyzeChampions() {
-    var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
+    const { myTeam, enemyTeam } = getTeamChampions();
     console.log("Enemy team", enemyTeam);
     console.log("My team ", myTeam);
-    var enemyAp = 0;
-    var enemyAd = 0;
-    var enemyTank = 0;
-    var teamAp = 0;
-    var teamAd = 0;
-    var teamTank = 0;
-    var enemyInfo = getTeamInfo(enemyTeam);
-    var teamInfo = getTeamInfo(myTeam);
-    (enemyAp = enemyInfo.ap, enemyAd = enemyInfo.ad, enemyTank = enemyInfo.tank);
-    (teamAp = teamInfo.ap, teamAd = teamInfo.ad, teamTank = teamInfo.tank);
+    let enemyAp = 0;
+    let enemyAd = 0;
+    let enemyTank = 0;
+    let teamAp = 0;
+    let teamAd = 0;
+    let teamTank = 0;
+    const enemyInfo = getTeamInfo(enemyTeam);
+    const teamInfo = getTeamInfo(myTeam);
+    ({ ap: enemyAp, ad: enemyAd, tank: enemyTank } = enemyInfo);
+    ({ ap: teamAp, ad: teamAd, tank: teamTank } = teamInfo);
     // Style the counts in the UI
-    var enemyApCount = document.querySelector(".enemy-ap");
-    var enemyAdCount = document.querySelector(".enemy-ad");
-    var enemyTankCount = document.querySelector(".enemy-tank");
+    const enemyApCount = document.querySelector(".enemy-ap");
+    const enemyAdCount = document.querySelector(".enemy-ad");
+    const enemyTankCount = document.querySelector(".enemy-tank");
     enemyApCount.textContent = enemyAp.toString() + " AP";
     enemyAdCount.textContent = enemyAd.toString() + " AD";
     enemyTankCount.textContent = enemyTank.toString() + (enemyTank < 2 ? " Tank" : " Tanks");
@@ -1057,9 +911,9 @@ function analyzeChampions() {
     enemyAdCount.style.color = "rgba(243, 146, 0, 1)";
     if (enemyAp + enemyAd > 5)
         console.error("More than 5 champions detected on enemy team!");
-    var teamApCount = document.querySelector(".team-ap");
-    var teamAdCount = document.querySelector(".team-ad");
-    var teamTankCount = document.querySelector(".team-tank");
+    const teamApCount = document.querySelector(".team-ap");
+    const teamAdCount = document.querySelector(".team-ad");
+    const teamTankCount = document.querySelector(".team-tank");
     teamApCount.textContent = teamAp.toString() + " AP";
     teamAdCount.textContent = teamAd.toString() + " AD";
     teamTankCount.textContent = teamTank.toString() + (teamTank < 2 ? " Tank" : " Tanks");
@@ -1068,12 +922,12 @@ function analyzeChampions() {
     suggestItems(teamInfo, enemyInfo);
 }
 function suggestItems(teamInfo, enemyInfo) {
-    var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
+    const { myTeam, enemyTeam } = getTeamChampions();
     // let isWinning: boolean = false;
-    var enemyAP = enemyInfo.ap, enemyAD = enemyInfo.ad, enemyTank = enemyInfo.tank;
-    var enemyShields = 0, enemyPoke = 0, enemyCrit = 0, enemyAS = 0, enemyDot = 0;
-    var teamAP = teamInfo.ap, teamAD = teamInfo.ad, teamTank = teamInfo.tank;
-    enemyTeam.forEach(function (c) {
+    let enemyAP = enemyInfo.ap, enemyAD = enemyInfo.ad, enemyTank = enemyInfo.tank;
+    let enemyShields = 0, enemyPoke = 0, enemyCrit = 0, enemyAS = 0, enemyDot = 0;
+    let teamAP = teamInfo.ap, teamAD = teamInfo.ad, teamTank = teamInfo.tank;
+    enemyTeam.forEach((c) => {
         var _a, _b, _c, _d, _e;
         if (((_a = c.class) === null || _a === void 0 ? void 0 : _a.includes("Enchanter")) && c.name !== "Nami" && c.name !== "Soraka")
             enemyShields++;
@@ -1086,39 +940,26 @@ function suggestItems(teamInfo, enemyInfo) {
         if (c.name === "Jax" || c.name === "Master Yi" || c.name === "Tryndamere")
             enemyAS++;
     });
-    var state = {
-        enemyAP: enemyAP,
-        enemyAD: enemyAD,
-        enemyTank: enemyTank,
-        enemyShields: enemyShields,
-        enemyPoke: enemyPoke,
-        enemyCrit: enemyCrit,
-        enemyAS: enemyAS,
-        enemyDot: enemyDot,
-        teamAP: teamAP,
-        teamAD: teamAD,
-        teamTank: teamTank,
-        isWinning: false
+    const state = {
+        enemyAP, enemyAD, enemyTank,
+        enemyShields, enemyPoke, enemyCrit, enemyAS, enemyDot,
+        teamAP, teamAD, teamTank, isWinning: false
     };
-    var weightsWinning = computeWeights(__assign(__assign({}, state), { isWinning: true }));
-    var weightsLosing = computeWeights(state);
+    const weightsWinning = computeWeights(Object.assign(Object.assign({}, state), { isWinning: true }));
+    const weightsLosing = computeWeights(state);
     // Exclude Bloodsong and Dead Man's Plate
-    var excludedIds = new Set(__spreadArray(["3877", "3742"], Array.from(selectedItems), true));
-    var winningItems = scoreItems(weightsWinning, excludedIds);
-    var losingItems = scoreItems(weightsLosing, excludedIds);
-    winningItems.forEach(function (item) {
-        console.log("Winning Item: ".concat(item.name, " (Score: ").concat(item.score, ") - Reasons: ").concat(item.reasons.join(", ")));
+    const excludedIds = new Set(["3877", "3742", ...Array.from(selectedItems)]);
+    const winningItems = scoreItems(weightsWinning, excludedIds);
+    const losingItems = scoreItems(weightsLosing, excludedIds);
+    winningItems.forEach(item => {
+        console.log(`Winning Item: ${item.name} (Score: ${item.score}) - Reasons: ${item.reasons.join(", ")}`);
     });
     // Render top 3 suggestions for each state
     displaySuggestedItems(winningItems.slice(0, 3), losingItems.slice(0, 3));
 }
 function computeWeights(state) {
-    var w = {};
-    var add = function (key, value) {
-        var _a;
-        if (value === void 0) { value = 1; }
-        return (w[key] = ((_a = w[key]) !== null && _a !== void 0 ? _a : 0) + value);
-    };
+    const w = {};
+    const add = (key, value = 1) => { var _a; return (w[key] = ((_a = w[key]) !== null && _a !== void 0 ? _a : 0) + value); };
     if (state.enemyCrit === 0)
         state.enemyCrit = -1;
     if (state.teamAP < 2)
@@ -1129,7 +970,7 @@ function computeWeights(state) {
     add("AntiShield", state.enemyShields);
     add("AntiPoke", state.enemyPoke);
     add("AntiCrit", state.enemyCrit);
-    add("AntiAS", state.enemyCrit);
+    add("AntiAS", state.enemyAS);
     add("AntiDot", state.enemyDot);
     add("AmpMagic", ((state.enemyAP >= 2 ? 2 : 0) + (state.teamAP >= 2 ? 2 : 0)) >= 4 ? 4 : 0);
     add("Frontline", state.teamTank === 0 ? 2 : 0);
@@ -1147,52 +988,47 @@ function computeWeights(state) {
     return w;
 }
 function scoreItems(weights, excludedIds) {
-    var results = [];
-    var _loop_2 = function (id, tags) {
+    const results = [];
+    for (const [id, tags] of Object.entries(ITEM_TAGS)) {
         if (excludedIds.has(id))
-            return "continue";
-        var score = 0;
-        var reasons = [];
-        for (var _c = 0, tags_1 = tags; _c < tags_1.length; _c++) {
-            var tag = tags_1[_c];
-            var weight = weights[tag] || 0;
+            continue;
+        let score = 0;
+        const reasons = [];
+        for (const tag of tags) {
+            const weight = weights[tag] || 0;
             score += weight;
-            reasons.push("".concat(weight, " (+").concat(tag, ")"));
+            reasons.push(`${weight} (+${tag})`);
         }
         if (score > 0) {
-            var item = BardItems.find(function (item) { return item.id === id; });
+            const item = BardItems.find(item => item.id === id);
             results.push({
-                id: id,
+                id,
                 name: (item === null || item === void 0 ? void 0 : item.name) || id,
-                score: score,
-                reasons: reasons
+                score,
+                reasons
             });
         }
-    };
-    for (var _i = 0, _a = Object.entries(ITEM_TAGS); _i < _a.length; _i++) {
-        var _b = _a[_i], id = _b[0], tags = _b[1];
-        _loop_2(id, tags);
     }
-    results.sort(function (a, b) { return b.score - a.score; });
+    results.sort((a, b) => b.score - a.score);
     return results;
 }
 function displaySuggestedItems(winningItems, losingItems) {
-    var patch = currentPatchVersion;
-    var renderInto = function (listSelector, items) {
-        var list = document.querySelector(listSelector);
+    const patch = currentPatchVersion;
+    const renderInto = (listSelector, items) => {
+        const list = document.querySelector(listSelector);
         if (!list)
             return;
-        [1, 2, 3].forEach(function (n, idx) {
-            var li = list.querySelector(".suggested-item-".concat(n));
-            var img = li === null || li === void 0 ? void 0 : li.querySelector('img');
-            var item = items[idx];
+        [1, 2, 3].forEach((n, idx) => {
+            const li = list.querySelector(`.suggested-item-${n}`);
+            const img = li === null || li === void 0 ? void 0 : li.querySelector('img');
+            const item = items[idx];
             if (!li || !img)
                 return;
             if (item) {
-                img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patch, "/img/item/").concat(item.id, ".png");
+                img.src = `https://ddragon.leagueoflegends.com/cdn/${patch}/img/item/${item.id}.png`;
                 img.alt = item.name;
                 img.title = item.reasons && item.reasons.length > 0
-                    ? "".concat(item.name, " \u2014 ").concat(item.reasons.slice(0, 2).join(', '))
+                    ? `${item.name} — ${item.reasons.slice(0, 2).join(', ')}`
                     : item.name;
             }
             else {
@@ -1209,10 +1045,10 @@ function setup() {
     // Mark Dead Man's Plate as already selected (core item for Bard)
     selectedItems.add("3742");
     // Load champion roles and assign champions to teams
-    loadChampionWikiData().then(function (wikiData) {
+    loadChampionWikiData().then(wikiData => {
         championWikiData = wikiData;
     });
-    getAllChampionsAndItems().then(function (data) {
+    getAllChampionsAndItems().then(data => {
         if (data) {
             allChampions = data.champions;
             allItems = data.items;
@@ -1220,67 +1056,66 @@ function setup() {
             // console.log(data.champions.data);
             // Assign champions to enemy team once we have both champion data and roles
             // Track used champions to prevent duplicates across both teams
-            var usedChampions_1 = new Set();
+            const usedChampions = new Set();
             if (championWikiData.length > 0) {
                 // First assign my team (which includes Bard), then enemy team
-                assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions_1, false);
-                assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions_1, true);
+                assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, false);
+                assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, true);
             }
             else {
                 // If roles haven't loaded yet, wait for them
-                loadChampionWikiData().then(function (wikiData) {
+                loadChampionWikiData().then(wikiData => {
                     championWikiData = wikiData;
                     // First assign my team (which includes Bard), then enemy team
-                    assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions_1, false);
-                    assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions_1, true);
+                    assignChampionsToTeam(".my-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, false);
+                    assignChampionsToTeam(".enemy-team-list", championWikiData, allChampions, data.patchVersion, usedChampions, true);
                 });
             }
-            var items = document.querySelectorAll(".item");
-            var bloodsongImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3877.png");
-            items[0].innerHTML = "<img src=\"".concat(bloodsongImg, "\" alt=\"Bloodsong\">");
+            let items = document.querySelectorAll(".item");
+            const bloodsongImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3877.png`;
+            items[0].innerHTML = `<img src="${bloodsongImg}" alt="Bloodsong">`;
             applyHealthBorder(items[0], "3877");
-            var deadMansPlateImg = "https://ddragon.leagueoflegends.com/cdn/".concat(data.patchVersion, "/img/item/3742.png");
-            items[1].innerHTML = "<img src=\"".concat(deadMansPlateImg, "\" alt=\"Dead Man's Plate\">");
+            const deadMansPlateImg = `https://ddragon.leagueoflegends.com/cdn/${data.patchVersion}/img/item/3742.png`;
+            items[1].innerHTML = `<img src="${deadMansPlateImg}" alt="Dead Man's Plate">`;
             applyHealthBorder(items[1], "3742");
             // Create dropdown for item slot 3 - All Bard items
-            var itemSlot3 = items[2];
+            const itemSlot3 = items[2];
             if (itemSlot3) {
                 createItemDropdown(itemSlot3, BardItems, data.patchVersion, "Item", "item-dropdown-3");
             }
             // Create dropdown for item slot 4 - All Bard items
-            var itemSlot4 = items[3];
+            const itemSlot4 = items[3];
             if (itemSlot4) {
                 createItemDropdown(itemSlot4, BardItems, data.patchVersion, "Item", "item-dropdown-4");
             }
             // Create dropdown for item slot 5 - All Bard items
-            var itemSlot5 = items[4];
+            const itemSlot5 = items[4];
             if (itemSlot5) {
                 createItemDropdown(itemSlot5, BardItems, data.patchVersion, "Item", "item-dropdown-5");
             }
             // Create dropdown for boots slot
-            var bootsSlot = document.querySelector(".item.boots-dropdown");
+            const bootsSlot = document.querySelector(".item.boots-dropdown");
             if (bootsSlot) {
                 createBootsDropdown(bootsSlot, data.patchVersion);
             }
             // Update all dropdowns to disable Dead Man's Plate (pre-selected core item)
             updateAllDropdowns();
         }
-        var matchedItems = matchBardItems().then(function (_a) {
-            var patch = _a.patch, enriched = _a.enriched, enrichedById = _a.enrichedById;
+        const matchedItems = matchBardItems().then(({ patch, enriched, enrichedById }) => {
             bardEnrichedItems = enriched;
             bardEnrichedItemsById = enrichedById;
             // console.log("Current patch:", patch);
             // console.log("Enriched Bard Items:", enriched);
             // console.log("Enriched By ID:", enrichedById);
             // Re-apply health borders now that enriched tags are available
-            var listItems = document.querySelectorAll('.items-list .item');
+            const listItems = document.querySelectorAll('.items-list .item');
             if (listItems[0])
                 applyHealthBorder(listItems[0], "3877");
             if (listItems[1])
                 applyHealthBorder(listItems[1], "3742");
             // Apply for current selections in all dropdowns
-            allDropdowns.forEach(function (dropdown) {
-                var li = dropdown.closest('.item');
+            allDropdowns.forEach((dropdown) => {
+                const li = dropdown.closest('.item');
                 if (li)
                     applyHealthBorder(li, dropdown.value || undefined);
             });
@@ -1295,11 +1130,13 @@ function setup() {
         });
     });
     // Add event listener for the "Generate teams" button
-    var newChampionsButton = document.getElementById('new-champions-button');
+    const newChampionsButton = document.getElementById('new-champions-button');
     if (newChampionsButton) {
-        newChampionsButton.addEventListener('click', function () {
+        newChampionsButton.addEventListener('click', () => {
             generateNewTeams();
         });
     }
 }
 setup();
+export {};
+//# sourceMappingURL=scripts.js.map
