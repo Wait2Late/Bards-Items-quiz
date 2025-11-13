@@ -590,6 +590,8 @@ function createChampionDropdown(
             img.alt = championName;
             img.src = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/img/champion/${selected}.png`;
             img.title = championName;
+            // apply adaptive-type border (AD/AP)
+            applyChampionTypeBorder(element, selected);
         } else if (img) {
             // Clear image if user selects the default option again
             img.src = "";
@@ -793,6 +795,8 @@ function assignChampionsToTeam(
             imgElement.title = `${championData.name} (${displayRole(role)})`;
             // Add this champion to the used set
             usedChampions.add(championData.id);
+            // apply adaptive-type border (AD/AP)
+            applyChampionTypeBorder(slotElement, championData.id);
         }
         
         // Update the dropdown to reflect the selected champion
@@ -973,6 +977,83 @@ function getChampionDisplayNameFromId(championId: string): string | null {
     }
 }
 
+// Apply a colored border to a champion slot element based on the champion's adaptive type
+function applyChampionTypeBorder(element: HTMLElement, championId?: string | null) {
+    // remove any previous type classes
+    element.classList.remove('type-ad', 'type-ap');
+
+    if (!championId) return;
+
+    // Resolve display name from DDragon id if possible
+    const ddName = getChampionDisplayNameFromId(championId) || championId;
+    const normalized = normalizeName(ddName);
+
+    // Find the wiki entry for this champion to read adaptiveType
+    const wikiEntry = championWikiData.find(c => normalizeName(c.name) === normalized);
+    if (!wikiEntry) return;
+
+    // Decide whether this champion should get a colored border and which type
+    const highlightType = getChampionHighlightType(wikiEntry);
+    if (!highlightType) return;
+
+    if (highlightType === 'physical') {
+        element.classList.add('type-ad');
+    } else if (highlightType === 'magic') {
+        element.classList.add('type-ap');
+    }
+}
+
+// Decide whether a champion should receive a damage-type highlight
+function getChampionHighlightType(champion: ChampionWikiData): 'physical' | 'magic' | null {
+    const name = champion.name;
+    const cls = champion.class;
+
+    const resolveAdaptive = (at: string | null | undefined): 'physical' | 'magic' | null => {
+        if (at === 'physical') return 'physical';
+        if (at === 'magic' || at === 'ability' || at === 'true') return 'magic';
+        return null;
+    };
+    switch (cls) {
+        case 'Enchanter':
+            return null;
+        case 'Catcher':
+            if (['Morgana', 'Zyra', 'Pyke', 'Neeko'].includes(name)) return resolveAdaptive(champion.adaptiveType);
+            return null;
+        case 'Juggernaut':
+        case 'Diver':
+        case 'Burst':
+        case 'Battlemage':
+        case 'Artillery':
+        case 'Assassin':
+        case 'Skirmisher':
+        case 'Marksman':
+        case 'Specialist':
+            return resolveAdaptive(champion.adaptiveType);
+        case 'Vanguard':
+            if (['Amumu', 'Sion', 'Malphite', 'Gragas'].includes(name)) return resolveAdaptive(champion.adaptiveType);
+            return null;
+        case 'Warden':
+            if (['Galio', "K'Sante", 'Poppy'].includes(name)) return resolveAdaptive(champion.adaptiveType);
+            return null;
+        default:
+            return resolveAdaptive(champion.adaptiveType);
+    }
+}
+
+// Refresh adaptive-type borders for all champion slots on the page
+function refreshChampionTypeBorders() {
+    const slots = document.querySelectorAll('.champion-dropdown');
+    slots.forEach(slot => {
+        const select = slot.querySelector('select.champion-select') as HTMLSelectElement | null;
+        if (select && select.value) {
+            applyChampionTypeBorder(slot as HTMLElement, select.value);
+        } else {
+            // clear any previous type classes
+            (slot as HTMLElement).classList.remove('type-ad', 'type-ap');
+        }
+    });
+}
+
 function getTeamChampions(): {
     myTeam: ChampionWikiData[];
     enemyTeam: ChampionWikiData[];
@@ -1058,7 +1139,6 @@ function getTeamInfo(team: ChampionWikiData[]) : { ap: number; ad: number ; tank
                 break;
             case "Vanguard":
                 // console.log(Champion.name, "class: ", Champion.class); // TODO Fix Nunu & Willump bug
-                    
                 tank++;
                 if (Champion.name === "Amumu" || 
                     Champion.name === "Sion" || 
@@ -1092,29 +1172,29 @@ function analyzeChampions() {
     console.log("Enemy team", enemyTeam);
     console.log("My team ", myTeam);
 
-    let enemyAp: number = 0;
-    let enemyAd: number = 0;
-    let enemyTank: number = 0;
-
-    let teamAp: number = 0;
-    let teamAd: number = 0;
-    let teamTank: number = 0;
-    
     const enemyInfo = getTeamInfo(enemyTeam);
     const teamInfo = getTeamInfo(myTeam);
 
-    ({ ap: enemyAp, ad: enemyAd, tank: enemyTank } = enemyInfo);
-    ({ ap: teamAp, ad: teamAd, tank: teamTank } = teamInfo);
+    // Ensure DOM borders are refreshed, then derive AP/AD counts from the visible colored borders
+    refreshChampionTypeBorders();
+
+    const enemyAp = document.querySelectorAll('.enemy-team-list .champion-dropdown.type-ap').length;
+    const enemyAd = document.querySelectorAll('.enemy-team-list .champion-dropdown.type-ad').length;
+    const enemyTank = enemyInfo.tank;
+
+    const teamAp = document.querySelectorAll('.my-team-list .champion-dropdown.type-ap').length;
+    const teamAd = document.querySelectorAll('.my-team-list .champion-dropdown.type-ad').length;
+    const teamTank = teamInfo.tank;
 
     // Style the counts in the UI
     const enemyApCount = document.querySelector(".enemy-ap");
     const enemyAdCount = document.querySelector(".enemy-ad");
     const enemyTankCount = document.querySelector(".enemy-tank");
-    
+
     enemyApCount!.textContent = enemyAp.toString() + " AP";
     enemyAdCount!.textContent = enemyAd.toString() + " AD";
     enemyTankCount!.textContent = enemyTank.toString() + (enemyTank < 2 ? " Tank" : " Tanks");
-    
+
     (enemyApCount as HTMLElement)!.style.color = "rgba(0, 0, 255, 1)";
     (enemyAdCount as HTMLElement)!.style.color = "rgba(243, 146, 0, 1)";
 
@@ -1132,6 +1212,8 @@ function analyzeChampions() {
     (teamAdCount as HTMLElement)!.style.color = "rgba(243, 146, 0, 1)";
 
     suggestItems(teamInfo, enemyInfo);
+
+    // Borders were refreshed earlier; no further action needed here
 }
 
 function suggestItems(
