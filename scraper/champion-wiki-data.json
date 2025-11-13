@@ -389,7 +389,7 @@
     "roles": ["Bottom"],
     "class": "Marksman",
     "legacyClass": ["Marksman", "Mage"],
-    "adaptiveType": "magic"
+    "adaptiveType": "physical"
   },
   {
     "name": "Kalista",
