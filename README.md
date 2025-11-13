@@ -40,26 +40,6 @@ A small, for-fun project where I learned TypeScript by building an interactive w
 - Subtle logic bugs: it’s easy to mix up signals (e.g., AntiAS should key off enemy attack speed, not crit). Keeping weights isolated in a function makes fixes straightforward.
 - CSS polish: background overlays and dropdown positioning needed a few iterations to avoid overlap and keep things legible.
 
-### How to run
-This is a static site that fetches public JSON and images. Opening `index.html` may work directly, but using a tiny local server is more reliable:
-
-1) With VS Code’s Live Server extension, right‑click `index.html` → “Open with Live Server”.
-
-2) Or with Node (PowerShell):
-
-```powershell
-npx http-server -p 5173 .
-# then open http://localhost:5173
-```
-
-### Repository layout
-- `index.html` – structure of the page (teams, items, summary)
-- `styles.css` – layout, background splash, and component styles
-- `scripts.ts` – TypeScript app logic (fetching, state, scoring, rendering)
-- `scripts.js` – compiled output
-- `tsconfig.json` – strict TS settings used for learning
-- `scraper/` – Puppeteer-based script and output data (`champion-wiki-data.json`)
-
 ### Possible next steps
 - Tighten types (less `any`), rename a couple of typos, and add an ESLint config.
 - Add a lightweight test or two for `computeWeights` and `scoreItems`.

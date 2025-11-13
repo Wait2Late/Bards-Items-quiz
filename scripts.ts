@@ -1147,15 +1147,15 @@ function suggestItems(
     let teamAP = teamInfo.ap, teamAD = teamInfo.ad, teamTank = teamInfo.tank;
 
     enemyTeam.forEach((c) => {
-        if (c.class?.includes("Enchanter") && c.name !== "Nami" && c.name !== "Soraka")
+        if (c.class?.includes("Enchanter") && ["Soraka", "Nami"].includes(c.name))
             enemyShields++;
-        if (c.class?.includes("Artillery") || c.class?.includes("Burst") && c.adaptiveType === "magic")
+        if ((c.class?.includes("Artillery") || c.class?.includes("Burst")) && c.adaptiveType === "magic")
             enemyPoke++;
         if (c.class?.includes("BattleMage"))
             enemyDot++;
-        if (c.class?.includes("Marksman") || c.name === "Yasuo" || c.name === "Yone")
+        if (c.class?.includes("Marksman") || ["Yasuo", "Yone"].includes(c.name))
             enemyCrit++;
-        if (c.name === "Jax" || c.name === "Master Yi" || c.name === "Tryndamere")
+        if (["Jax", "Master Yi", "Tryndamere"].includes(c.name))
             enemyAS++;
     });
 
@@ -1395,7 +1395,5 @@ function setup() {
         });
     }
 }
-
-
 
 setup();
