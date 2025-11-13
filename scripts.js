@@ -574,6 +574,8 @@ function createChampionDropdown(element, championWikiData, allChampions, patchVe
             img.alt = championName;
             img.src = "https://ddragon.leagueoflegends.com/cdn/".concat(patchVersion, "/img/champion/").concat(selected, ".png");
             img.title = championName;
+            // apply adaptive-type border (AD/AP)
+            applyChampionTypeBorder(element, selected);
         }
         else if (img) {
             // Clear image if user selects the default option again
@@ -750,6 +752,8 @@ function assignChampionsToTeam(teamListSelector, championWikiData, allChampions,
             imgElement.title = "".concat(championData.name, " (").concat(displayRole(role), ")");
             // Add this champion to the used set
             usedChampions.add(championData.id);
+            // apply adaptive-type border (AD/AP)
+            applyChampionTypeBorder(slotElement, championData.id);
         }
         // Update the dropdown to reflect the selected champion
         var selectElement = slotElement.querySelector('select.champion-select');
@@ -933,6 +937,84 @@ function getChampionDisplayNameFromId(championId) {
         return null;
     }
 }
+// Apply a colored border to a champion slot element based on the champion's adaptive type
+function applyChampionTypeBorder(element, championId) {
+    // remove any previous type classes
+    element.classList.remove('type-ad', 'type-ap');
+    if (!championId)
+        return;
+    // Resolve display name from DDragon id if possible
+    var ddName = getChampionDisplayNameFromId(championId) || championId;
+    var normalized = normalizeName(ddName);
+    // Find the wiki entry for this champion to read adaptiveType
+    var wikiEntry = championWikiData.find(function (c) { return normalizeName(c.name) === normalized; });
+    if (!wikiEntry)
+        return;
+    // Decide whether this champion should get a colored border and which type
+    var highlightType = getChampionHighlightType(wikiEntry);
+    if (!highlightType)
+        return;
+    if (highlightType === 'physical') {
+        element.classList.add('type-ad');
+    }
+    else if (highlightType === 'magic') {
+        element.classList.add('type-ap');
+    }
+}
+// Decide whether a champion should receive a damage-type highlight
+function getChampionHighlightType(champion) {
+    var name = champion.name;
+    var cls = champion.class;
+    var resolveAdaptive = function (at) {
+        if (at === 'physical')
+            return 'physical';
+        if (at === 'magic' || at === 'ability' || at === 'true')
+            return 'magic';
+        return null;
+    };
+    switch (cls) {
+        case 'Enchanter':
+            return null;
+        case 'Catcher':
+            if (['Morgana', 'Zyra', 'Pyke', 'Neeko'].includes(name))
+                return resolveAdaptive(champion.adaptiveType);
+            return null;
+        case 'Juggernaut':
+        case 'Diver':
+        case 'Burst':
+        case 'Battlemage':
+        case 'Artillery':
+        case 'Assassin':
+        case 'Skirmisher':
+        case 'Marksman':
+        case 'Specialist':
+            return resolveAdaptive(champion.adaptiveType);
+        case 'Vanguard':
+            if (['Amumu', 'Sion', 'Malphite', 'Gragas'].includes(name))
+                return resolveAdaptive(champion.adaptiveType);
+            return null;
+        case 'Warden':
+            if (['Galio', "K'Sante", 'Poppy'].includes(name))
+                return resolveAdaptive(champion.adaptiveType);
+            return null;
+        default:
+            return resolveAdaptive(champion.adaptiveType);
+    }
+}
+// Refresh adaptive-type borders for all champion slots on the page
+function refreshChampionTypeBorders() {
+    var slots = document.querySelectorAll('.champion-dropdown');
+    slots.forEach(function (slot) {
+        var select = slot.querySelector('select.champion-select');
+        if (select && select.value) {
+            applyChampionTypeBorder(slot, select.value);
+        }
+        else {
+            // clear any previous type classes
+            slot.classList.remove('type-ad', 'type-ap');
+        }
+    });
+}
 function getTeamChampions() {
     var myTeam = [];
     var enemyTeam = [];
@@ -1041,16 +1123,16 @@ function analyzeChampions() {
     var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
     console.log("Enemy team", enemyTeam);
     console.log("My team ", myTeam);
-    var enemyAp = 0;
-    var enemyAd = 0;
-    var enemyTank = 0;
-    var teamAp = 0;
-    var teamAd = 0;
-    var teamTank = 0;
     var enemyInfo = getTeamInfo(enemyTeam);
     var teamInfo = getTeamInfo(myTeam);
-    (enemyAp = enemyInfo.ap, enemyAd = enemyInfo.ad, enemyTank = enemyInfo.tank);
-    (teamAp = teamInfo.ap, teamAd = teamInfo.ad, teamTank = teamInfo.tank);
+    // Ensure DOM borders are refreshed, then derive AP/AD counts from the visible colored borders
+    refreshChampionTypeBorders();
+    var enemyAp = document.querySelectorAll('.enemy-team-list .champion-dropdown.type-ap').length;
+    var enemyAd = document.querySelectorAll('.enemy-team-list .champion-dropdown.type-ad').length;
+    var enemyTank = enemyInfo.tank;
+    var teamAp = document.querySelectorAll('.my-team-list .champion-dropdown.type-ap').length;
+    var teamAd = document.querySelectorAll('.my-team-list .champion-dropdown.type-ad').length;
+    var teamTank = teamInfo.tank;
     // Style the counts in the UI
     var enemyApCount = document.querySelector(".enemy-ap");
     var enemyAdCount = document.querySelector(".enemy-ad");
@@ -1071,6 +1153,7 @@ function analyzeChampions() {
     teamApCount.style.color = "rgba(0, 0, 255, 1)";
     teamAdCount.style.color = "rgba(243, 146, 0, 1)";
     suggestItems(teamInfo, enemyInfo);
+    // Borders were refreshed earlier; no further action needed here
 }
 function suggestItems(teamInfo, enemyInfo) {
     var _a = getTeamChampions(), myTeam = _a.myTeam, enemyTeam = _a.enemyTeam;
@@ -1080,15 +1163,15 @@ function suggestItems(teamInfo, enemyInfo) {
     var teamAP = teamInfo.ap, teamAD = teamInfo.ad, teamTank = teamInfo.tank;
     enemyTeam.forEach(function (c) {
         var _a, _b, _c, _d, _e;
-        if (((_a = c.class) === null || _a === void 0 ? void 0 : _a.includes("Enchanter")) && c.name !== "Nami" && c.name !== "Soraka")
+        if (((_a = c.class) === null || _a === void 0 ? void 0 : _a.includes("Enchanter")) && ["Soraka", "Nami"].includes(c.name))
             enemyShields++;
-        if (((_b = c.class) === null || _b === void 0 ? void 0 : _b.includes("Artillery")) || ((_c = c.class) === null || _c === void 0 ? void 0 : _c.includes("Burst")) && c.adaptiveType === "magic")
+        if ((((_b = c.class) === null || _b === void 0 ? void 0 : _b.includes("Artillery")) || ((_c = c.class) === null || _c === void 0 ? void 0 : _c.includes("Burst"))) && c.adaptiveType === "magic")
             enemyPoke++;
         if ((_d = c.class) === null || _d === void 0 ? void 0 : _d.includes("BattleMage"))
             enemyDot++;
-        if (((_e = c.class) === null || _e === void 0 ? void 0 : _e.includes("Marksman")) || c.name === "Yasuo" || c.name === "Yone")
+        if (((_e = c.class) === null || _e === void 0 ? void 0 : _e.includes("Marksman")) || ["Yasuo", "Yone"].includes(c.name))
             enemyCrit++;
-        if (c.name === "Jax" || c.name === "Master Yi" || c.name === "Tryndamere")
+        if (["Jax", "Master Yi", "Tryndamere"].includes(c.name))
             enemyAS++;
     });
     var state = {

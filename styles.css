@@ -267,10 +267,35 @@ hr {
 
 }
 
+/* Borders that indicate adaptive damage type */
+.champion-dropdown.type-ad {
+    border-color: #f39200; /* orange for AD */
+    /* inner ring + outer ring (match item.health style) */
+    box-shadow:
+        0 0 0 3px rgba(243,146,0,0.28) inset,
+        0 0 0 3px rgba(243,146,0,0.6);
+    transition: box-shadow 160ms ease, border-color 160ms ease;
+}
+.champion-dropdown.type-ap {
+    border-color: #0066ff; /* blue for AP */
+    /* inner ring + outer ring (match item.health style) */
+    box-shadow:
+        0 0 0 3px rgba(0,102,255,0.28) inset,
+        0 0 0 3px rgba(0,102,255,0.6);
+    transition: box-shadow 160ms ease, border-color 160ms ease;
+}
+
 .champion-dropdown img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* Apply same visual ring to the image so the colored area surrounds the icon */
+.champion-dropdown.type-ad img,
+.champion-dropdown.type-ap img {
+    border-radius: 6px;
+    box-shadow: inherit;
 }
 
 /* Style champion dropdowns positioned under their boxes */

@@ -851,7 +851,7 @@
     "roles": ["Jungle"],
     "class": "Juggernaut",
     "legacyClass": ["Fighter", "Mage"],
-    "adaptiveType": "physical"
+    "adaptiveType": "magic"
   },
   {
     "name": "Singed",
