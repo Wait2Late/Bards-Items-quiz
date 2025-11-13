@@ -24,7 +24,7 @@ body::before {
 
 main {
     width: 100%;
-    /* max-width: 1200px; */
+    max-width: 1400px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
