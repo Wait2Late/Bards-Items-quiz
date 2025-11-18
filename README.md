@@ -2,6 +2,16 @@
 
 A small, for-fun project where I learned TypeScript by building an interactive web page that suggests items for Bard based on both teams' champion compositions. It pulls live data from Riot's Data Dragon and a tiny wiki scraper I wrote, then scores items with a simple, explainable rule system.
 
+### How to play
+1. Select champions for both teams using the dropdowns. Your team has a special Bard slot. You can also generate new random teams.
+2. Choose up to 4 items for Bard (3 regular items + boots). The dropdowns will disable already-selected items.
+3. Once all item slots are filled, view the suggested top 3 items for "If winning" and "If losing" scenarios, based on the current champion compositions.
+
+![Quiz demonstration](/assets/Quiz-demonstration.gif)
+
+
+
+
 ### Why I built this
 - Learn and practice TypeScript with strict settings.
 - Explore DOM-driven UI patterns (dropdowns, state, conditional rendering).
