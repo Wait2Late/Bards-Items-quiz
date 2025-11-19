@@ -121,7 +121,7 @@
   {
     "name": "Brand",
     "roles": ["Jungle", "Support", "Middle"],
-    "class": "Burst",
+    "class": "Battlemage",
     "legacyClass": ["Mage", "Support"],
     "adaptiveType": "magic"
   },

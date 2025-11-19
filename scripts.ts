@@ -85,7 +85,7 @@ const TeamOffense: BardItem[] = BardItems.filter(item => item.ItemType === ItemT
 const ITEM_TAGS: Record<ItemId, string[]> = {
     "3742": ["Armor","Peel", "Frontline"],             // Dead Man's Plate
     "3143": ["Armor","AntiCrit","slow", "Frontline"],  // Randuin's Omen
-    "4401": ["MR","AntiDot"],                          // Force of Nature
+    "4401": ["MR","AntiDot", "Frontline"],             // Force of Nature
     "2504": ["MR","AntiPoke", "Frontline"],            // Kaenic Rookern
     "6665": ["MixedEnemyDmg", "Frontline"],            // Jak'Sho The Protean
     "3091": ["MR","AS","OnHit","Tenacity"],            // Wit's End
@@ -99,7 +99,7 @@ const ITEM_TAGS: Record<ItemId, string[]> = {
     "3190": ["AoEShield"],                             // Locket of the Iron Solari
     "3107": ["AoEHeal"],                               // Redemption
     "3222": ["Cleanse"],                               // Mikael's Blessing
-    "3110": ["Armor","AntiAS"],                        // Frozen Heart
+    "3110": ["Armor","AntiAS", "Frontline"],           // Frozen Heart
     "3109": ["Armor","Heal"],                          // Knight's Vow
     "4005": ["AP"],                                    // Imperial Mandate
     "8020": ["MR","AmpMagic","Frontline"],             // Abyssal Mask
@@ -1233,11 +1233,11 @@ function suggestItems(
             enemyShields++;
         if ((c.class?.includes("Artillery") || c.class?.includes("Burst")) && c.adaptiveType === "magic")
             enemyPoke++;
-        if (c.class?.includes("BattleMage"))
+        if (c.class?.includes("Battlemage"))
             enemyDot++;
         if (c.class?.includes("Marksman") || ["Yasuo", "Yone"].includes(c.name))
             enemyCrit++;
-        if (["Jax", "Master Yi", "Tryndamere"].includes(c.name))
+        if (["Jax", "Master Yi", "Tryndamere", "Irelia"].includes(c.name))
             enemyAS++;
     });
 

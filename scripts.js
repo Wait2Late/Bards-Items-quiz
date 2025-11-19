@@ -108,7 +108,7 @@ var TeamOffense = BardItems.filter(function (item) { return item.ItemType === It
 var ITEM_TAGS = {
     "3742": ["Armor", "Peel", "Frontline"], // Dead Man's Plate
     "3143": ["Armor", "AntiCrit", "slow", "Frontline"], // Randuin's Omen
-    "4401": ["MR", "AntiDot"], // Force of Nature
+    "4401": ["MR", "AntiDot", "Frontline"], // Force of Nature
     "2504": ["MR", "AntiPoke", "Frontline"], // Kaenic Rookern
     "6665": ["MixedEnemyDmg", "Frontline"], // Jak'Sho The Protean
     "3091": ["MR", "AS", "OnHit", "Tenacity"], // Wit's End
@@ -122,7 +122,7 @@ var ITEM_TAGS = {
     "3190": ["AoEShield"], // Locket of the Iron Solari
     "3107": ["AoEHeal"], // Redemption
     "3222": ["Cleanse"], // Mikael's Blessing
-    "3110": ["Armor", "AntiAS"], // Frozen Heart
+    "3110": ["Armor", "AntiAS", "Frontline"], // Frozen Heart
     "3109": ["Armor", "Heal"], // Knight's Vow
     "4005": ["AP"], // Imperial Mandate
     "8020": ["MR", "AmpMagic", "Frontline"], // Abyssal Mask
@@ -1167,7 +1167,7 @@ function suggestItems(teamInfo, enemyInfo) {
             enemyShields++;
         if ((((_b = c.class) === null || _b === void 0 ? void 0 : _b.includes("Artillery")) || ((_c = c.class) === null || _c === void 0 ? void 0 : _c.includes("Burst"))) && c.adaptiveType === "magic")
             enemyPoke++;
-        if ((_d = c.class) === null || _d === void 0 ? void 0 : _d.includes("BattleMage"))
+        if ((_d = c.class) === null || _d === void 0 ? void 0 : _d.includes("Battlemage"))
             enemyDot++;
         if (((_e = c.class) === null || _e === void 0 ? void 0 : _e.includes("Marksman")) || ["Yasuo", "Yone"].includes(c.name))
             enemyCrit++;
