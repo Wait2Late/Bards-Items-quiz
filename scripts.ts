@@ -1375,9 +1375,6 @@ function setup() {
         allChampions = data.champions;
         allItems = data.items;
 
-        // console.log(data.items.data);
-        // console.log(data.champions.data);
-
         // Assign champions to enemy team once we have both champion data and roles
         // Track used champions to prevent duplicates across both teams
         const usedChampions = new Set<string>();
